@@ -1,0 +1,252 @@
+@import './../styles/components/responsive';
+
+.layout {
+  position: relative;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  .header {
+    grid-row-start: 1;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    color: #2e2e2e;
+    padding: 0.5rem 1rem;
+    z-index: 999;
+    padding: 1rem;
+    width: 100%;
+    background-color: var(--white);
+
+    .container {
+      padding: 0.4rem;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+
+      > * {
+        flex: 1;
+      }
+    }
+
+    button {
+      box-shadow: none;
+    }
+
+    .logo {
+      font-size: 24px;
+    }
+
+    a {
+      color: #53565c;
+      b {
+        color: var(--black);
+      }
+    }
+
+    a[class='active'] {
+      font-weight: bold;
+    }
+
+    .network {
+      column-gap: 8px;
+      border-radius: 1rem;
+      padding: 0.8rem 1rem;
+      cursor: help;
+      user-select: none;
+      @include small-down() {
+        display: none;
+      }
+      &:hover {
+        background: #f7f8fa;
+      }
+
+      img {
+        width: 25px;
+        height: 26.3px;
+        padding: 0.15rem;
+        background: rgba(254, 0, 91, 0.04);
+        border-radius: 999px;
+      }
+
+      span {
+      }
+    }
+
+    .actions {
+      column-gap: 0.5rem;
+    }
+
+    .connect-button {
+      border: none;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      color: var(--white);
+      width: fit-content;
+      overflow: hidden;
+      white-space: nowrap;
+      background: linear-gradient(135.71deg, #8a93d2 6.43%, #4d5683 93.06%);
+      box-shadow: inset -6.21875px 1.16602px 7.50137px rgba(0, 0, 0, 0.25);
+      filter: brightness(1.2);
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 200;
+
+      &:after {
+        content: 'Connect Universal Profile';
+      }
+
+      @include small-down() {
+        &:after {
+          content: 'Connect UP';
+        }
+      }
+
+      &:hover {
+        filter: brightness(1.4);
+      }
+    }
+
+    .connect-button,
+    .network {
+      transition: background-color 250ms ease 0s, filter 250ms ease 0s;
+    }
+
+    .left {
+      column-gap: 2.5rem;
+    }
+
+    ul.nav {
+      column-gap: 1rem;
+      @include small-down() {
+        display: none;
+      }
+    }
+
+    ul.mini-nav {
+      background-color: #f4f4f4;
+      column-gap: 1rem;
+      @include medium-up() {
+        display: none;
+      }
+    }
+  }
+
+  > main {
+    grid-row-start: 2;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 2;
+    flex-grow: 1;
+    flex: 1;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 1rem;
+
+    header {
+      padding: 1rem 0;
+
+      span {
+        font-size: 1.3rem;
+        font-weight: bold;
+      }
+
+      ul {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        li {
+          display: flex;
+          align-items: center;
+          column-gap: 1rem;
+        }
+      }
+
+      figure {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        column-gap: 1rem;
+        border-radius: 999px;
+
+        figcaption {
+        }
+
+        img {
+          --width: 40px;
+          width: var(--width);
+          height: var(--width);
+          border: 1px solid #ddd;
+          border-radius: inherit;
+        }
+      }
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+    }
+  }
+
+  footer {
+    position: relative;
+    color: var(--black-700);
+    text-align: center;
+    padding: 1rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  > header,
+  > main {
+    width: 100%;
+  }
+  nav,
+  > div {
+    min-height: inherit;
+  }
+}
+.active {
+  /* Frame 37031 */
+
+  /* Auto layout */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 8px;
+  gap: 10px;
+
+  width: 47px;
+  height: 20px;
+
+  background: #000000;
+  border-radius: 999px;
+
+  /* Inside auto layout */
+  flex: none;
+  order: 0;
+  flex-grow: 0;
+
+  color: var(--white) !important;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}

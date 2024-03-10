@@ -1,0 +1,11 @@
+{
+    "name": "ateny/universal-fam",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amir Rahimi",
+            "email": "atenyun@gmail.com"
+        }
+    ]
+}

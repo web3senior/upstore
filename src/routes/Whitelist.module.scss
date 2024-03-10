@@ -1,0 +1,86 @@
+@import './../styles/components/responsive';
+
+$width: 124px;
+$height: $width;
+
+.section {
+  height: inherit;
+  user-select: none;
+  padding-top: 1rem;
+
+  table {
+    width: 100%;
+  }
+}
+
+figure.pfp {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  column-gap: 1rem;
+
+  figcaption {
+    font-weight: bold;
+  }
+
+  img {
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    border: 2px solid #f1f1f1;
+    border-radius: 999px;
+  }
+}
+
+.github-card {
+  background: rgba(0, 195, 160, 0.06);
+  border-radius: var(--global-border-radius);
+}
+
+.github-card__body {
+  padding: 2rem 2.5rem;
+  color: #00c3a0;
+  font-weight: 500;
+}
+
+.btn-refresh {
+  border: none;
+  background: linear-gradient(-225deg, #d5dbe4, #f8f8f8);
+  border-radius: 4px;
+  box-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff, 0 1px 2px 1px rgba(30, 35, 90, 0.4);
+  padding: 0.3rem 0.3rem;
+  cursor: pointer;
+
+  svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  &:active {
+    transform: translateY(0.1em);
+  }
+}
+
+.grid {
+  gap: 1rem;
+}
+
+.grid__item {
+  position: relative;
+  background-image: linear-gradient(180deg, #fff, #f5f5fa);
+  box-shadow: 0px 9.64505px 12.8601px rgba(0, 0, 0, 0.1);
+  padding: 1rem 0;
+  transition: all ease-in-out 0.12s;
+  overflow: hidden;
+
+  &:hover {
+    box-shadow: 0 8px 22px 0 rgba(37, 44, 97, 0.15), 0 4px 6px 0 rgba(93, 100, 148, 0.2);
+    a {
+    }
+  }
+
+  b {
+    max-width: 100%;
+    font-size: 14px;
+  }
+}

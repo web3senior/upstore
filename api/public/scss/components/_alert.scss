@@ -1,0 +1,144 @@
+/**
+* Provide contextual feedback messages in order to the actions.
+*/
+
+// Use
+@use "sass:list";
+@use "sass:map";
+
+// Data Members
+$alerts: (
+  primary: (
+    background: #EBF3FC,
+    color: #115EA3,
+    stroke: #B4D6FA,
+    link: #002752,
+  ),
+  secondary: (
+    background: #e2e3e5,
+    color: #383d41,
+    stroke: #202326,
+    link: #202326,
+  ),
+  danger: (
+    background: #FDF3F4,
+    color: #B10E1C,
+    stroke: #EEACB2,
+    link: #491217,
+  ),
+  info: (
+    background: #cceef0,
+    color: #045356,
+    stroke: #5eaab7,
+    link: #062c33,
+  ),
+  warning: (
+    background: #fff5c9,
+    color: #a06923,
+    stroke: #f3bb66,
+    link: #533f03,
+  ),
+  dark: (
+    background: #d6d8d9,
+    color: #1b1e21,
+    stroke: #c6c8ca,
+    link: #040505,
+  ),
+  light: (
+    background: #fefefe,
+    color: #818182,
+    stroke: #fdfdfe,
+    link: #686868,
+  ),
+  success: (
+    background: #daffe6,
+    color: #277539,
+    stroke: #202b22,
+    link: #0b2e13,
+  ),
+);
+
+$border: (
+  width: 1px,
+  style: solid,
+  radius: 999px,
+);
+
+$padding: (
+  x: 1.25rem,
+  y: 0.75rem,
+);
+
+// Alert
+.alert {
+  position: relative;
+  padding: map.get($padding, y) map.get($padding, x);
+  margin-bottom: 1rem;
+
+  &.alert--border {
+    border-width: map.get($border, width);
+    border-style: map.get($border, style);
+    border-radius: map.get($border, radius);
+  }
+
+  hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border: 0;
+    border-top: 1px solid transparent;
+  }
+
+  span {
+    vertical-align: middle;
+  }
+
+  /// @param {List} $alerts
+  @each $alert in (map.keys($alerts)) {
+    &.alert--#{$alert} {
+      color: map.get($alerts, $alert, color);
+      background-color: map.get($alerts, $alert, background);
+      border-color: map.get($alerts, $alert, stroke);
+
+      .alert__link {
+        color: map.get($alerts, $alert, link);
+      }
+
+      hr {
+        border-top-color: map.get($alerts, $alert, stroke);
+      }
+    }
+  }
+}
+
+.alert-dismissible {
+  padding-left: 4rem;
+
+  .close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0.75rem 1.25rem;
+    color: inherit;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+  }
+
+  button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+}
+
+.alert-heading {
+  color: inherit;
+  font-size: 1.5rem !important;
+}

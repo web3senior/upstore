@@ -1,0 +1,84 @@
+.container {
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.card {
+  border-radius: 23.867px;
+  background: var(--White, #fff);
+  box-shadow: 15.514px 29.238px 18.497px 0px rgba(93, 134, 194, 0.12);
+  padding: 2rem 0.5rem;
+  user-select: none;
+  cursor: pointer;
+
+  .cardBody {
+    background-color: rgba(255 255 255 / 40%);
+    margin-top: 1rem;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+
+    ul {
+      row-gap: 1.5rem;
+    }
+  }
+}
+
+// Checkbox
+input[type='checkbox'] {
+  --form-control-disabled: #959495;
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  position: relative;
+  font: inherit;
+  color: currentColor;
+  height: 1.15em;
+  border-radius: 8px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+  width: 50px;
+  background-color: #eff2f5;
+  cursor: pointer;
+  transition: 120ms all ease-in-out;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.15em;
+    height: inherit;
+    transform: scale(1.5);
+    transition: 120ms all ease-in-out;
+    transform-origin: center;
+    position: absolute;
+    background: #ffffff;
+    border-radius: 4px;
+    background-color: var(--white);
+    background-image: url('./../assets/checkbox-deactive.svg');
+    background-repeat: no-repeat;
+    background-size: 60%;
+    background-position: center;
+    border: 2px solid #eff2f5;
+    filter: drop-shadow(0 1px 2px rgb(0 0 0/0.1)) drop-shadow(0 1px 1px rgb(0 0 0/0.06));
+  }
+
+  &:checked{
+    background-color: #4bcc00;
+
+    &:before {
+      left: calc(100% - 20px) !important;
+      background-image: url('./../assets/checkbox-active.svg');
+      border-color: #4bcc00;
+      background-color: #fff;
+    }
+  }
+
+  &:focus {
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

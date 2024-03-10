@@ -1,0 +1,58 @@
+:root {
+  font-family: 'Open Sans', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  // color-scheme: light dark;
+  // color: rgba(255, 255, 255, 0.87);
+  background-color: #fff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+  ::selection {
+    color: var(--color-primary);
+    background-color: var(--color-secondary);
+  }
+  
+}
+
+#root {
+  height: inherit;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+// input::-webkit-calendar-picker-indicator {
+//   display: none;
+//   opacity: 0;
+// }
+
+@media (prefers-color-scheme: light) {
+  // :root {
+  //   color: #213547;
+  //   background-color: #ffffff;
+  // }
+
+  // button {
+  //   background-color: #f9f9f9;
+  // }
+}

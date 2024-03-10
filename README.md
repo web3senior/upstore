@@ -1,0 +1,2 @@
+# 🛍️ UP Store
+universalprofile.store

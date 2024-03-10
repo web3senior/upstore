@@ -1,0 +1,41 @@
+{
+  "name": "universallink",
+  "version": "1.0.0",
+  "description": "Share link seamlessly on blockchain",
+  "main": "config.base.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx webpack --config config.development.js",
+    "prod": "npx webpack --config config.production.js",
+    "clean": "rm dist/bundle.js",
+    "sass:u": "sass -w public/scss/u.scss:dist/u.min.css",
+    "sass:home": "sass -w public/scss/home.scss:dist/home.min.css",
+    "sass:panel": "sass -w public/scss/global.scss:dist/panel.min.css",
+    "sass:admin": "sass -w public/scss/admin.scss:dist/admin.min.css",
+    "sass:offline": "sass -w --style compressed offline.scss:src/offline.min.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/web3senior/universaal-link.git"
+  },
+  "author": "Amir Rahimi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/web3senior/universaal-link/issues"
+  },
+  "homepage": "https://github.com/web3senior/universaal-link#readme",
+  "devDependencies": {
+    "css-loader": "^6.10.0",
+    "office-ui-fabric-core": "^11.1.0",
+    "sass": "^1.70.0",
+    "sass-loader": "^14.1.0",
+    "style-loader": "^3.3.4",
+    "webpack": "^5.90.1",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "animate.css": "^4.1.1",
+    "toastify-js": "^1.12.0",
+    "web3": "^4.5.0"
+  }
+}

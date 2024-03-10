@@ -1,0 +1,64 @@
+@use 'sass:list';
+@use 'sass:map';
+
+// Data Members
+$breakpoints: (
+  // Extra small devices
+  xsmall: ('xs-col-', 0),
+  // Small devices (landscape phones, 576px and up)
+  small: ('sm-col-',576px),
+  // Medium devices (tablets, 768px and up)
+  medium: ('md-col-',768px),
+  //Large devices (desktops, 992px and up)
+  large: ('lg-col-',992px),
+  // Extra large devices (large desktops, 1200px and up)
+  xlarge: ('xl-col-',1200px)
+);
+
+// Grid
+.grid {
+  display: grid;
+
+  &.grid--fit {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  }
+
+  &.grid--manually {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  &.grid--fill {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  &.grid--gap-025 {
+    grid-gap: 0.25rem;
+  }
+
+  &.grid--gap-050 {
+    grid-gap: 0.50rem;
+  }
+
+  &.grid--gap-075 {
+    grid-gap: 0.75rem;
+  }
+
+  &.grid--gap-1 {
+    grid-gap: 1rem;
+  }
+}
+
+// Medias
+@for $i from 1 through list.length($breakpoints) {
+  @media (min-width: list.nth(list.nth(list.nth($breakpoints, $i), 2), 2)) {
+    .grid {
+      @for $a from 1 through 13 {
+        @for $b from 1 through 13 {
+          .#{list.nth(list.nth(list.nth($breakpoints,$i),2),1)}#{$a}-#{$b} {
+            grid-column: #{$a} / #{$b};
+          }
+        }
+      }
+    }
+  }
+}
