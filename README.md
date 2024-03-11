@@ -9,6 +9,10 @@
 ![Prettier Badge](assets/badge-prettier.svg "HardHat")
 <a href="//twitter.com/atenyun">![X Badge](assets/badge-x.svg "HardHat")</a>
 
+## Demo
+
+# https://universalprofile.store
+
 ## Overview
 
 Traditional app stores, like Apple's App Store or Google Play, are controlled by a single entity. This means they have the power to decide what apps get listed, and can even remove them if they violate their guidelines.
