@@ -13,6 +13,9 @@
 
 # https://universalprofile.store
 
+## YouTube
+https://youtu.be/ILmirZXwNyc
+
 ## Overview
 
 Traditional app stores, like Apple's App Store or Google Play, are controlled by a single entity. This means they have the power to decide what apps get listed, and can even remove them if they violate their guidelines.
