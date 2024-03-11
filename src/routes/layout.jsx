@@ -23,17 +23,17 @@ let links = [
   {
     name: 'DAO',
     icon: null,
-    path: `benefits`,
+    path: `/dao`,
   },
   {
     name: 'DeFi',
     icon: null,
-    path: `whitelist`,
+    path: `/defi`,
   },
   {
     name: 'Gaming',
     icon: null,
-    path: `lyx`,
+    path: `/gaming`,
   },
 ]
 

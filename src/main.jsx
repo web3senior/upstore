@@ -13,6 +13,7 @@ import SplashScreen from "./routes/splashScreen.jsx"
 import Whitelist from "./routes/whitelist.jsx"
 import Benefits from "./routes/benefits.jsx"
 import Home from "./routes/home.jsx"
+import App from "./routes/app.jsx"
 import About from "./routes/about.jsx"
 import Lyx from "./routes/lyx.jsx"
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home title={`Home`} />,
+      },
+      {
+        path: ":appId",
+        element: <App />,
       },
       {
         path: "/about",

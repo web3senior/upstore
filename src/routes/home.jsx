@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
@@ -142,12 +142,16 @@ function Home({ title }) {
   }
 
   useEffect(() => {
+    // /0xd0f34b10
+    //console.log('-------------',web3.eth.abi.encodeFunctionSignature(`getAppList()`))
+
     getAppList().then(async (res) => {
       //console.log(res)
       const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item)))
       console.log(responses)
       setApp(responses)
       setBackupApp(responses)
+      setIsLoading(false)
     })
   }, [])
 
@@ -166,7 +170,7 @@ function Home({ title }) {
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
           <div className={`${styles['grid']} grid grid--fit mt-60`} style={{ '--data-width': '50px' }}>
-            {/* {isLoading && (
+             {isLoading && (
                 <>
                   {[1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
                     <Shimmer key={i}>
@@ -174,7 +178,7 @@ function Home({ title }) {
                     </Shimmer>
                   ))}
                 </>
-              )} */}
+              )}
 
             {app &&
               app.length > 0 &&
@@ -185,9 +189,9 @@ function Home({ title }) {
                   key={i}
                 >
                   <Link to={`${item.id}`}>
-                  <figure title={item.category}>
-                    <img alt={item.name} src={item.logo} />
-                  </figure>
+                    <figure title={item.category}>
+                      <img alt={item.name} src={item.logo} />
+                    </figure>
                   </Link>
                 </div>
               ))}

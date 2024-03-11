@@ -29,6 +29,10 @@ body {
   height: inherit;
 }
 
+input {
+  outline: 0;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -41,10 +45,10 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
-// input::-webkit-calendar-picker-indicator {
-//   display: none;
-//   opacity: 0;
-// }
+input::-webkit-calendar-picker-indicator {
+  display: none;
+  opacity: 0;
+}
 
 @media (prefers-color-scheme: light) {
   // :root {

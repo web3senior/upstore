@@ -21,7 +21,7 @@ export const isAuth = async () => await localStorage.getItem('accessToken')
 export const chainID = async () => await web3.eth.getChainId()
 
 export const getIPFS = async (CID) => {
-  console.log(CID)
+  //  console.log(CID)
   let requestOptions = {
     method: 'GET',
     redirect: 'follow',
@@ -38,23 +38,23 @@ export const getIPFS = async (CID) => {
  */
 
 export const fetchProfile = async (addr) => {
-  console.log(addr)
+  //console.log(addr)
   var contract = new web3.eth.Contract(LSP0ERC725Account.abi, addr)
   return contract.methods
     .getData('0x5ef83ad9559033e6e941db7d7c495acdce616347d28e90c7ce47cbfcfcad3bc5')
     .call()
     .then(async (data) => {
       data = data.substring(6, data.length)
-      console.log(data)
+      // console.log(data)
       //  data ="0x" + data.substring(6)
       //  console.log(data)
       // slice the bytes to get its pieces
       const hashFunction = '0x' + data.slice(0, 8)
-      console.log(hashFunction)
+      // console.log(hashFunction)
       const hash = '0x' + data.slice(76)
       const url = '0x' + data.slice(76)
 
-      console.log(hashFunction, ' | ', hash, ' | ', url)
+      // console.log(hashFunction, ' | ', hash, ' | ', url)
 
       // check if it uses keccak256
       //  if (hashFunction === '0x6f357c6a') {
@@ -103,9 +103,9 @@ export function AuthProvider({ children }) {
       let accounts = await web3.eth.getAccounts()
       if (accounts.length === 0) await web3.eth.requestAccounts()
       accounts = await web3.eth.getAccounts()
-      console.log(accounts)
+      //console.log(accounts)
       setWallet(accounts[0])
-      fetchProfile(accounts[0]).then(res => setProfile(res))
+      fetchProfile(accounts[0]).then((res) => setProfile(res))
       toast.dismiss(loadingToast)
       toast.success(`UP successfuly connected`)
       navigate(`/`)
@@ -119,8 +119,10 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (isUPinstalled()) {
       isWalletConnected().then((addr) => {
-        setWallet(addr)
-        fetchProfile(addr).then(res => setProfile(res))
+        if (addr !== undefined) {
+          setWallet(addr)
+          fetchProfile(addr).then((res) => setProfile(res))
+        }
       })
     }
   }, [])
