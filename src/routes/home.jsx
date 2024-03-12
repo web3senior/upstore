@@ -171,7 +171,24 @@ function Home({ title }) {
 
           <p className="text-center">Unleash the power of Lukso, explore and connect dapps with ease</p>
 
-          <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} onChange={() => handleSearch()} ref={txtSearchRef} className={`${styles['txt-search']}`} />
+          <div className={`${styles['txt-search']}`}>
+            <div className={styles['access-key']}>
+              <span>Alt</span>
+              <span>+</span>
+              <span>Shift</span>
+              <span>+</span>
+              <span>U</span>
+            </div>
+            <input
+              type={`text`}
+              placeholder={`Search in ${app && app.length} dapps`}
+              list={`apps`}
+              accessKey={`u`}
+              onChange={() => handleSearch()}
+              ref={txtSearchRef}
+            />
+          </div>
+
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
           <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '50px' }}>
