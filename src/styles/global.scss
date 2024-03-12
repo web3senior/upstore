@@ -1,6 +1,7 @@
 @use "abstract" as *;
 @use "components" as *;
 @import "./../../node_modules/animate.css/animate.min.css";
+@import "./../../node_modules/office-ui-fabric-core/dist/sass/Fabric.scss";
 
 .d-none {
   display: none;

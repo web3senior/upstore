@@ -17,10 +17,11 @@ import party from 'party-js'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
 
 export const loader = async ({ request, params }) => {
+  if (params.appId.length !== `0x0000000000000000000000000000000000000000000000000000000000000000`.length) return false
   if (localStorage.getItem(`appSeen`) !== null) {
     let data = JSON.parse(localStorage.getItem(`appSeen`))
     if (data.filter((item) => item.appId.includes(params.appId)).length === 0) {
-      let newData = [...JSON.parse(localStorage.getItem(`appSeen`)), {appId: params.appId}]
+      let newData = [...JSON.parse(localStorage.getItem(`appSeen`)), { appId: params.appId }]
       localStorage.setItem(`appSeen`, JSON.stringify(newData))
     }
   } else {
@@ -66,8 +67,6 @@ function App({ title }) {
       setApp([responses])
       setIsLoading(false)
     })
-
-
   }, [])
 
   return (
@@ -100,9 +99,16 @@ function App({ title }) {
                   <h4>{item.name}</h4>
                   <p>{item.description}</p>
                   <b>
-                   App ID: {params.appId.slice(0, 4)}...{params.appId.slice(params.appId.length - 4, params.appId.length)}
+                    App ID: {params.appId.slice(0, 4)}...{params.appId.slice(params.appId.length - 4, params.appId.length)}
                   </b>
-                  <div>{item.tags && item.tags.split(',').map((tag, i) => <span key={i} className={`badge badge-dark badge-pill`}>{tag}</span>)}</div>
+                  <div>
+                    {item.tags &&
+                      item.tags.split(',').map((tag, i) => (
+                        <span key={i} className={`badge badge-dark badge-pill`}>
+                          {tag}
+                        </span>
+                      ))}
+                  </div>
 
                   <p className=" mt-10 d-flex">
                     <span className={`badge badge-pill badge-success`}>{item.url}</span>

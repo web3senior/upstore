@@ -164,7 +164,8 @@ function Home({ title }) {
     <>
       <section className={styles.section}>
         <div className={`__container`} data-width={`medium`}>
-          <figure className={`${styles['logo']}`}>
+
+          <figure className={`${styles['logo']} ms-motion-slideDownIn`}>
             <img alt={import.meta.env.VITE_NAME} src={Logo} />
             <figcaption>Connect to the universe</figcaption>
           </figure>
