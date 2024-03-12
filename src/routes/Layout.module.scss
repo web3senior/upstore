@@ -6,22 +6,27 @@
   display: grid;
   grid-template-rows: auto 1fr;
 
+  background: radial-gradient(35.16% 126.39% at 83.33% 77.08%, #fef8e8 0%, rgba(255, 255, 255, 0) 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    radial-gradient(41.76% 150.09% at 6.41% 50%, rgba(249, 139, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%)
+      /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */,
+    rgba(255, 184, 209, 0.24);
+
   .header {
     grid-row-start: 1;
     grid-row-end: 2;
     grid-column-start: 1;
     grid-column-end: 2;
     color: #2e2e2e;
-    padding: 0.5rem 1rem;
+
     z-index: 999;
     padding: 1rem;
     width: 100%;
-    background-color: var(--white);
 
     .container {
-      padding: 0.4rem;
+      padding: 0.5rem 1rem;
       background: rgba(255, 255, 255, 0.4);
-      border-radius: 1.5rem;
+      border-radius: 999px;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
@@ -216,7 +221,8 @@
 
     > ul {
       background-color: #f9fbfd;
-      padding: 1rem 0; display: none;
+      padding: 1rem 0;
+      display: none;
     }
 
     figure {

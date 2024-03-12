@@ -169,7 +169,7 @@ function Home({ title }) {
             <figcaption>Connect to the universe</figcaption>
           </figure>
 
-          <p className="text-center">Unleash the power of Lukso, explore and connect dapps with ease</p>
+          <p className="text-center">Unleash the power of LUKSO, explore and connect dapps with ease</p>
 
           <div className={`${styles['txt-search']}`}>
             <div className={styles['access-key']}>
