@@ -27,6 +27,7 @@ function Home({ title }) {
   const [app, setApp] = useState([])
   const [backApp, setBackupApp] = useState([])
   const [whitelist, setWhitelist] = useState()
+  const [appSeen, setAppSeen] = useState()
   const auth = useAuth()
   const navigate = useNavigate()
   const txtSearchRef = useRef()
@@ -139,7 +140,13 @@ function Home({ title }) {
     return await UpstoreContract.methods.getAppList().call()
   }
 
+  const readLocalStorage = async () => await JSON.parse(localStorage.getItem(`appSeen`))
+
   useEffect(() => {
+    readLocalStorage().then((res) => {
+      console.log(res)
+      setAppSeen(res)
+    })
     // /0xd0f34b10
     //console.log('-------------',web3.eth.abi.encodeFunctionSignature(`getAppList()`))
 
@@ -167,10 +174,10 @@ function Home({ title }) {
           <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} onChange={() => handleSearch()} ref={txtSearchRef} className={`${styles['txt-search']}`} />
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
-          <div className={`${styles['grid']} grid grid--fit mt-60`} style={{ '--data-width': '50px' }}>
+          <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '50px' }}>
             {isLoading && (
               <>
-                {[1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
+                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
                   <Shimmer key={i}>
                     <div style={{ width: `50px`, height: `50px` }} />
                   </Shimmer>
@@ -181,21 +188,45 @@ function Home({ title }) {
             {app &&
               app.length > 0 &&
               app.map((item, i) => (
-                <div
+                <Link
+                  to={`${item.id}`}
                   style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
                   className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
                   key={i}
                 >
-                  <Link to={`${item.id}`}>
-                    <figure title={item.name}>
-                      <img alt={item.name} src={item.logo} />
-                    </figure>
-                  </Link>
-                </div>
+                  <figure title={item.name}>
+                    <img alt={item.name} src={item.logo} />
+                  </figure>
+                </Link>
               ))}
 
             {app && app.length > 0 && <DefaultAppHolder app={app} />}
           </div>
+
+          {appSeen && appSeen.length > 0 && (
+            <>
+              <p className="mt-50">Recent dapps ({appSeen.length})</p>
+              <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '50px' }}>
+                {app &&
+                  app.length > 0 &&
+                  app
+                    .filter((item, i) => appSeen.find((appSeenItem) => appSeenItem.appId === item.id) !== undefined)
+                    .reverse()
+                    .map((item, i) => (
+                      <Link
+                        to={`${item.id}`}
+                        style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                        className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
+                        key={i}
+                      >
+                        <figure title={item.name}>
+                          <img alt={item.name} src={item.logo} />
+                        </figure>
+                      </Link>
+                    ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
     </>
@@ -207,8 +238,12 @@ const DefaultAppHolder = ({ app }) => {
   if (app.length > 18) return
   for (let i = 0; i < 18 - app.length; i++) {
     holder.push(
-      <div key={i} onClick={()=>toast(`Submit your dapp to the manager`)}
-      style={{ backgroundColor: '#FFF1F8' }} className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}>
+      <div
+        key={i}
+        onClick={() => toast(`Submit your dapp to the manager`)}
+        style={{ backgroundColor: '#FFF1F8' }}
+        className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
+      >
         <figure>
           <img src={DappDefaultIcon} />
         </figure>

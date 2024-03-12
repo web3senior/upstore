@@ -13,7 +13,7 @@ import SplashScreen from "./routes/splashScreen.jsx"
 import Whitelist from "./routes/whitelist.jsx"
 import New from "./routes/new.jsx"
 import Home from "./routes/home.jsx"
-import App from "./routes/app.jsx"
+import App, {loader as appLoader} from "./routes/app.jsx"
 import About from "./routes/about.jsx"
 import Lyx from "./routes/lyx.jsx"
 
@@ -37,6 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: ":appId",
+        loader: appLoader,
         element: <App />,
       },
       {

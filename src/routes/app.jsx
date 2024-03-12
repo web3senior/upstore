@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, Link, useParams } from 'react-router-dom'
+import { useNavigate, defer, useParams } from 'react-router-dom'
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
@@ -15,6 +15,21 @@ import ABI from '../abi/upstore.json'
 import party from 'party-js'
 // import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
+
+export const loader = async ({ request, params }) => {
+  if (localStorage.getItem(`appSeen`) !== null) {
+    let data = JSON.parse(localStorage.getItem(`appSeen`))
+    if (data.filter((item) => item.appId.includes(params.appId)).length === 0) {
+      let newData = [...JSON.parse(localStorage.getItem(`appSeen`)), {appId: params.appId}]
+      localStorage.setItem(`appSeen`, JSON.stringify(newData))
+    }
+  } else {
+    let newData = [{ appId: params.appId }]
+    localStorage.setItem(`appSeen`, JSON.stringify(newData))
+  }
+
+  return defer({})
+}
 
 function App({ title }) {
   Title(title)
@@ -51,6 +66,8 @@ function App({ title }) {
       setApp([responses])
       setIsLoading(false)
     })
+
+
   }, [])
 
   return (
