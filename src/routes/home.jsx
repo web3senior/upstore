@@ -7,11 +7,9 @@ import Loading from './components/LoadingSpinner'
 import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
 import { useAuth, web3, _ } from './../contexts/AuthContext'
-import UniversalFamShot from './../../src/assets/universal-fam-shot.png'
 import styles from './Home.module.scss'
 import Logo from './../../src/assets/logo.svg'
 import Banner from './../../src/assets/banner.png'
-import UniversalFamAsset from './../../src/assets/universal-fam-asset.png'
 import Web3 from 'web3'
 import ABI from './../abi/upstore.json'
 import party from 'party-js'
@@ -160,36 +158,36 @@ function Home({ title }) {
       <section className={styles.section}>
         <div className={`__container`} data-width={`medium`}>
           <figure className={`${styles['logo']}`}>
-            <img src={Logo} />
+            <img alt={import.meta.env.VITE_NAME} src={Logo} />
+            <figcaption>Connect to the universe</figcaption>
           </figure>
 
-          <h4 className="text-center mt-20">Connect to the universe</h4>
-          <p className="text-center">Unleash the power of Lukso: Explore and connect dapps with ease</p>
+          <p className="text-center">Unleash the power of Lukso, explore and connect dapps with ease</p>
 
           <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} onChange={() => handleSearch()} ref={txtSearchRef} className={`${styles['txt-search']}`} />
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
           <div className={`${styles['grid']} grid grid--fit mt-60`} style={{ '--data-width': '50px' }}>
-             {isLoading && (
-                <>
-                  {[1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
-                    <Shimmer key={i}>
-                      <div style={{ width: `50px`, height: `50px` }} />
-                    </Shimmer>
-                  ))}
-                </>
-              )}
+            {isLoading && (
+              <>
+                {[1, 1, 1, 1, 1, 1, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
+                  <Shimmer key={i}>
+                    <div style={{ width: `50px`, height: `50px` }} />
+                  </Shimmer>
+                ))}
+              </>
+            )}
 
             {app &&
               app.length > 0 &&
               app.map((item, i) => (
                 <div
                   style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                  className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate spin`}
+                  className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
                   key={i}
                 >
                   <Link to={`${item.id}`}>
-                    <figure title={item.category}>
+                    <figure title={item.name}>
                       <img alt={item.name} src={item.logo} />
                     </figure>
                   </Link>
@@ -198,10 +196,6 @@ function Home({ title }) {
 
             {app && app.length > 0 && <DefaultAppHolder app={app} />}
           </div>
-
-          <figure className="mt-40">
-            <img src={Banner} />
-          </figure>
         </div>
       </section>
     </>
@@ -210,10 +204,11 @@ function Home({ title }) {
 
 const DefaultAppHolder = ({ app }) => {
   let holder = []
-  if (app.length > 9) return
-  for (let i = 0; i < 9 - app.length; i++) {
+  if (app.length > 18) return
+  for (let i = 0; i < 18 - app.length; i++) {
     holder.push(
-      <div key={i} style={{ backgroundColor: '#FFF1F8' }} className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate spin`}>
+      <div key={i} onClick={()=>toast(`Submit your dapp to the manager`)}
+      style={{ backgroundColor: '#FFF1F8' }} className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}>
         <figure>
           <img src={DappDefaultIcon} />
         </figure>

@@ -1,0 +1,44 @@
+import { useEffect } from 'react'
+import { Title } from './helper/DocumentTitle'
+import Solidgrant from './../assets/solid-grant.svg'
+import styles from './New.module.scss'
+
+function New({ title }) {
+  Title(title)
+  const dappStructure = {
+    name: 'Chillwhales',
+    category: 'NFT',
+    tags: 'chill,🐳,chillwhale,$chill',
+    url: 'https://chillwhales.com',
+    logo: 'data:image/png;base64,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',
+    description:
+      'A virtual collection of 8,888 unique editions created with the purpose of serving as your digital identity on Universal Profiles. Your chillwhale gives you membership access to the whalepod via Common Ground, exclusive events within the LUKSO ecosystem, and most importantly; a chill pfp. Whalecome 🐳',
+  }
+
+  useEffect(() => {}, [])
+  return (
+    <>
+      <section className={styles.section}>
+        <div className={`__container`} data-width={`medium`}>
+          <div className={`card`}>
+            <div className={`card__header`}>New dapp</div>
+            <div className={`card__body d-flex flex-column`}>
+              <div className={`alert alert--warning`}>
+                <strong>Heads up!</strong>
+                <p>After submitting your dapp, the manager should make it active to show on the store.</p>
+              </div>
+
+              <pre>{JSON.stringify(dappStructure, null, 2)}</pre>
+
+              <input placeholder='CID'/>
+              <input placeholder='Manager'/>
+              <button>Send</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default New

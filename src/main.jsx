@@ -11,7 +11,7 @@ const Layout = lazy(() => import("./routes/layout.jsx"))
 const UserLayout = lazy(() => import("./routes/user-layout.jsx"))
 import SplashScreen from "./routes/splashScreen.jsx"
 import Whitelist from "./routes/whitelist.jsx"
-import Benefits from "./routes/benefits.jsx"
+import New from "./routes/new.jsx"
 import Home from "./routes/home.jsx"
 import App from "./routes/app.jsx"
 import About from "./routes/about.jsx"
@@ -40,16 +40,16 @@ const router = createBrowserRouter([
         element: <App />,
       },
       {
-        path: "/about",
+        path: "new",
+        element: <New title={`New`} />,
+      },
+      {
+        path: "about",
         element: <About title={`About`} />,
       },
       {
         path: "whitelist",
         element: <Whitelist title={`Whitelist`} />,
-      },
-      {
-        path: "Benefits",
-        element: <Benefits title={`Benefits`} />,
       },
       {
         path: "lyx",

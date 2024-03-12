@@ -122,7 +122,19 @@ export default function Root() {
         </main>
 
         <footer>
-          <a href="http://aratta.dev" target={`_blank`}>
+          <ul className={`d-flex flex-row align-items-center justify-content-center`}>
+            <li>
+              <NavLink to={`new`} className={({ isActive, isPending }) => (isPending ? styles['pending'] : isActive ? styles['active'] : '')}>
+                Submit your dapp
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to={`about`} className={({ isActive, isPending }) => (isPending ? styles['pending'] : isActive ? styles['active'] : '')}>
+                About
+              </NavLink>
+            </li>
+          </ul>
+          <a href={`//aratta.dev`} target={`_blank`}>
             <figure>
               <img alt={import.meta.env.AUTHOR} src={Aratta} />
             </figure>

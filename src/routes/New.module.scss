@@ -7,6 +7,10 @@
   @include small-down() {
   }
 
+  pre {
+    overflow-x: auto;
+  }
+
   figure {
     figcaption {
       text-align: center;

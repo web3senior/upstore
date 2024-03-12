@@ -1,8 +1,5 @@
 @import './../styles/components/responsive';
 
-$width: 124px;
-$height: $width;
-
 .section {
   height: inherit;
   user-select: none;
@@ -18,20 +15,21 @@ $height: $width;
   }
 
   figure.logo {
-    width: 82px;
-    margin: 0 auto;
-
     img {
-      width: inherit;
-      transform: rotate(-1.5deg);
+      margin: 0 auto;
+    }
+
+    figcaption {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 1rem;
     }
   }
 
-  h4 {
-    font-weight: 400;
+  p {
+    opacity: 0.8;
     @include small-down() {
-      font-size: 26px;
-      font-weight: 600;
+      font-size: 13px;
     }
   }
 
@@ -72,9 +70,7 @@ $height: $width;
 }
 
 .grid__item {
-  /* Frame 37030 */
-
-  /* Auto layout */
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -86,6 +82,8 @@ $height: $width;
 
   box-shadow: 0px 1.75439px 2.36842px rgba(0, 0, 0, 0.08);
   border-radius: 0.8rem;
+
+  overflow: hidden;
 
   cursor: pointer;
 
@@ -116,8 +114,7 @@ $height: $width;
   background-position: 97% center;
   background-repeat: no-repeat;
   background-size: 34px;
-  box-shadow: rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
-
+  box-shadow: 3.2px 6.7px 5.3px rgba(0, 0, 0, 0.028), 10.7px 22.3px 17.9px rgba(0, 0, 0, 0.042), 48px 100px 80px rgba(0, 0, 0, 0.07);
   span {
     position: absolute;
     right: 0.5rem;
