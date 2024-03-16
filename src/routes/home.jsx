@@ -164,13 +164,14 @@ function Home({ title }) {
     <>
       <section className={styles.section}>
         <div className={`__container`} data-width={`medium`}>
-
           <figure className={`${styles['logo']} ms-motion-slideDownIn`}>
             <img alt={import.meta.env.VITE_NAME} src={Logo} />
             <figcaption>Connect to the universe</figcaption>
           </figure>
 
-          <p className={`${styles['message']} mt-10`}>Get ready to experience the best of LUKSO! You can now easily browse and connect with various dapps that will help you unlock the full potential of this amazing platform.</p>
+          <p className={`${styles['message']} mt-10`}>
+            Get ready to experience the best of LUKSO! You can now easily browse and connect with various dapps that will help you unlock the full potential of this amazing platform.
+          </p>
 
           <div className={`${styles['txt-search']}`}>
             <div className={styles['access-key']}>
@@ -238,6 +239,30 @@ function Home({ title }) {
               </div>
             </>
           )}
+        </div>
+
+        <div className={styles['statictucs']}>
+          <div className={`__container`} data-width={`medium`}>
+            <h6>There is much more to explore</h6>
+            <p>
+              Unlock a world of possibilities with Lukso's extensive range of decentralized applications (dapps). With countless options available, you can explore and experience the full potential of
+              blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
+            </p>
+            <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
+            <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+                <span>{app && app.length > 0 && app.length}</span>
+                <small>Dapps</small>
+              </div>
+              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+                <span>{app && app.length > 0 && app.filter(item => item.category === 'NFT').length}</span>
+                <small>NFT Collection</small>
+              </div>
+              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+                <span>{1}</span>
+                <small>Chain</small>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>
