@@ -87,7 +87,7 @@ function App({ title }) {
             <div className={`ms-Grid-row`}>
               <div className={`ms-Grid-col ms-sm6 ms-md4 ms-lg3`}>
                 <div className={`${styles['card']} card`}>
-                  <div className={`${styles['card__header']} card__header`}>Brand Identity</div>
+             
                   {app &&
                     app.length > 0 &&
                     app.map((item, i) => (
@@ -99,9 +99,10 @@ function App({ title }) {
                         >
                           <figure title={item.category}>
                             <img alt={item.name} src={item.logo} />
+                            <figcaption>{item.name}</figcaption>
                           </figure>
-
-                          <b>{item.name}</b>
+                          
+                          <span className={`badge badge-pill badge-success`}>{app[0].url}</span>
                         </div>
                       </>
                     ))}
@@ -125,7 +126,10 @@ function App({ title }) {
                 {app && app.length > 0 && (
                   <>
                     <div className={`${styles['card']} card`}>
-                      <div className={`${styles['card__header']} card__header`}>Description</div>
+                      <div className={`${styles['card__header']} card__header d-flex flex-row align-items-center justify-content-between`}>
+                      <span>Description</span>
+                      <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
+                      </div>
 
                       <div
                         style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}
@@ -133,29 +137,7 @@ function App({ title }) {
                       >
                         <p>{app[0].description}</p>
 
-                        <div>
-                          {app[0].tags &&
-                            app[0].tags.split(',').map((tag, i) => (
-                              <span key={i} className={`badge badge-dark badge-pill`}>
-                                {tag}
-                              </span>
-                            ))}
-                        </div>
-
-                        <p className=" mt-10 d-flex">
-                          <span className={`badge badge-pill badge-success`}>{app[0].url}</span>
-                          <a href={`${app[0].url}`} target={`_blank`}>
-                            <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <path
-                                d="M16.25 9.1875V16.7344C16.25 16.9498 16.2076 17.1632 16.1251 17.3622C16.0427 17.5613 15.9218 17.7421 15.7695 17.8945C15.6171 18.0468 15.4363 18.1677 15.2372 18.2501C15.0382 18.3326 14.8248 18.375 14.6094 18.375H4.76562C4.3305 18.375 3.9132 18.2021 3.60553 17.8945C3.29785 17.5868 3.125 17.1695 3.125 16.7344V6.89062C3.125 6.4555 3.29785 6.0382 3.60553 5.73053C3.9132 5.42285 4.3305 5.25 4.76562 5.25H11.6349M14.2812 2.625H18.875V7.21875M9.6875 11.8125L18.5469 2.95312"
-                                stroke="black"
-                                strokeWidth="1.3125"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </a>
-                        </p>
+                       
                       </div>
                     </div>
 
@@ -163,13 +145,24 @@ function App({ title }) {
                       <a href={`${app[0].url}`} target={`_blank`}>
                         Open
                       </a>
-                      <MaterialIcon name={`open_in_new`} />
+                      <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M16.25 9.1875V16.7344C16.25 16.9498 16.2076 17.1632 16.1251 17.3622C16.0427 17.5613 15.9218 17.7421 15.7695 17.8945C15.6171 18.0468 15.4363 18.1677 15.2372 18.2501C15.0382 18.3326 14.8248 18.375 14.6094 18.375H4.76562C4.3305 18.375 3.9132 18.2021 3.60553 17.8945C3.29785 17.5868 3.125 17.1695 3.125 16.7344V6.89062C3.125 6.4555 3.29785 6.0382 3.60553 5.73053C3.9132 5.42285 4.3305 5.25 4.76562 5.25H11.6349M14.2812 2.625H18.875V7.21875M9.6875 11.8125L18.5469 2.95312"
+                          stroke="white"
+                          strokeWidth="1.3125"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
                     </div>
 
                     <div className={styles['appid']}>
                       App ID: {params.appId.slice(0, 4)}...{params.appId.slice(params.appId.length - 4, params.appId.length)}
                     </div>
                     <div>Owner {app[0].manager}</div>
+
+
+
                   </>
                 )}
               </div>
