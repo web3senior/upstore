@@ -28,7 +28,7 @@
 
   p.message {
     opacity: 0.9;
-    text-wrap:balance;
+    text-wrap: balance;
     text-align: center;
     line-height: 30px;
 
@@ -84,11 +84,12 @@
   height: 60px;
   background-color: var(--white);
   border-radius: 0.8rem;
-  overflow: hidden;
+
   --shadow: 0px 9px 4px rgba(63, 93, 116, 0.01), 0px 5px 3px rgba(63, 93, 116, 0.04), 0px 2px 2px rgba(63, 93, 116, 0.07), 0px 1px 1px rgba(63, 93, 116, 0.08), 0px 0px 0px rgba(63, 93, 116, 0.08);
   --shadow-colored: 0px 9px 4px var(--shadow-color), 0px 5px 3px var(--shadow-color), 0px 2px 2px var(--shadow-color), 0px 1px 1px var(--shadow-color), 0px 0px 0px var(--shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--shadow);
-  
+
+  will-change: transform;
   cursor: pointer;
 
   &:hover {
@@ -99,6 +100,15 @@
   b {
     max-width: 100%;
     font-size: 14px;
+  }
+
+  i {
+    position: absolute;
+    top: 0.2em;
+    right: 0.2em;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.3);
+    color: gold;
   }
 }
 
@@ -160,7 +170,7 @@
 }
 
 .statictucs {
-  background-color: #F9FBFD;
+  background-color: #f9fbfd;
   padding: 1rem 0;
   margin-top: 4rem;
 
@@ -169,7 +179,7 @@
   }
 
   p {
- 
+    text-wrap: balance;
   }
 
   &__card {

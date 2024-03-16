@@ -186,7 +186,12 @@ function Home({ title }) {
 
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
-          <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '50px' }}>
+          <div className={`d-flex flex-row align-items-center justify-content-start `}>
+            <MaterialIcon name={`local_fire_department`} style={{color:'var(--color-primary)'}}/>
+            <span>Hot Daaps</span>
+          </div>
+
+          <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '50px' }}>
             {isLoading && (
               <>
                 {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
@@ -209,6 +214,8 @@ function Home({ title }) {
                   <figure title={item.name}>
                     <img alt={item.name} src={item.logo} />
                   </figure>
+
+                  <i className={`ms-Icon ms-Icon--FavoriteStarFill animate fade`} aria-hidden="true"></i>
                 </Link>
               ))}
 
@@ -245,21 +252,21 @@ function Home({ title }) {
           <div className={`__container`} data-width={`medium`}>
             <h6>There is much more to explore</h6>
             <p>
-              Unlock a world of possibilities with Lukso's extensive range of decentralized applications (dapps). With countless options available, you can explore and experience the full potential of
+              Unlock a world of possibilities with Lukso's extensive range of decentralized applications. With countless options available, you can explore and experience the full potential of
               blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
             </p>
             <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
-            <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
                 <span>{app && app.length > 0 && app.length}</span>
                 <small>Dapps</small>
               </div>
               <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
-                <span>{app && app.length > 0 && app.filter(item => item.category === 'NFT').length}</span>
-                <small>NFT Collection</small>
+                <span>{app && app.length > 0 && app.filter((item) => item.category === 'NFT').length}</span>
+                <small>NFT Collections</small>
               </div>
               <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
                 <span>{1}</span>
-                <small>Chain</small>
+                <small>Chains</small>
               </div>
             </div>
           </div>
