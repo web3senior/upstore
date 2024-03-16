@@ -170,7 +170,7 @@ function Home({ title }) {
             <figcaption>Connect to the universe</figcaption>
           </figure>
 
-          <p className="text-center">Unleash the power of LUKSO, explore and connect dapps with ease</p>
+          <p className={`${styles['message']} mt-10`}>Get ready to experience the best of LUKSO! You can now easily browse and connect with various dapps that will help you unlock the full potential of this amazing platform.</p>
 
           <div className={`${styles['txt-search']}`}>
             <div className={styles['access-key']}>
@@ -180,14 +180,7 @@ function Home({ title }) {
               <span>+</span>
               <span>U</span>
             </div>
-            <input
-              type={`text`}
-              placeholder={`Search in ${app && app.length} dapps`}
-              list={`apps`}
-              accessKey={`u`}
-              onChange={() => handleSearch()}
-              ref={txtSearchRef}
-            />
+            <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} accessKey={`u`} onChange={() => handleSearch()} ref={txtSearchRef} />
           </div>
 
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>

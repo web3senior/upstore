@@ -18,10 +18,10 @@
     grid-column-start: 1;
     grid-column-end: 2;
     color: #2e2e2e;
-
     z-index: 999;
     padding: 1rem;
     width: 100%;
+    
 
     .container {
       padding: 0.5rem 1rem;
@@ -32,7 +32,8 @@
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+      
       > * {
         flex: 1;
       }
@@ -97,13 +98,12 @@
       width: fit-content;
       overflow: hidden;
       white-space: nowrap;
-      background: linear-gradient(135.71deg, #8a93d2 6.43%, #4d5683 93.06%);
-      box-shadow: inset -6.21875px 1.16602px 7.50137px rgba(0, 0, 0, 0.25);
+      background-color: #0f0f0f;
       filter: brightness(1.2);
       border-radius: 999px;
-      cursor: pointer;
       font-size: 14px;
-      font-weight: 200;
+      font-weight: 400;
+      cursor: pointer;
 
       &:after {
         content: 'Connect Universal Profile';
