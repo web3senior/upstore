@@ -191,10 +191,10 @@ function Home({ title }) {
             <span>Hot Daaps</span>
           </div>
 
-          <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '50px' }}>
+          <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '45px' }}>
             {isLoading && (
               <>
-                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
+                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
                   <Shimmer key={i}>
                     <div style={{ width: `50px`, height: `50px` }} />
                   </Shimmer>
@@ -214,8 +214,6 @@ function Home({ title }) {
                   <figure title={item.name}>
                     <img alt={item.name} src={item.logo} />
                   </figure>
-
-                  <i className={`ms-Icon ms-Icon--FavoriteStarFill animate fade`} aria-hidden="true"></i>
                 </Link>
               ))}
 
@@ -225,7 +223,7 @@ function Home({ title }) {
           {appSeen && appSeen.length > 0 && (
             <>
               <p className="mt-50">Recent dapps ({appSeen.length})</p>
-              <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '50px' }}>
+              <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '45px' }}>
                 {app &&
                   app.length > 0 &&
                   app
@@ -278,8 +276,8 @@ function Home({ title }) {
 
 const DefaultAppHolder = ({ app }) => {
   let holder = []
-  if (app.length > 18) return
-  for (let i = 0; i < 18 - app.length; i++) {
+  if (app.length > 24) return
+  for (let i = 0; i < 24 - app.length; i++) {
     holder.push(
       <div
         key={i}

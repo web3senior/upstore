@@ -86,31 +86,35 @@ function App({ title }) {
           <div className={`ms-Grid`} dir="ltr">
             <div className={`ms-Grid-row`}>
               <div className={`ms-Grid-col ms-sm6 ms-md4 ms-lg3`}>
-                <div className={`${styles['card']} card`}>
-             
-                  {app &&
-                    app.length > 0 &&
-                    app.map((item, i) => (
-                      <>
-                        <div
-                          style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                          className={`${styles['card__body']} card__body d-flex flex-column align-items-center justify-content-center animate fade`}
-                          key={i}
-                        >
-                          <figure title={item.category}>
-                            <img alt={item.name} src={item.logo} />
-                            <figcaption>{item.name}</figcaption>
-                          </figure>
-                          
-                          <span className={`badge badge-pill badge-success`}>{app[0].url}</span>
-                        </div>
-                      </>
-                    ))}
+                {app &&
+                  app.length > 0 &&
+                  app.map((item, i) => (
+                    <div className={`${styles['card']} `}>
+                      <div
+                        style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                        className={`${styles['card__body']} d-flex flex-column align-items-center justify-content-center animate fade`}
+                        key={i}
+                      >
+                        <figure title={item.category}>
+                          <img alt={item.name} src={item.logo} />
+                          <figcaption>{item.name}</figcaption>
+                        </figure>
+
+                      
+                      </div>
+                    </div>
+                  ))}
+
+<div className={`${styles['card']} mt-30`}>
+                  <div className={`${styles['card__body']} animate fade`}>
+                    {app &&
+                      app.length > 0 &&
+                      app[0].tags &&  <span>{app[0].url}</span>}
+                  </div>
                 </div>
 
-                <div className={`${styles['card']} card mt-30`}>
-                  <div className={`${styles['card__header']} card__header`}>Tags</div>
-                  <div className={`${styles['card__body']} card__body animate fade`}>
+                <div className={`${styles['card']} mt-30`}>
+                  <div className={`${styles['card__body']} animate fade`}>
                     {app &&
                       app.length > 0 &&
                       app[0].tags &&
@@ -125,19 +129,17 @@ function App({ title }) {
               <div className={`ms-Grid-col ms-sm6 ms-md8 ms-lg9`}>
                 {app && app.length > 0 && (
                   <>
-                    <div className={`${styles['card']} card`}>
-                      <div className={`${styles['card__header']} card__header d-flex flex-row align-items-center justify-content-between`}>
-                      <span>Description</span>
-                      <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
+                    <div className={`${styles['card']}`}>
+                      <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
+                        <span>Description</span>
+                        <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
                       </div>
 
                       <div
                         style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}
-                        className={`${styles['card__body']} card__body d-flex flex-column align-items-center justify-content-center animate fade`}
+                        className={`${styles['card__body']} ${styles['description']} d-flex flex-column align-items-center justify-content-center animate fade`}
                       >
                         <p>{app[0].description}</p>
-
-                       
                       </div>
                     </div>
 
@@ -160,9 +162,6 @@ function App({ title }) {
                       App ID: {params.appId.slice(0, 4)}...{params.appId.slice(params.appId.length - 4, params.appId.length)}
                     </div>
                     <div>Owner {app[0].manager}</div>
-
-
-
                   </>
                 )}
               </div>
