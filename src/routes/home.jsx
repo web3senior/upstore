@@ -286,7 +286,7 @@ const DefaultAppHolder = ({ app }) => {
         className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
       >
         <figure>
-          <img src={DappDefaultIcon} />
+          <img alt={import.meta.VITE_NAME} src={DappDefaultIcon} />
         </figure>
       </div>
     )

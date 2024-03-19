@@ -8,7 +8,7 @@ import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
 import { useAuth, web3, _ } from '../contexts/AuthContext'
 import styles from './App.module.scss'
-import Logo from './../../src/assets/logo.svg'
+import PinkCheckmark from './../../src/assets/verified.svg'
 import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
@@ -97,23 +97,20 @@ function App({ title }) {
                       >
                         <figure title={item.category}>
                           <img alt={item.name} src={item.logo} />
-                          <figcaption>{item.name}</figcaption>
+                          <figcaption>
+                            {item.name}
+                            <img src={PinkCheckmark} />
+                          </figcaption>
                         </figure>
-
-                      
                       </div>
                     </div>
                   ))}
 
-<div className={`${styles['card']} mt-30`}>
-                  <div className={`${styles['card__body']} animate fade`}>
-                    {app &&
-                      app.length > 0 &&
-                      app[0].tags &&  <span>{app[0].url}</span>}
-                  </div>
+                <div className={`${styles['card']} mt-10`}>
+                  <div className={`${styles['card__body']} animate fade`}>{app && app.length > 0 && app[0].tags && <span>🔒{app[0].url}</span>}</div>
                 </div>
 
-                <div className={`${styles['card']} mt-30`}>
+                <div className={`${styles['card']} mt-10`}>
                   <div className={`${styles['card__body']} animate fade`}>
                     {app &&
                       app.length > 0 &&
@@ -158,10 +155,18 @@ function App({ title }) {
                       </svg>
                     </div>
 
-                    <div className={styles['appid']}>
-                      App ID: {params.appId.slice(0, 4)}...{params.appId.slice(params.appId.length - 4, params.appId.length)}
+                    <div className={`${styles['card']}`}>
+                      <div className={`${styles['card__body']}`}>
+                        <div>
+                          <b>App ID: </b>
+                          {params.appId}
+                        </div>
+                        <div>
+                          <b>Owner: </b>
+                          {`${app[0].manager} ${app[0].manager === auth.wallet ? '(You)' : ''}`}
+                        </div>
+                      </div>
                     </div>
-                    <div>Owner {app[0].manager}</div>
                   </>
                 )}
               </div>

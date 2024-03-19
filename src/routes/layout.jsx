@@ -56,6 +56,7 @@ export default function Root() {
     document.querySelector('#modal').classList.toggle('blur')
     document.querySelector('.cover').classList.toggle('showCover')
   }
+  
   useEffect(() => {}, [])
 
   return (
@@ -70,13 +71,14 @@ export default function Root() {
               </Link>
 
               <ul className={`${styles['nav']} d-flex flex-row align-items-center justify-content-center`}>
-                {links.map((item, i) => (
-                  <li key={i}>
-                    <NavLink to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}>
-                      {item.name}
-                    </NavLink>
-                  </li>
-                ))}
+                {location.pathname === '/' &&
+                  links.map((item, i) => (
+                    <li key={i}>
+                      <NavLink to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}>
+                        {item.name}
+                      </NavLink>
+                    </li>
+                  ))}
               </ul>
             </div>
 
@@ -96,10 +98,26 @@ export default function Root() {
                     />
                   </>
                 ) : (
-                  <>
-                    <span>{auth.profile && `🆙@${auth.profile && auth.profile.LSP3Profile.name}`}</span>
-                    {auth.wallet && `${auth.wallet.slice(0, 4)}...${auth.wallet.slice(38)}`}
-                  </>
+                  <div className={`${styles['profile']} d-flex flex-row align-items-center justify-content-end`}>
+                    <figure>
+                      <img alt={``} src={`https://ipfs.io/ipfs/${auth.profile && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                    </figure>
+
+                    <ul>
+                      <li className={`d-flex flex-row align-items-center justify-content-stretch`}>
+                        <figure>
+                          <img alt={``} src={`https://ipfs.io/ipfs/${auth.profile && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                        </figure>
+                        <div className={`d-flex flex-column align-items-center justify-content-center`}>
+                          <b>Hi, {auth.profile && auth.profile.LSP3Profile.name}</b>
+                          <span>{auth.wallet && `${auth.wallet.slice(0, 4)}...${auth.wallet.slice(38)}`}</span>
+                        </div>
+                      </li>
+                      <li>My Dapps</li>
+                      <li>Settings</li>
+                      <li>Disconnect</li>
+                    </ul>
+                  </div>
                 )}
                 <div className={`connect-btn-party-holder`} />
               </div>
