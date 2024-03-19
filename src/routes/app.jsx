@@ -90,6 +90,7 @@ function App({ title }) {
     } catch (error) {
       console.error(error)
       toast.dismiss(t)
+      getLike()
     }
   }
 
