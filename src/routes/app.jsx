@@ -152,18 +152,20 @@ function App({ title }) {
                   </div>
                 </div>
 
-                <div className={`${styles['card']} ${styles['repo']} mt-10`}>
-                  <div className={`${styles['card__body']} animate fade`}>
-                    {app && app.length > 0 && app[0].repo && (
-                      <div className={`d-flex flex-row align-items-center justify-content-start`}>
-                        <img src={GitHubMark} />
-                        <a href={`${app[0].repo}`} target={`_blank`}>
-                          <span className={`badge badge-dark badge-pill ml-10`}>{app[0].repo}</span>
-                        </a>
+                {app && app.length > 0 && app[0].repo && (
+                  <>
+                    <div className={`${styles['card']} ${styles['repo']} mt-10`}>
+                      <div className={`${styles['card__body']} animate fade`}>
+                        <div className={`d-flex flex-row align-items-center justify-content-start`}>
+                          <img src={GitHubMark} />
+                          <a href={`${app[0].repo}`} target={`_blank`}>
+                            <span className={`badge badge-dark badge-pill ml-10`}>{app[0].repo}</span>
+                          </a>
+                        </div>
                       </div>
-                    )}
-                  </div>
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
               <div className={`ms-Grid-col ms-sm6 ms-md8 ms-lg8`}>
                 {app && app.length > 0 && (
@@ -186,16 +188,15 @@ function App({ title }) {
                       <a href={`${app[0].url}`} target={`_blank`}>
                         Open
                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M16.25 9.1875V16.7344C16.25 16.9498 16.2076 17.1632 16.1251 17.3622C16.0427 17.5613 15.9218 17.7421 15.7695 17.8945C15.6171 18.0468 15.4363 18.1677 15.2372 18.2501C15.0382 18.3326 14.8248 18.375 14.6094 18.375H4.76562C4.3305 18.375 3.9132 18.2021 3.60553 17.8945C3.29785 17.5868 3.125 17.1695 3.125 16.7344V6.89062C3.125 6.4555 3.29785 6.0382 3.60553 5.73053C3.9132 5.42285 4.3305 5.25 4.76562 5.25H11.6349M14.2812 2.625H18.875V7.21875M9.6875 11.8125L18.5469 2.95312"
-                          stroke="white"
-                          strokeWidth="1.3125"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                          <path
+                            d="M16.25 9.1875V16.7344C16.25 16.9498 16.2076 17.1632 16.1251 17.3622C16.0427 17.5613 15.9218 17.7421 15.7695 17.8945C15.6171 18.0468 15.4363 18.1677 15.2372 18.2501C15.0382 18.3326 14.8248 18.375 14.6094 18.375H4.76562C4.3305 18.375 3.9132 18.2021 3.60553 17.8945C3.29785 17.5868 3.125 17.1695 3.125 16.7344V6.89062C3.125 6.4555 3.29785 6.0382 3.60553 5.73053C3.9132 5.42285 4.3305 5.25 4.76562 5.25H11.6349M14.2812 2.625H18.875V7.21875M9.6875 11.8125L18.5469 2.95312"
+                            stroke="white"
+                            strokeWidth="1.3125"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
                       </a>
-                     
                     </div>
 
                     <div className={`${styles['card']}`}>
