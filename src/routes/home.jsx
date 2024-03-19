@@ -134,7 +134,7 @@ function Home({ title }) {
   }
 
   const getAppList = async () => {
-    let web3 = new Web3(`https://rpc.testnet.lukso.gateway.fm`)
+    let web3 = new Web3(`https://rpc.lukso.gateway.fm`)
     web3.eth.defaultAccount = auth.wallet
     const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
     return await UpstoreContract.methods.getAppList().call()
@@ -212,7 +212,7 @@ function Home({ title }) {
                   key={i}
                 >
                   <figure title={item.name}>
-                    <img alt={item.name} src={item.logo} />
+                    <img alt={``} src={item.logo} />
                   </figure>
                 </Link>
               ))}

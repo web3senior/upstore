@@ -56,7 +56,7 @@ export default function Root() {
     document.querySelector('#modal').classList.toggle('blur')
     document.querySelector('.cover').classList.toggle('showCover')
   }
-  
+
   useEffect(() => {}, [])
 
   return (
@@ -113,8 +113,8 @@ export default function Root() {
                           <span>{auth.wallet && `${auth.wallet.slice(0, 4)}...${auth.wallet.slice(38)}`}</span>
                         </div>
                       </li>
-                      <li>My Dapps</li>
-                      <li>Settings</li>
+                      <li>My Dapps (coming soon)</li>
+                      <li>Settings (coming soon)</li>
                       <li>Disconnect</li>
                     </ul>
                   </div>

@@ -36,14 +36,14 @@ function App({ title }) {
   Title(title)
   const [isLoading, setIsLoading] = useState(true)
   const [app, setApp] = useState([])
+  const [like, setLike] = useState(0)
   const auth = useAuth()
   const navigate = useNavigate()
   const params = useParams()
-  const txtSearchRef = useRef()
 
   const fetchIPFS = async (CID) => {
     try {
-      const response = await fetch(`https://api.universalprofile.cloud/ipfs/${CID}`)
+      const response = await fetch(`${import.meta.env.VITE_IPFS_GATEWAY}${CID}`)
       if (!response.ok) throw new Response('Failed to get data', { status: 500 })
       const json = await response.json()
       // console.log(json)
@@ -54,10 +54,35 @@ function App({ title }) {
   }
 
   const getApp = async () => {
-    let web3 = new Web3(`https://rpc.testnet.lukso.gateway.fm`)
-    web3.eth.defaultAccount = params.appId
+    let web3 = new Web3(import.meta.env.VITE_RPC_URL)
     const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
     return await UpstoreContract.methods.getApp(params.appId).call()
+  }
+
+  const getLike = async () => {
+    let web3 = new Web3(import.meta.env.VITE_RPC_URL)
+    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
+    return await UpstoreContract.methods.getLikeTotal(params.appId).call()
+  }
+
+  const handleLike = async () => {
+    const t = toast.loading(`Sending...`)
+
+    try {
+      let web3 = new Web3(window.lukso)
+      web3.eth.defaultAccount = auth.wallet
+      const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
+      return await UpstoreContract.methods
+        .addLike(params.appId)
+        .send({ from: auth.wallet })
+        .then((res) => {
+          console.log(res)
+          toast.dismiss(t)
+        })
+    } catch (error) {
+      console.error(error)
+      toast.dismiss(t)
+    }
   }
 
   useEffect(() => {
@@ -66,6 +91,9 @@ function App({ title }) {
       console.log(responses)
       setApp([responses])
       setIsLoading(false)
+    })
+    getLike().then((res) => {
+      setLike(web3.utils.toNumber(res))
     })
   }, [])
 
@@ -85,11 +113,11 @@ function App({ title }) {
 
           <div className={`ms-Grid`} dir="ltr">
             <div className={`ms-Grid-row`}>
-              <div className={`ms-Grid-col ms-sm6 ms-md4 ms-lg3`}>
+              <div className={`ms-Grid-col ms-sm6 ms-md4 ms-lg4`}>
                 {app &&
                   app.length > 0 &&
                   app.map((item, i) => (
-                    <div className={`${styles['card']} `}>
+                    <div className={`${styles['card']}`} key={i}>
                       <div
                         style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
                         className={`${styles['card__body']} d-flex flex-column align-items-center justify-content-center animate fade`}
@@ -123,7 +151,7 @@ function App({ title }) {
                   </div>
                 </div>
               </div>
-              <div className={`ms-Grid-col ms-sm6 ms-md8 ms-lg9`}>
+              <div className={`ms-Grid-col ms-sm6 ms-md8 ms-lg8`}>
                 {app && app.length > 0 && (
                   <>
                     <div className={`${styles['card']}`}>
@@ -167,6 +195,12 @@ function App({ title }) {
                         </div>
                       </div>
                     </div>
+
+                    <p className={`${styles['like']} d-flex`}>
+                      <span>Like this dapp?</span>
+                      <span onClick={() => handleLike()}>🩷</span>
+                      <span>{like}</span>
+                    </p>
                   </>
                 )}
               </div>

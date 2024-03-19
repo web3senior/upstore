@@ -18,10 +18,9 @@ $height: $width;
   }
 
   figure {
-    margin: 0 auto;
-
     img {
       width: 82px;
+      margin: 0 auto;
       transform: rotate(-1.5deg);
     }
 
@@ -48,14 +47,6 @@ $height: $width;
       font-size: 26px;
       font-weight: 600;
     }
-  }
-
-  i {
-    position: absolute;
-    top: 0.2em;
-    right: 0.2em;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -132,4 +123,14 @@ $height: $width;
   font-size: 13px;
   line-height: 30px;
   text-indent: 2em;
+}
+
+.like {
+  column-gap: .5rem;
+
+  span{
+    &:nth-child(2){
+      cursor: pointer;
+    }
+  }
 }
