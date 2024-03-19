@@ -204,6 +204,7 @@ function Home({ title }) {
 
             {app &&
               app.length > 0 &&
+              app.filter(item => item.status) &&
               app.map((item, i) => (
                 <Link
                   to={`${item.id}`}
