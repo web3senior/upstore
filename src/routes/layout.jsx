@@ -16,24 +16,10 @@ party.resolvableShapes['Lukso'] = `<img src="${Lukso}"/>`
 
 let links = [
   {
-    name: 'NFT',
+    name: 'Submit your dapp',
     icon: null,
-    path: `/`,
-  },
-  {
-    name: 'DAO',
-    icon: null,
-    path: `/dao`,
-  },
-  {
-    name: 'DeFi',
-    icon: null,
-    path: `/defi`,
-  },
-  {
-    name: 'Gaming',
-    icon: null,
-    path: `/gaming`,
+    target: '_blank',
+    path: `https://docs.google.com/forms/d/e/1FAIpQLScUYz_4VjdcB9bMOilhN67cFdzF1U7XZ1o0XqQYkaxThwTijA/viewform`,
   },
 ]
 
@@ -74,9 +60,9 @@ export default function Root() {
                 {location.pathname === '/' &&
                   links.map((item, i) => (
                     <li key={i}>
-                      <NavLink to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}>
+                      <Link to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}>
                         {item.name}
-                      </NavLink>
+                      </Link>
                     </li>
                   ))}
               </ul>
