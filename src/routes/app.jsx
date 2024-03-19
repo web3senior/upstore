@@ -9,6 +9,7 @@ import toast, { Toaster } from 'react-hot-toast'
 import { useAuth, web3, _ } from '../contexts/AuthContext'
 import styles from './App.module.scss'
 import PinkCheckmark from './../../src/assets/verified.svg'
+import GitHubMark from './../../src/assets/github-mark.svg'
 import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
@@ -144,10 +145,23 @@ function App({ title }) {
                       app.length > 0 &&
                       app[0].tags &&
                       app[0].tags.split(',').map((tag, i) => (
-                        <span key={i} className={`badge badge-dark badge-pill`}>
+                        <span key={i} className={`badge badge-danger badge-pill ml-10`}>
                           {tag}
                         </span>
                       ))}
+                  </div>
+                </div>
+
+                <div className={`${styles['card']} ${styles['repo']} mt-10`}>
+                  <div className={`${styles['card__body']} animate fade`}>
+                    {app && app.length > 0 && app[0].repo && (
+                      <div className={`d-flex flex-row align-items-center justify-content-start`}>
+                        <img src={GitHubMark} />
+                        <a href={`${app[0].repo}`} target={`_blank`}>
+                          <span className={`badge badge-dark badge-pill ml-10`}>{app[0].repo}</span>
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
