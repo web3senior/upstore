@@ -12,6 +12,8 @@ import PinkCheckmark from './../../src/assets/verified.svg'
 import GitHubMark from './../../src/assets/github-mark.svg'
 import IconX from './../../src/assets/icon-x.svg'
 import IconCG from './../../src/assets/icon-cg.svg'
+import IconTelegram from './../../src/assets/icon-telegram.svg'
+import IconDiscord from './../../src/assets/icon-discord.svg'
 import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
@@ -233,6 +235,26 @@ function App({ title }) {
                               <a href={`https://app.cg/c/${app[0].social.cg}`} target={`_blank`}>
                                 <figure>
                                   <img alt={`CG`} src={IconCG} />
+                                </figure>
+                              </a>
+                            </li>
+                          )}
+
+                          {app[0].social.telegram && (
+                            <li>
+                              <a href={`https://t.me/${app[0].social.telegram}`} target={`_blank`}>
+                                <figure>
+                                  <img alt={`Telegram`} src={IconTelegram} />
+                                </figure>
+                              </a>
+                            </li>
+                          )}
+
+                           {app[0].social.discord && (
+                            <li>
+                              <a href={`https://discord.gg/${app[0].social.discord}`} target={`_blank`}>
+                                <figure>
+                                  <img alt={`Discord`} src={IconDiscord} />
                                 </figure>
                               </a>
                             </li>
