@@ -96,8 +96,8 @@ export default function Root() {
                           <span>{auth.wallet && `${auth.wallet.slice(0, 4)}...${auth.wallet.slice(38)}`}</span>
                         </div>
                       </li>
-                      <li>My Dapps (coming soon)</li>
-                      <li>Settings (coming soon)</li>
+                      <li>My dApps</li>
+                      <li>Settings</li>
                       <li>Disconnect</li>
                     </ul>
                   </div>
