@@ -11,6 +11,7 @@ import styles from './App.module.scss'
 import PinkCheckmark from './../../src/assets/verified.svg'
 import GitHubMark from './../../src/assets/github-mark.svg'
 import IconX from './../../src/assets/icon-x.svg'
+import IconCG from './../../src/assets/icon-cg.svg'
 import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
@@ -204,15 +205,29 @@ function App({ title }) {
                         </svg>
                       </a>
 
-                      {
-                        app[0].social && app[0].social.x  && <>
-                        <a href={`https://twitter.com/${app[0].social.x}`} target={`_blank`}>
-                        <figure>
-                          <img alt={`X`} src={IconX}/>
-                        </figure>
-                      </a>
-                        </>
-                      }
+                      {app[0].social && (
+                        <ul className={`${styles['social']} d-flex flex-row align-items-center justify-content-between`}>
+                          {app[0].social.x && (
+                            <li>
+                              <a href={`https://twitter.com/${app[0].social.x}`} target={`_blank`}>
+                                <figure>
+                                  <img alt={`X`} src={IconX} />
+                                </figure>
+                              </a>
+                            </li>
+                          )}
+
+                          {app[0].social.cg && (
+                            <li>
+                              <a href={`https://app.cg/c/${app[0].social.cg}`} target={`_blank`}>
+                                <figure>
+                                  <img alt={`CG`} src={IconCG} />
+                                </figure>
+                              </a>
+                            </li>
+                          )}
+                        </ul>
+                      )}
                     </div>
 
                     <div className={`${styles['card']}`}>

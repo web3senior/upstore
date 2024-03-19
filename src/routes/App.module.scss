@@ -86,7 +86,7 @@ $height: $width;
 .button {
   gap: 14.39px;
 
-  a {
+  > a {
     cursor: pointer;
 
     &:first-child {
@@ -106,14 +106,6 @@ $height: $width;
       &:active {
         transform: scale(0.95);
       }
-    }
-  }
-
-  figure {
-    img {
-      width: 32px;
-      border-radius: 999px;
-      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     }
   }
 }
@@ -153,5 +145,16 @@ $height: $width;
 .repo {
   img {
     width: 24px;
+  }
+}
+
+.social {
+  column-gap: 0.4em;
+  figure {
+    img {
+      width: 32px;
+      border-radius: 999px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    }
   }
 }
