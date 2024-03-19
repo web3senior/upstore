@@ -86,11 +86,11 @@ function App({ title }) {
         .then((res) => {
           console.log(res)
           toast.dismiss(t)
+          getLike()
         })
     } catch (error) {
       console.error(error)
       toast.dismiss(t)
-      getLike()
     }
   }
 
