@@ -141,6 +141,12 @@ function Home({ title }) {
   }
 
   const readLocalStorage = async () => await JSON.parse(localStorage.getItem(`appSeen`))
+  
+  const getLike = async (appId) => {
+    let web3 = new Web3(import.meta.env.VITE_RPC_URL)
+    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
+    return await UpstoreContract.methods.getLikeTotal(appId).call()
+  }
 
   useEffect(() => {
     readLocalStorage().then((res) => {
@@ -152,7 +158,7 @@ function Home({ title }) {
 
     getAppList().then(async (res) => {
       //console.log(res)
-      const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item)))
+      const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, {like:  web3.utils.toNumber(await getLike(item.id))})))
       console.log(responses)
       setApp(responses)
       setBackupApp(responses)
@@ -206,6 +212,7 @@ function Home({ title }) {
               app.length > 0 &&
               app
                 .filter((item) => item.status)
+                .sort((a, b) => b.like - a.like)
                 .map((item, i) => (
                   <Link
                     to={`${item.id}`}

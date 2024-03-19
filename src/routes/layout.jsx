@@ -32,19 +32,6 @@ export default function Root() {
   const navigation = useNavigation()
   const location = useLocation()
 
-  const handleNavLink = (route) => {
-    if (route) navigate(route)
-    handleOpenNav()
-  }
-
-  const handleOpenNav = () => {
-    document.querySelector('#modal').classList.toggle('open')
-    document.querySelector('#modal').classList.toggle('blur')
-    document.querySelector('.cover').classList.toggle('showCover')
-  }
-
-  useEffect(() => {}, [])
-
   return (
     <>
       <Toaster />

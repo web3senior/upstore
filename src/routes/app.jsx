@@ -103,6 +103,7 @@ function App({ title }) {
       setApp([responses])
       setIsLoading(false)
     })
+    
     getLike().then((res) => {
       setLike(web3.utils.toNumber(res))
     })
