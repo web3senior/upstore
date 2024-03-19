@@ -194,7 +194,7 @@ function Home({ title }) {
 
           <div className={`d-flex flex-row align-items-center justify-content-start `}>
             <MaterialIcon name={`local_fire_department`} style={{ color: 'var(--color-primary)' }} />
-            <span>Hot Daaps</span>
+            <span>Hot dApps</span>
           </div>
 
           <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '45px' }}>
@@ -231,7 +231,7 @@ function Home({ title }) {
 
           {appSeen && appSeen.length > 0 && (
             <>
-              <p className="mt-50">Recent dapps ({appSeen.length})</p>
+              <p className="mt-50">Recent dApps ({appSeen.length})</p>
               <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '45px' }}>
                 {app &&
                   app.length > 0 &&
