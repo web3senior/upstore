@@ -10,6 +10,7 @@ import { useAuth, web3, _ } from '../contexts/AuthContext'
 import styles from './App.module.scss'
 import PinkCheckmark from './../../src/assets/verified.svg'
 import GitHubMark from './../../src/assets/github-mark.svg'
+import IconX from './../../src/assets/icon-x.svg'
 import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
@@ -189,7 +190,7 @@ function App({ title }) {
                       </div>
                     </div>
 
-                    <div className={`${styles['button']} mt-20 mb-20`}>
+                    <div className={`${styles['button']} mt-20 mb-20 d-flex flex-row align-items-center justify-content-between`}>
                       <a href={`${app[0].url}`} target={`_blank`}>
                         Open
                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -202,6 +203,16 @@ function App({ title }) {
                           />
                         </svg>
                       </a>
+
+                      {
+                        app[0].social && app[0].social.x  && <>
+                        <a href={`https://twitter.com/${app[0].social.x}`} target={`_blank`}>
+                        <figure>
+                          <img alt={`X`} src={IconX}/>
+                        </figure>
+                      </a>
+                        </>
+                      }
                     </div>
 
                     <div className={`${styles['card']}`}>

@@ -86,24 +86,34 @@ $height: $width;
 .button {
   gap: 14.39px;
 
-  cursor: pointer;
-
   a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    column-gap: 1rem;
-    color: currentColor;
-    padding: 1rem 1.5rem;
-    max-width: 180px;
-    background-color: #212121;
-    border: none;
-    color: #fff;
-    font-weight: bold;
-    border-radius: var(--global-border-radius);
+    cursor: pointer;
 
-    &:active {
-      transform: scale(0.95);
+    &:first-child {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      column-gap: 1rem;
+      color: currentColor;
+      padding: 1rem 1.5rem;
+      max-width: 180px;
+      background-color: #212121;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: var(--global-border-radius);
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+
+  figure {
+    img {
+      width: 32px;
+      border-radius: 999px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     }
   }
 }
