@@ -122,6 +122,7 @@ $height: $width;
 
   &__body {
     padding: 1rem 1.5rem;
+    overflow-x: auto;
   }
 }
 

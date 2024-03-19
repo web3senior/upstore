@@ -103,7 +103,7 @@ function App({ title }) {
       setApp([responses])
       setIsLoading(false)
     })
-    
+
     getLike().then((res) => {
       setLike(web3.utils.toNumber(res))
     })
@@ -147,7 +147,14 @@ function App({ title }) {
                   ))}
 
                 <div className={`${styles['card']} mt-10`}>
-                  <div className={`${styles['card__body']} animate fade`}>{app && app.length > 0 && app[0].tags && <span>🔒{app[0].url}</span>}</div>
+                  <div className={`${styles['card__body']} animate fade`}>
+                    {app && app.length > 0 && app[0].tags && (
+                      <div className={`d-flex`}>
+                        <span>🔒</span>
+                        <span>{app[0].url}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className={`${styles['card']} mt-10`}>
