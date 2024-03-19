@@ -187,7 +187,7 @@ function Home({ title }) {
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
           <div className={`d-flex flex-row align-items-center justify-content-start `}>
-            <MaterialIcon name={`local_fire_department`} style={{color:'var(--color-primary)'}}/>
+            <MaterialIcon name={`local_fire_department`} style={{ color: 'var(--color-primary)' }} />
             <span>Hot Daaps</span>
           </div>
 
@@ -204,21 +204,22 @@ function Home({ title }) {
 
             {app &&
               app.length > 0 &&
-              app.filter(item => item.status) &&
-              app.map((item, i) => (
-                <Link
-                  to={`${item.id}`}
-                  style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                  className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
-                  key={i}
-                >
-                  <figure title={item.name}>
-                    <img alt={``} src={item.logo} />
-                  </figure>
-                </Link>
-              ))}
+              app
+                .filter((item) => item.status)
+                .map((item, i) => (
+                  <Link
+                    to={`${item.id}`}
+                    style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                    className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
+                    key={i}
+                  >
+                    <figure title={item.name}>
+                      <img alt={``} src={item.logo} />
+                    </figure>
+                  </Link>
+                ))}
 
-            {app && app.length > 0 && <DefaultAppHolder app={app} />}
+            {app && app.length > 0 && <DefaultAppHolder app={app.filter((item) => item.status)} />}
           </div>
 
           {appSeen && appSeen.length > 0 && (
