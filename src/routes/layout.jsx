@@ -86,13 +86,23 @@ export default function Root() {
                 ) : (
                   <div className={`${styles['profile']} d-flex flex-row align-items-center justify-content-end`}>
                     <figure>
-                      <img alt={``} src={`https://ipfs.io/ipfs/${auth.profile && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                      <img
+                        alt={``}
+                        src={`https://ipfs.io/ipfs/${
+                          auth.profile && auth.profile.LSP3Profile.profileImage.length > 0 && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')
+                        }`}
+                      />
                     </figure>
 
                     <ul>
                       <li className={`d-flex flex-row align-items-center justify-content-stretch`}>
                         <figure>
-                          <img alt={``} src={`https://ipfs.io/ipfs/${auth.profile && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                          <img
+                            alt={``}
+                            src={`https://ipfs.io/ipfs/${
+                              auth.profile && auth.profile.LSP3Profile.profileImage.length > 0 && auth.profile.LSP3Profile.profileImage[0].url.replace('ipfs://', '').replace('://', '')
+                            }`}
+                          />
                         </figure>
                         <div className={`d-flex flex-column align-items-center justify-content-center`}>
                           <b>Hi, {auth.profile && auth.profile.LSP3Profile.name}</b>
