@@ -182,7 +182,7 @@ function App({ title }) {
                       </div>
                     </div>
 
-                    <div className={`${styles['button']} mt-20`}>
+                    <div className={`${styles['button']} mt-20 mb-20`}>
                       <a href={`${app[0].url}`} target={`_blank`}>
                         Open
                         <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
