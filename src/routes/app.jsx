@@ -67,6 +67,11 @@ function App({ title }) {
   }
 
   const handleLike = async () => {
+    if (!auth.wallet) {
+      toast.error(`Please connect Universal Profile`)
+      return
+    }
+
     const t = toast.loading(`Sending...`)
 
     try {
