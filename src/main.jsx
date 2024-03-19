@@ -38,7 +38,7 @@ const router = createBrowserRouter([
       {
         path: ":appId",
         loader: appLoader,
-        element: <App />,
+        element: <App title={`App Detail`}/>,
       },
       {
         path: "new",
