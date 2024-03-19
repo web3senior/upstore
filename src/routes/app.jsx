@@ -86,7 +86,9 @@ function App({ title }) {
         .then((res) => {
           console.log(res)
           toast.dismiss(t)
-          getLike()
+          getLike().then((res) => {
+            setLike(web3.utils.toNumber(res))
+          })
         })
     } catch (error) {
       console.error(error)
