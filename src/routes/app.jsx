@@ -122,7 +122,7 @@ function App({ title }) {
 
   return (
     <>
-      <section className={styles.section}>
+      <section className={`${styles.section} s-motion-slideUpIn`}>
         <div className={`__container`} data-width={`large`}>
           {isLoading && (
             <>
@@ -207,9 +207,9 @@ function App({ title }) {
 
                       <div
                         style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}
-                        className={`${styles['card__body']} ${styles['description']} d-flex flex-column align-items-center justify-content-center animate fade`}
+                        className={`${styles['card__body']} ${styles['description']}`}
                       >
-                        <p>{app[0].description}</p>
+                        {app[0].description}
                       </div>
                     </div>
 
