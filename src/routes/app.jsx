@@ -136,7 +136,7 @@ function App({ title }) {
 
           <div className={`ms-Grid`} dir="ltr">
             <div className={`ms-Grid-row`}>
-              <div className={`ms-Grid-col ms-sm6 ms-md4 ms-lg4`}>
+              <div className={`ms-Grid-col ms-sm12 ms-md4 ms-lg4`}>
                 {app &&
                   app.length > 0 &&
                   app.map((item, i) => (
@@ -196,7 +196,7 @@ function App({ title }) {
                   </>
                 )}
               </div>
-              <div className={`ms-Grid-col ms-sm6 ms-md8 ms-lg8`}>
+              <div className={`ms-Grid-col ms-sm12 ms-md8 ms-lg8`}>
                 {app && app.length > 0 && (
                   <>
                     <div className={`${styles['card']}`}>
@@ -274,14 +274,8 @@ function App({ title }) {
 
                     <div className={`${styles['card']}`}>
                       <div className={`${styles['card__body']}`}>
-                        <div>
-                          <b>App ID: </b>
-                          {params.appId}
-                        </div>
-                        <div>
-                          <b>Owner: </b>
-                          {`${app[0].manager} ${app[0].manager === auth.wallet ? '(You)' : ''}`}
-                        </div>
+                          <p>App ID: {params.appId && `${params.appId.slice(0, 8)}...${params.appId.slice(60)}`}</p>
+                         <p>Owner: {app[0].manager && `${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
                       </div>
                     </div>
 
