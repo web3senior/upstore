@@ -172,7 +172,7 @@ function Home({ title }) {
         <div className={`__container`} data-width={`medium`}>
           <figure className={`${styles['logo']} ms-motion-slideDownIn`}>
             <img alt={import.meta.env.VITE_NAME} src={Logo} />
-            <figcaption>Connect to the universe</figcaption>
+            <figcaption>Connect To The Universe</figcaption>
           </figure>
 
           <p className={`${styles['message']} mt-10`}>

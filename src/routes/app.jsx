@@ -21,6 +21,7 @@ import party from 'party-js'
 // import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
 
+
 export const loader = async ({ request, params }) => {
   if (params.appId.length !== `0x0000000000000000000000000000000000000000000000000000000000000000`.length) return false
   if (localStorage.getItem(`appSeen`) !== null) {
@@ -88,8 +89,16 @@ function App({ title }) {
         .then((res) => {
           console.log(res)
           toast.dismiss(t)
+          
+          // Refetch the like total
           getLike().then((res) => {
             setLike(web3.utils.toNumber(res))
+          })
+
+          // Party
+          party.confetti(document.querySelector(`.party-holder`), {
+            count: party.variation.range(20, 40),
+            shapes: ["star", "roundedSquare"],
           })
         })
     } catch (error) {
@@ -131,7 +140,7 @@ function App({ title }) {
                 {app &&
                   app.length > 0 &&
                   app.map((item, i) => (
-                    <div className={`${styles['card']}`} key={i}>
+                    <div className={`${styles['card']} party-holder`} key={i}>
                       <div
                         style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
                         className={`${styles['card__body']} d-flex flex-column align-items-center justify-content-center animate fade`}
