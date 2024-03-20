@@ -285,9 +285,9 @@ function App({ title }) {
                       </div>
                     </div>
 
-                    <p className={`${styles['like']} d-flex`}>
+                    <p className={`${styles['like']} d-flex align-items-center`}>
                       <span>Like this dapp?</span>
-                      <span onClick={() => handleLike()}>🩷</span>
+                      <MaterialIcon name="favorite" className={`text-danger`} style={{fontSize: '16px'}} onClick={() => handleLike()}/>
                       <span>{like}</span>
                     </p>
                   </>
