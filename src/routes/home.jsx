@@ -131,6 +131,8 @@ function Home({ title }) {
     } catch (error) {
       console.error(error)
     }
+
+    return false
   }
 
   const getAppList = async () => {
