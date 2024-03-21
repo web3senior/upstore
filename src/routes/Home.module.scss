@@ -19,6 +19,7 @@
 
     img {
       margin: 0 auto;
+      width: 75px;
     }
 
     figcaption {
@@ -74,28 +75,80 @@
 }
 
 .grid {
-  gap: 0.5rem;
+  gap: 0.7rem;
 }
 
 .grid__item {
   position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0.6em;
-
-  background-color: var(--white);
-  border-radius: 0.8rem;
-  --shadow: 0px 9px 4px rgba(63, 93, 116, 0.01), 0px 5px 3px rgba(63, 93, 116, 0.04), 0px 2px 2px rgba(63, 93, 116, 0.07), 0px 1px 1px rgba(63, 93, 116, 0.08), 0px 0px 0px rgba(63, 93, 116, 0.08);
-  --shadow-colored: 0px 9px 4px var(--shadow-color), 0px 5px 3px var(--shadow-color), 0px 2px 2px var(--shadow-color), 0px 1px 1px var(--shadow-color), 0px 0px 0px var(--shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--shadow);
-  overflow: hidden;
-  will-change: transform;
-  cursor: pointer;
-
+  padding: 0.9rem 0.8rem;
+  border-radius: var(--global-border-radius);
+  opacity: 1;
+  transition: background-color 0.15s cubic-bezier(0.7, 0, 0.84, 0) 0s;
+  
   &:hover {
-    transform: translateY(-0.2rem);
-    transition: all ease-in-out 0.12s;
+    background-color: #f4f4f4;
+    .close-btn {
+      i {
+        top: 0;
+        opacity: 1;
+      }
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    height: 20px;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+
+    i {
+      position: absolute;
+      top: -7px;
+      height: 18px;
+      width: 18px;
+      border-radius: 999px;
+      font-size: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: ease-in-out 0.1s;
+      opacity: 0;
+  
+      &:hover {
+        background-color: #EF3246;
+        color: var(--white);
+      }
+    }
+  }
+
+  > a {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.6em;
+    place-self: stretch;
+    height: 70px;
+    background-color: var(--white);
+    border-radius: 0.8rem;
+    --shadow: 0px 9px 4px rgba(63, 93, 116, 0.01), 0px 5px 3px rgba(63, 93, 116, 0.04), 0px 2px 2px rgba(63, 93, 116, 0.07), 0px 1px 1px rgba(63, 93, 116, 0.08), 0px 0px 0px rgba(63, 93, 116, 0.08);
+    --shadow-colored: 0px 9px 4px var(--shadow-color), 0px 5px 3px var(--shadow-color), 0px 2px 2px var(--shadow-color), 0px 1px 1px var(--shadow-color), 0px 0px 0px var(--shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--shadow);
+    overflow: hidden;
+    will-change: transform;
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-0.2rem);
+      transition: all ease-in-out 0.12s;
+    }
   }
 
   figure {
@@ -106,7 +159,7 @@
     justify-content: center;
 
     img {
-      width: inherit;
+      width: 80%;
     }
   }
 
@@ -114,12 +167,36 @@
     max-width: 100%;
     font-size: 14px;
   }
+
+  span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+    font-size: 12px;
+  }
 }
 
 .txt-search {
   position: relative;
   margin: 2rem auto;
   isolation: isolate;
+  max-width: 800px;
+
+  &:after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('./../assets/logo.svg');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 
   input {
     position: relative;
@@ -129,13 +206,15 @@
     display: flex;
     align-items: center;
     justify-content: stretch;
-    border-radius: 999px;
+    border-radius: var(--global-border-radius);
     overflow: hidden;
-    padding: 1.1rem 1.35rem;
+    padding: 1.6rem 3.8rem;
     box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1), 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+
     &:active {
       background-color: #fafafa;
     }
+
     &:focus {
       outline: 1px solid var(--area1);
     }
@@ -173,9 +252,9 @@
   }
 }
 
-.statictucs {
-  background-color: #f9fbfd;
-  padding: 1rem 0;
+.statistics {
+  background-color: var(--white);
+  padding: 2rem 0;
   margin-top: 4rem;
 
   h6 {

@@ -39,7 +39,7 @@ export default function Root() {
         <header className={`${styles.header}`}>
           <div className={`${styles.container} __containerss`} data-width={`xlarge`}>
             <div className={`${styles['left']} d-flex flex-row align-items-center justify-content-start`}>
-              <Link to={'/'} className={styles['logo']}>
+              <Link to={'/'} className={`${styles['logo']}`}>
                 <b>UP Store</b>
               </Link>
 
@@ -47,7 +47,7 @@ export default function Root() {
                 {location.pathname === '/' &&
                   links.map((item, i) => (
                     <li key={i}>
-                      <Link to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}>
+                      <Link to={item.path} target={item.target} className={`${({ isActive, isPending }) => (isPending ? 'pending' : isActive ? styles['active'] : '')}`}>
                         {item.name}
                       </Link>
                     </li>
@@ -81,7 +81,7 @@ export default function Root() {
                       />
                     </figure>
 
-                    <ul>
+                    <ul className={`${styles['profile']}`}>
                       <li className={`d-flex flex-row align-items-center justify-content-stretch`}>
                         <figure>
                           <img
@@ -110,7 +110,7 @@ export default function Root() {
           <ul className={`${styles['mini-nav']} d-flex flex-row align-items-center justify-content-center`}>
             {links.map((item, i) => (
               <li key={i}>
-                <NavLink to={item.path} target={item.target} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}>
+                <NavLink to={item.path} target={item.target} className={`${({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active' : '')}`}>
                   {item.name}
                 </NavLink>
               </li>
@@ -123,18 +123,6 @@ export default function Root() {
         </main>
 
         <footer>
-          <ul className={`d-flex flex-row align-items-center justify-content-center`}>
-            <li>
-              <NavLink to={`new`} className={({ isActive, isPending }) => (isPending ? styles['pending'] : isActive ? styles['active'] : '')}>
-                Submit your dapp
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to={`about`} className={({ isActive, isPending }) => (isPending ? styles['pending'] : isActive ? styles['active'] : '')}>
-                About
-              </NavLink>
-            </li>
-          </ul>
           <a href={`//aratta.dev`} target={`_blank`}>
             <figure>
               <img alt={import.meta.env.AUTHOR} src={Aratta} />

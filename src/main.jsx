@@ -12,7 +12,7 @@ const UserLayout = lazy(() => import("./routes/user-layout.jsx"))
 import SplashScreen from "./routes/splashScreen.jsx"
 import Whitelist from "./routes/whitelist.jsx"
 import New from "./routes/new.jsx"
-import Home from "./routes/home.jsx"
+import Home, { loader as homeLoader} from "./routes/home.jsx"
 import App, {loader as appLoader} from "./routes/app.jsx"
 import About from "./routes/about.jsx"
 import Lyx from "./routes/lyx.jsx"
@@ -33,6 +33,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        loader: homeLoader,
         element: <Home title={`Home`} />,
       },
       {

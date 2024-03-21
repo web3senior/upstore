@@ -23,8 +23,8 @@
     width: 100%;
 
     .container {
-      padding: 0.5rem 1rem;
-      background: rgba(2, 2, 2, 0.02);
+      padding: 0.8rem 1.5rem;
+      background: var(--white);
       border-radius: 999px;
       display: flex;
       flex-direction: row;
@@ -44,6 +44,7 @@
 
     .logo {
       font-size: 24px;
+      text-transform: uppercase;
     }
 
     a {
@@ -263,6 +264,7 @@
   right: 0.5rem;
   top: 0;
   bottom: 0;
+
   &:hover {
     ul {
       visibility: visible;
@@ -270,8 +272,8 @@
   }
 
   figure {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
 
     img {
       border-radius: 999px;

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { Suspense, useState, useEffect, useRef } from 'react'
+import { useLoaderData, defer, Form, Await, useRouteError, Link, useNavigate } from 'react-router-dom'
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
@@ -21,13 +21,18 @@ party.resolvableShapes['Lukso'] = `<img src="http://localhost:5173/src/assets/lu
 
 const WhitelistFactoryAddr = web3.utils.padLeft(`0x2`, 64)
 
+export const loader = async () => {
+  return defer({ key: 'val' })
+}
+
 function Home({ title }) {
   Title(title)
+  const [loaderData, setLoaderData] = useState(useLoaderData())
   const [isLoading, setIsLoading] = useState(true)
   const [app, setApp] = useState([])
   const [backApp, setBackupApp] = useState([])
   const [whitelist, setWhitelist] = useState()
-  const [appSeen, setAppSeen] = useState()
+  const [recentApp, setRecentApp] = useState([])
   const auth = useAuth()
   const navigate = useNavigate()
   const txtSearchRef = useRef()
@@ -142,44 +147,47 @@ function Home({ title }) {
     return await UpstoreContract.methods.getAppList().call()
   }
 
-  const readLocalStorage = async () => await JSON.parse(localStorage.getItem(`appSeen`))
-  
   const getLike = async (appId) => {
     let web3 = new Web3(import.meta.env.VITE_RPC_URL)
     const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
     return await UpstoreContract.methods.getLikeTotal(appId).call()
   }
 
-  useEffect(() => {
-    readLocalStorage().then((res) => {
-      console.log(res)
-      setAppSeen(res)
+  const handleRemoveRecentApp = async (e, appId) => {
+    localStorage.setItem('appSeen', JSON.stringify(recentApp.filter((reduceItem) => reduceItem.appId !== appId)))
+    
+    // Refresh the recent app list
+    getRecentApp().then((res) => {
+      setRecentApp(res)
     })
+  }
+
+  const getRecentApp = async () => {
+    return await JSON.parse(localStorage.getItem(`appSeen`))
+  }
+  useEffect(() => {
     // /0xd0f34b10
     //console.log('-------------',web3.eth.abi.encodeFunctionSignature(`getAppList()`))
-
     getAppList().then(async (res) => {
-      //console.log(res)
-      const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, {like:  web3.utils.toNumber(await getLike(item.id))})))
-      console.log(responses)
+      const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, { like: web3.utils.toNumber(await getLike(item.id)) })))
       setApp(responses)
       setBackupApp(responses)
       setIsLoading(false)
+    })
+
+    getRecentApp().then((res) => {
+      setRecentApp(res)
     })
   }, [])
 
   return (
     <>
       <section className={styles.section}>
-        <div className={`__container`} data-width={`medium`}>
+        <div className={`__container`} data-width={`large`}>
           <figure className={`${styles['logo']} ms-motion-slideDownIn`}>
             <img alt={import.meta.env.VITE_NAME} src={Logo} />
-            <figcaption>Connect To The Universe</figcaption>
+            <figcaption>UP STORE</figcaption>
           </figure>
-
-          <p className={`${styles['message']} mt-10`}>
-            Get ready to experience the best of LUKSO! You can now easily browse and connect with various dapps that will help you unlock the full potential of this amazing platform.
-          </p>
 
           <div className={`${styles['txt-search']}`}>
             <div className={styles['access-key']}>
@@ -199,12 +207,12 @@ function Home({ title }) {
             <span>Hot dApps</span>
           </div>
 
-          <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '45px' }}>
+          <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '85px' }}>
             {isLoading && (
               <>
-                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
+                {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, i) => (
                   <Shimmer key={i}>
-                    <div style={{ width: `50px`, height: `50px` }} />
+                    <div style={{ width: `50px`, height: `85px` }} />
                   </Shimmer>
                 ))}
               </>
@@ -213,51 +221,59 @@ function Home({ title }) {
             {app &&
               app.length > 0 &&
               app
-                .filter((item) => item.status)
+                .filter((item, i) => item.status && i < 20)
                 .sort((a, b) => b.like - a.like)
                 .map((item, i) => (
-                  <Link
-                    to={`${item.id}`}
-                    style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                    className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
-                    key={i}
-                  >
-                    <figure title={item.name}>
-                      <img alt={``} src={item.logo} />
-                    </figure>
-                  </Link>
+                  <div key={i} className={`${styles['grid__item']} d-flex flex-column align-items-center`} style={{ rowGap: '.6rem' }}>
+                    <Link
+                      to={`${item.id}`}
+                      style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                      className={`d-flex flex-column align-items-center justify-content-center animate pop`}
+                    >
+                      <figure title={item.name}>
+                        <img alt={item.name} src={item.logo} />
+                      </figure>
+                    </Link>
+                    <span>{item.name}</span>
+                  </div>
                 ))}
 
             {app && app.length > 0 && <DefaultAppHolder app={app.filter((item) => item.status)} />}
           </div>
 
-          {appSeen && appSeen.length > 0 && (
+          <p className="mt-50">Recent dApps</p>
+
+          {recentApp && recentApp.length > 0 && (
             <>
-              <p className="mt-50">Recent dApps ({appSeen.length})</p>
-              <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '45px' }}>
+              <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '85px' }}>
                 {app &&
                   app.length > 0 &&
                   app
-                    .filter((item, i) => appSeen.find((appSeenItem) => appSeenItem.appId === item.id) !== undefined)
+                    .filter((item, i) => recentApp.find((appSeenItem) => appSeenItem.appId === item.id) !== undefined)
                     .reverse()
                     .map((item, i) => (
-                      <Link
-                        to={`${item.id}`}
-                        style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                        className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
-                        key={i}
-                      >
-                        <figure title={item.name}>
-                          <img alt={item.name} src={item.logo} />
-                        </figure>
-                      </Link>
+                      <div key={i} className={`${styles['grid__item']} d-flex flex-column align-items-center`} style={{ rowGap: '.6rem' }}>
+                        <div className={`${styles['close-btn']}`} onClick={(e) => handleRemoveRecentApp(e, item.id)}>
+                          <i className={`ms-Icon ms-Icon--ChromeClose`} aria-hidden="true"></i>
+                        </div>
+                        <Link
+                          to={`${item.id}`}
+                          style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                          className={`d-flex flex-column align-items-center justify-content-center animate pop`}
+                        >
+                          <figure title={item.name}>
+                            <img alt={item.name} src={item.logo} />
+                          </figure>
+                        </Link>
+                        <span>{item.name}</span>
+                      </div>
                     ))}
               </div>
             </>
           )}
         </div>
 
-        <div className={styles['statictucs']}>
+        <div className={styles['statistics']}>
           <div className={`__container`} data-width={`medium`}>
             <h6>There is much more to explore</h6>
             <p>
@@ -265,15 +281,15 @@ function Home({ title }) {
               blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
             </p>
             <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
-              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
                 <span>{app && app.length > 0 && app.length}</span>
                 <small>Dapps</small>
               </div>
-              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
                 <span>{app && app.length > 0 && app.filter((item) => item.category === 'NFT').length}</span>
                 <small>NFT Collections</small>
               </div>
-              <div className={`${styles['statictucs__card']} card d-flex flex-column`}>
+              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
                 <span>{1}</span>
                 <small>Chains</small>
               </div>
@@ -287,18 +303,21 @@ function Home({ title }) {
 
 const DefaultAppHolder = ({ app }) => {
   let holder = []
-  if (app.length > 24) return
-  for (let i = 0; i < 24 - app.length; i++) {
+  if (app.length > 20) return
+  for (let i = 0; i < 20 - app.length; i++) {
     holder.push(
-      <div
-        key={i}
-        onClick={() => toast(`Submit your dapp to the manager`)}
-        style={{ backgroundColor: '#FFF1F8' }}
-        className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
-      >
-        <figure>
-          <img alt={import.meta.VITE_NAME} src={DappDefaultIcon} />
-        </figure>
+      <div key={i} className={`${styles['grid__item']} d-flex flex-column align-items-center`} style={{ rowGap: '.6rem' }}>
+        <a
+          href={`#`}
+          onClick={() => toast(`Submit your dapp to the manager`)}
+          style={{ backgroundColor: '#FFF1F8' }}
+          className={`${styles['grid__item']} d-flex flex-column align-items-center justify-content-center animate pop`}
+        >
+          <figure>
+            <img alt={import.meta.VITE_NAME} src={DappDefaultIcon} />
+          </figure>
+        </a>
+        <span>Unnamed</span>
       </div>
     )
   }

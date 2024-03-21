@@ -60,7 +60,6 @@ export const fetchProfile = async (addr) => {
       //  if (hashFunction === '0x6f357c6a') {
       // download the json file
       const json = await getIPFS(web3.utils.hexToUtf8(url).replace('ipfs://', '').replace('://', ''))
-      console.log(json)
       return json
       // compare hashes
       if (web3.utils.keccak256(JSON.stringify(json)) === hash.replace(hashFunction, '')) {
