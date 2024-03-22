@@ -317,7 +317,7 @@ const DefaultAppHolder = ({ app }) => {
             <img alt={import.meta.VITE_NAME} src={DappDefaultIcon} />
           </figure>
         </a>
-        <span>Unnamed</span>
+        <span>New dApp</span>
       </div>
     )
   }
