@@ -56,7 +56,15 @@ export default function Root() {
             </div>
 
             <div className={`${styles['actions']} d-flex align-items-center justify-content-end`}>
-              <div className={`d-flex flex-column align-items-center justify-content-end`}>
+            <div className={`${styles['network']} d-flex align-items-center justify-content-end`}>
+                <img alt={`Lukso`} src={Lukso} />
+                <span>Lukso</span>
+                <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5.69247 6.00759L0.384766 0.699887L1.09247 -0.0078125L5.69247 4.59219L10.2925 -0.0078125L11.0002 0.699887L5.69247 6.00759Z" fill="black" />
+                </svg>
+              </div>
+              
+              <div className={`d-flex flex-row align-items-center justify-content-end`}>
                 {!auth.wallet ? (
                   <>
                     <button
@@ -102,8 +110,11 @@ export default function Root() {
                     </ul>
                   </div>
                 )}
-                <div className={`connect-btn-party-holder`} />
               </div>
+
+
+
+                <div className={`connect-btn-party-holder`} />
             </div>
           </div>
 
