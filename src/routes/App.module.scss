@@ -155,3 +155,19 @@
     }
   }
 }
+
+.btn-like {
+  background-color: var(--color-primary);
+  border: none;
+  padding: 0.1rem 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  cursor: pointer;
+
+  span {
+    color: var(--white);
+    font-size: 13px;
+  }
+}

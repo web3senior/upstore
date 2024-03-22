@@ -169,7 +169,7 @@ function Home({ title }) {
     // /0xd0f34b10
     //console.log('-------------',web3.eth.abi.encodeFunctionSignature(`getAppList()`))
     getAppList().then(async (res) => {
-      const responses = await Promise.all(res.map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, { like: web3.utils.toNumber(await getLike(item.id)) })))
+      const responses = await Promise.all(res[0].map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, { like: web3.utils.toNumber(await getLike(item.id)) })))
       setApp(responses)
       setBackupApp(responses)
       setIsLoading(false)

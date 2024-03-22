@@ -1,8 +1,30 @@
 [
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "url",
+				"type": "string"
+			}
+		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "appId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "DuplicatedAddress",
+		"type": "error"
 	},
 	{
 		"inputs": [
@@ -30,22 +52,16 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "time",
+				"name": "price",
 				"type": "uint256"
-			}
-		],
-		"name": "TooEarly",
-		"type": "error"
-	},
-	{
-		"inputs": [
+			},
 			{
 				"internalType": "uint256",
-				"name": "time",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
-		"name": "TooLate",
+		"name": "PriceNotMet",
 		"type": "error"
 	},
 	{
@@ -78,13 +94,32 @@
 			{
 				"indexed": true,
 				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
 				"name": "sender",
 				"type": "address"
 			},
 			{
 				"indexed": true,
 				"internalType": "bytes32",
-				"name": "id",
+				"name": "appId",
 				"type": "bytes32"
 			},
 			{
@@ -106,7 +141,7 @@
 				"type": "bool"
 			}
 		],
-		"name": "NewAppadded",
+		"name": "appAdded",
 		"type": "event"
 	},
 	{
@@ -115,46 +150,70 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "previousOwner",
+				"name": "sender",
 				"type": "address"
 			},
 			{
 				"indexed": true,
-				"internalType": "address",
-				"name": "newOwner",
-				"type": "address"
-			}
-		],
-		"name": "OwnershipTransferred",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "bytes32",
 				"name": "appId",
 				"type": "bytes32"
 			}
 		],
-		"name": "addLike",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
+		"name": "likeAdded",
+		"type": "event"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "fallback"
 	},
 	{
 		"inputs": [],
-		"name": "appTotal",
+		"name": "URL",
 		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"name": "app",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "id",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "manager",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dt",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bool",
+				"name": "status",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -302,6 +361,37 @@
 				"internalType": "struct UpStore.AppStruct[]",
 				"name": "",
 				"type": "tuple[]"
+			},
+			{
+				"internalType": "uint256",
+				"name": "total",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAppTotal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBalance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -332,6 +422,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getLikeTotal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "total",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -353,25 +456,30 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "metadata",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "manager",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
-		"name": "newApp",
+		"name": "like",
 		"outputs": [
 			{
 				"internalType": "bytes32",
-				"name": "",
+				"name": "appId",
 				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "dt",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -389,9 +497,46 @@
 	},
 	{
 		"inputs": [],
+		"name": "price",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "renounceOwnership",
 		"outputs": [],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "metadata",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "manager",
+				"type": "address"
+			}
+		],
+		"name": "setApp",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "appId",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -425,7 +570,7 @@
 				"type": "bytes32"
 			}
 		],
-		"name": "setStatus",
+		"name": "setLike",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -433,6 +578,69 @@
 				"type": "bool"
 			}
 		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "newPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "setPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "newUrl",
+				"type": "string"
+			}
+		],
+		"name": "setURL",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "appId",
+				"type": "bytes32"
+			}
+		],
+		"name": "toggleStatus",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "status",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -460,6 +668,11 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "manager",
+				"type": "address"
 			}
 		],
 		"name": "updateApp",
@@ -484,14 +697,9 @@
 				"internalType": "string",
 				"name": "metadata",
 				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "manager",
-				"type": "address"
 			}
 		],
-		"name": "updateAppOwner",
+		"name": "updateMetadata",
 		"outputs": [
 			{
 				"internalType": "bool",
@@ -518,12 +726,50 @@
 		"name": "verifyManager",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"components": [
+					{
+						"internalType": "bytes32",
+						"name": "id",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "metadata",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "manager",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dt",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "status",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct UpStore.AppStruct",
 				"name": "",
-				"type": "bool"
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	}
 ]

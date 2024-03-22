@@ -21,7 +21,6 @@ import party from 'party-js'
 // import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
 
-
 export const loader = async ({ request, params }) => {
   if (params.appId.length !== `0x0000000000000000000000000000000000000000000000000000000000000000`.length) return false
   if (localStorage.getItem(`appSeen`) !== null) {
@@ -84,12 +83,12 @@ function App({ title }) {
       web3.eth.defaultAccount = auth.wallet
       const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
       return await UpstoreContract.methods
-        .addLike(params.appId)
+        .setLike(params.appId)
         .send({ from: auth.wallet })
         .then((res) => {
           console.log(res)
           toast.dismiss(t)
-          
+
           // Refetch the like total
           getLike().then((res) => {
             setLike(web3.utils.toNumber(res))
@@ -98,7 +97,7 @@ function App({ title }) {
           // Party
           party.confetti(document.querySelector(`.party-holder`), {
             count: party.variation.range(20, 40),
-            shapes: ["star", "roundedSquare"],
+            shapes: ['star', 'roundedSquare'],
           })
         })
     } catch (error) {
@@ -205,10 +204,7 @@ function App({ title }) {
                         <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
                       </div>
 
-                      <div
-                        style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}
-                        className={`${styles['card__body']} ${styles['description']}`}
-                      >
+                      <div style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }} className={`${styles['card__body']} ${styles['description']}`}>
                         {app[0].description}
                       </div>
                     </div>
@@ -259,7 +255,7 @@ function App({ title }) {
                             </li>
                           )}
 
-                           {app[0].social.discord && (
+                          {app[0].social.discord && (
                             <li>
                               <a href={`https://discord.gg/${app[0].social.discord}`} target={`_blank`}>
                                 <figure>
@@ -274,14 +270,18 @@ function App({ title }) {
 
                     <div className={`${styles['card']}`}>
                       <div className={`${styles['card__body']}`}>
-                          <p>App ID: {params.appId && `${params.appId.slice(0, 8)}...${params.appId.slice(60)}`}</p>
-                         <p>Owner: {app[0].manager && `${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
+                        <p>App ID: {params.appId && `${params.appId.slice(0, 8)}...${params.appId.slice(60)}`}</p>
+                        <p>Owner: {app[0].manager && `${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
                       </div>
                     </div>
 
                     <p className={`${styles['like']} d-flex align-items-center`}>
                       <span>Like this dapp?</span>
-                      <MaterialIcon name="favorite" className={`text-danger`} style={{fontSize: '16px'}} onClick={() => handleLike()}/>
+
+                      <button className={`${styles['btn-like']}`} onClick={() => handleLike()}>
+                        <MaterialIcon name={`favorite`}/>
+                      </button>
+
                       <span>{like}</span>
                     </p>
                   </>
