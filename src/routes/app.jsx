@@ -76,7 +76,7 @@ function App({ title }) {
       return
     }
 
-    const t = toast.loading(`Sending...`)
+    const t = toast.loading(`Waiting for transaction's confirmation`)
 
     try {
       let web3 = new Web3(window.lukso)
