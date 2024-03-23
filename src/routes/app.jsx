@@ -157,6 +157,14 @@ function App({ title }) {
                             <img src={PinkCheckmark} />
                           </figcaption>
                         </figure>
+                        <div>
+                          {app[0].tags &&
+                            app[0].tags.split(',').map((tag, i) => (
+                              <span key={i} className={`badge badge-danger badge-pill ml-10`}>
+                                {tag}
+                              </span>
+                            ))}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -169,19 +177,6 @@ function App({ title }) {
                         <span>{app[0].url}</span>
                       </div>
                     )}
-                  </div>
-                </div>
-
-                <div className={`${styles['card']} mt-10`}>
-                  <div className={`${styles['card__body']} animate fade`}>
-                    {app &&
-                      app.length > 0 &&
-                      app[0].tags &&
-                      app[0].tags.split(',').map((tag, i) => (
-                        <span key={i} className={`badge badge-danger badge-pill ml-10`}>
-                          {tag}
-                        </span>
-                      ))}
                   </div>
                 </div>
 
@@ -203,13 +198,15 @@ function App({ title }) {
                 {app && app.length > 0 && manager && (
                   <>
                     <div className={`${styles['card']} ${styles['repo']} mt-10`}>
-                    <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
+                      <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
                         <span>Owner</span>
-                        <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>View</a>
+                        <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>
+                          View
+                        </a>
                       </div>
                       <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
                         <figure>
-                          <img alt={``} src={`https://ipfs.io/ipfs/${manager?.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                          <img alt={``} src={`https://ipfs.io/ipfs/${manager?.profileImage[0]?.url.replace('ipfs://', '').replace('://', '')}`} />
                           <figcaption>@{manager?.name}</figcaption>
                         </figure>
                         <p title={app[0].manager}>{`${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
