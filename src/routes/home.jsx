@@ -195,9 +195,9 @@ function Home({ title }) {
               <span>+</span>
               <span>Shift</span>
               <span>+</span>
-              <span>U</span>
+              <span>S</span>
             </div>
-            <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} accessKey={`u`} onChange={() => handleSearch()} ref={txtSearchRef} />
+            <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} accessKey={`s`} onChange={() => handleSearch()} ref={txtSearchRef} />
           </div>
 
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
