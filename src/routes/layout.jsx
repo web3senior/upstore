@@ -25,7 +25,7 @@ let links = [
     name: 'Contract',
     icon: null,
     target: '_blank',
-    path: `https://explorer.execution.mainnet.lukso.network/address/0x83CE417862adB6Fa48685Ca1a6497e4eC871e692`,
+    path: `https://explorer.execution.mainnet.lukso.network/address/${import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET}`,
   },
 ]
 
