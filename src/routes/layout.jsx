@@ -21,6 +21,12 @@ let links = [
     target: '_blank',
     path: `https://docs.google.com/forms/d/e/1FAIpQLScUYz_4VjdcB9bMOilhN67cFdzF1U7XZ1o0XqQYkaxThwTijA/viewform`,
   },
+  {
+    name: 'Contract',
+    icon: null,
+    target: '_blank',
+    path: `https://explorer.execution.mainnet.lukso.network/address/0x83CE417862adB6Fa48685Ca1a6497e4eC871e692`,
+  },
 ]
 
 export default function Root() {
@@ -63,7 +69,7 @@ export default function Root() {
                   <path d="M5.69247 6.00759L0.384766 0.699887L1.09247 -0.0078125L5.69247 4.59219L10.2925 -0.0078125L11.0002 0.699887L5.69247 6.00759Z" fill="black" />
                 </svg>
               </div>
-              
+
               <div className={`d-flex flex-row align-items-center justify-content-end`}>
                 {!auth.wallet ? (
                   <>
