@@ -16,7 +16,7 @@ party.resolvableShapes['Lukso'] = `<img src="${Lukso}"/>`
 
 let links = [
   {
-    name: 'Submit your dapp',
+    name: 'Submit your dApp',
     icon: null,
     target: '_blank',
     path: `https://docs.google.com/forms/d/e/1FAIpQLScUYz_4VjdcB9bMOilhN67cFdzF1U7XZ1o0XqQYkaxThwTijA/viewform`,
@@ -62,7 +62,7 @@ export default function Root() {
             </div>
 
             <div className={`${styles['actions']} d-flex align-items-center justify-content-end`}>
-            <div className={`${styles['network']} d-flex align-items-center justify-content-end`}>
+              <div className={`${styles['network']} d-flex align-items-center justify-content-end`}>
                 <img alt={`Lukso`} src={Lukso} />
                 <span>Lukso</span>
                 <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,9 +118,7 @@ export default function Root() {
                 )}
               </div>
 
-
-
-                <div className={`connect-btn-party-holder`} />
+              <div className={`connect-btn-party-holder`} />
             </div>
           </div>
 
