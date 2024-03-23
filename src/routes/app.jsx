@@ -41,6 +41,7 @@ function App({ title }) {
   Title(title)
   const [isLoading, setIsLoading] = useState(true)
   const [app, setApp] = useState([])
+  const [manager, setManager] = useState()
   const [like, setLike] = useState(0)
   const auth = useAuth()
   const navigate = useNavigate()
@@ -108,10 +109,14 @@ function App({ title }) {
 
   useEffect(() => {
     getApp().then(async (res) => {
+      if (!res.status) return
       const responses = Object.assign(await fetchIPFS(res.metadata), res)
-      console.log(responses)
       setApp([responses])
       setIsLoading(false)
+      auth.fetchProfile(responses.manager).then((res) => {
+        setManager(res.LSP3Profile)
+        console.log(res.LSP3Profile)
+      })
     })
 
     getLike().then((res) => {
@@ -194,7 +199,26 @@ function App({ title }) {
                     </div>
                   </>
                 )}
+
+                {app && app.length > 0 && manager && (
+                  <>
+                    <div className={`${styles['card']} ${styles['repo']} mt-10`}>
+                    <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
+                        <span>Owner</span>
+                        <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>View</a>
+                      </div>
+                      <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
+                        <figure>
+                          <img alt={``} src={`https://ipfs.io/ipfs/${manager?.profileImage[0].url.replace('ipfs://', '').replace('://', '')}`} />
+                          <figcaption>@{manager?.name}</figcaption>
+                        </figure>
+                        <p title={app[0].manager}>{`${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
+
               <div className={`ms-Grid-col ms-sm12 ms-md8 ms-lg8`}>
                 {app && app.length > 0 && (
                   <>
@@ -271,7 +295,6 @@ function App({ title }) {
                     <div className={`${styles['card']}`}>
                       <div className={`${styles['card__body']}`}>
                         <p>App ID: {params.appId && `${params.appId.slice(0, 8)}...${params.appId.slice(60)}`}</p>
-                        <p>Owner: {app[0].manager && `${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
                       </div>
                     </div>
 
@@ -279,7 +302,7 @@ function App({ title }) {
                       <span>Like this dapp?</span>
 
                       <button className={`${styles['btn-like']}`} onClick={() => handleLike()}>
-                        <MaterialIcon name={`favorite`}/>
+                        <MaterialIcon name={`favorite`} />
                       </button>
 
                       <span>{like}</span>
