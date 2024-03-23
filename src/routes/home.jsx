@@ -165,7 +165,7 @@ function Home({ title }) {
   const getRecentApp = async () => {
     return await JSON.parse(localStorage.getItem(`appSeen`))
   }
-  
+
   useEffect(() => {
     getAppList().then(async (res) => {
       const responses = await Promise.all(res[0].map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, { like: web3.utils.toNumber(await getLike(item.id)) })))
@@ -273,7 +273,7 @@ function Home({ title }) {
         </div>
 
         <div className={styles['statistics']}>
-          <div className={`__container`} data-width={`medium`}>
+          <div className={`__container`} data-width={`large`}>
             <h6>There is much more to explore</h6>
             <p>
               Unlock a world of possibilities with Lukso's extensive range of decentralized applications. With countless options available, you can explore and experience the full potential of
