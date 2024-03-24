@@ -83,7 +83,9 @@
   padding: 0.9rem 0.8rem;
   border-radius: var(--global-border-radius);
   opacity: 1;
-  transition: background-color 0.15s cubic-bezier(0.7, 0, 0.84, 0) 0s;
+  transition-property: box-shadow, transform;
+  transition-duration: 400ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.29, 0.99);
 
   &:hover {
     background-color: #f4f4f4;
@@ -143,12 +145,15 @@
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--shadow);
 
     overflow: hidden;
+    transition-property: box-shadow, transform;
+    transition-duration: 400ms;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.29, 0.99);
     will-change: transform;
     cursor: pointer;
 
     &:hover {
-      transform: translateY(-0.2rem);
-      transition: all ease-in-out 0.12s;
+      transform: translateY(-0.2rem) scale(1.2);
+
     }
   }
 

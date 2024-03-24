@@ -3,18 +3,38 @@ import { useLoaderData, defer, Form, Await, useRouteError, Link, useNavigate } f
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
-import Loading from './components/LoadingSpinner'
-import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
 import { useAuth, web3, _ } from './../contexts/AuthContext'
-import styles from './Home.module.scss'
 import Logo from './../../src/assets/logo.svg'
-import Banner from './../../src/assets/banner.png'
 import Web3 from 'web3'
 import ABI from './../abi/upstore.json'
 import party from 'party-js'
-// import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
+import styles from './Home.module.scss'
+
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Doughnut } from 'react-chartjs-2'
+ChartJS.register(ArcElement, Tooltip, Legend)
+export const data = {
+  labels: ['Red', 'Orange', 'Yellow', 'Green', 'Blue'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)'],
+      borderColor: ['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)'],
+      borderWidth: 1,
+    },
+  ],
+  options: {
+    plugins: {
+        title: {
+            display: false,
+            text: 'Custom Chart Title'
+        }
+    }
+}
+}
 
 party.resolvableShapes['UP'] = `<img src="http://localhost:5173/src/assets/up-logo.svg"/>`
 party.resolvableShapes['Lukso'] = `<img src="http://localhost:5173/src/assets/lukso-logo.svg"/>`
@@ -155,7 +175,7 @@ function Home({ title }) {
 
   const handleRemoveRecentApp = async (e, appId) => {
     localStorage.setItem('appSeen', JSON.stringify(recentApp.filter((reduceItem) => reduceItem.appId !== appId)))
-    
+
     // Refresh the recent app list
     getRecentApp().then((res) => {
       setRecentApp(res)
@@ -169,7 +189,7 @@ function Home({ title }) {
   useEffect(() => {
     getAppList().then(async (res) => {
       const responses = await Promise.all(res[0].map(async (item) => Object.assign(await fetchIPFS(item.metadata), item, { like: web3.utils.toNumber(await getLike(item.id)) })))
-      setApp(responses.filter(item => item.status))
+      setApp(responses.filter((item) => item.status))
       setBackupApp(responses)
       setIsLoading(false)
     })
@@ -203,7 +223,7 @@ function Home({ title }) {
 
           <div className={`d-flex flex-row align-items-center justify-content-start `}>
             <MaterialIcon name={`local_fire_department`} style={{ color: 'var(--color-primary)' }} />
-            <span>Hot dApps</span>
+            <b className={`ms-fontSize-16`}>Hot dApps</b>
           </div>
 
           <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '85px' }}>
@@ -274,24 +294,32 @@ function Home({ title }) {
 
         <div className={styles['statistics']}>
           <div className={`__container`} data-width={`large`}>
-            <h6>There is much more to explore</h6>
-            <p>
-              Unlock a world of possibilities with Lukso's extensive range of decentralized applications. With countless options available, you can explore and experience the full potential of
-              blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
-            </p>
-            <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
-              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                <span>{app && app.length > 0 && app.length}</span>
-                <small>Dapps</small>
+            <div className={`d-flex align-items-center justify-content-center`} style={{ '--data-width': '435px' }}>
+              <div>
+                <h6>There is much more to explore</h6>
+                <p>
+                  Unlock a world of possibilities with Lukso's extensive range of decentralized applications. With countless options available, you can explore and experience the full potential of
+                  blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
+                </p>
+                <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
+                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
+                    <span>{app && app.length > 0 && app.length}</span>
+                    <small>Dapps</small>
+                  </div>
+                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
+                    <span>{app && app.length > 0 && app.filter((item) => item.category === 'NFT').length}</span>
+                    <small>NFT Collections</small>
+                  </div>
+                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
+                    <span>{1}</span>
+                    <small>Chains</small>
+                  </div>
+                </div>
               </div>
-              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                <span>{app && app.length > 0 && app.filter((item) => item.category === 'NFT').length}</span>
-                <small>NFT Collections</small>
-              </div>
-              <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                <span>{1}</span>
-                <small>Chains</small>
-              </div>
+
+              {/* <div className={`d-flex align-items-center justify-content-center`} style={{width: '400px'}} >
+                <Doughnut data={data}/>
+              </div> */}
             </div>
           </div>
         </div>
