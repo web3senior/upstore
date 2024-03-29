@@ -157,7 +157,7 @@ function App({ title }) {
                             <img src={PinkCheckmark} />
                           </figcaption>
                         </figure>
-                        <div>
+                        <div className={`mt-10`}>
                           {app[0].tags &&
                             app[0].tags.split(',').map((tag, i) => (
                               <span key={i} className={`badge badge-danger badge-pill ml-10`}>
