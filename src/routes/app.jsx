@@ -205,7 +205,7 @@ function App({ title }) {
                         </a>
                       </div>
                       <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
-                        <figure>
+                        <figure className={`${styles['owner']}`}>
                           <img alt={``} src={`https://ipfs.io/ipfs/${manager?.profileImage[0]?.url.replace('ipfs://', '').replace('://', '')}`} />
                           <figcaption>@{manager?.name}</figcaption>
                         </figure>
