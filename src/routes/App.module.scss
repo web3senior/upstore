@@ -14,7 +14,7 @@
     color: #088ae9;
   }
 
-  figure {
+  figure.logo {
     img {
       width: 82px;
       margin: 0 auto;
@@ -34,6 +34,12 @@
         width: 18px;
         height: 18px;
       }
+    }
+  }
+
+  figure.qr {
+    img {
+      width: auto;
     }
   }
 

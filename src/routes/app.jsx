@@ -150,7 +150,7 @@ function App({ title }) {
                         className={`${styles['card__body']} d-flex flex-column align-items-center justify-content-center animate fade`}
                         key={i}
                       >
-                        <figure title={item.category}>
+                        <figure className={`${styles['logo']}`} title={item.category}>
                           <img alt={item.name} src={item.logo} />
                           <figcaption>
                             {item.name}
@@ -214,6 +214,14 @@ function App({ title }) {
                     </div>
                   </>
                 )}
+
+                <div className={`${styles['card']} ${styles['repo']} mt-10`}>
+                  <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
+                    <figure className={`${styles['qr']}`}>
+                      <img src={`https://quickchart.io/qr?text=${window.location.href}&size=200&format=svg`} />
+                    </figure>
+                  </div>
+                </div>
               </div>
 
               <div className={`ms-Grid-col ms-sm12 ms-md8 ms-lg8`}>
