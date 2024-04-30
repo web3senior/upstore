@@ -27,6 +27,12 @@ let links = [
     target: '_blank',
     path: `https://explorer.execution.mainnet.lukso.network/address/${import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET}`,
   },
+  //   {
+  //   name: 'LSP7 Metadata 🛠️',
+  //   icon: null,
+  //   target: '',
+  //   path: `tools/lsp7`,
+  // },
 ]
 
 export default function Root() {
