@@ -240,7 +240,7 @@ function Home({ title }) {
             {app &&
               app.length > 0 &&
               app
-                .filter((item, i) => item.status && i < 20)
+                .filter((item, i) => item.status && i < 30)
                 .sort((a, b) => b.like - a.like)
                 .map((item, i) => (
                   <div key={i} className={`${styles['grid__item']} d-flex flex-column align-items-center`} style={{ rowGap: '.6rem' }}>
@@ -330,8 +330,8 @@ function Home({ title }) {
 
 const DefaultAppHolder = ({ app }) => {
   let holder = []
-  if (app.length > 20) return
-  for (let i = 0; i < 20 - app.length; i++) {
+  if (app.length > 30) return
+  for (let i = 0; i < 30 - app.length; i++) {
     holder.push(
       <div key={i} className={`${styles['grid__item']} d-flex flex-column align-items-center`} style={{ rowGap: '.6rem' }}>
         <a
