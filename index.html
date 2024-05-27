@@ -49,17 +49,17 @@
         <script type="module" src="/src/main.jsx"></script>
         <script>
             if ('serviceWorker' in navigator) {
-              addEventListener('load', async () => {
-                navigator.serviceWorker
-                  .register('./sw.js')
-                  .then((registration) => {
-                    console.log('Hooray. Registration successful, scope is:', registration.scope)
-                  })
-                  .catch((error) => {
-                    console.warn('Whoops. Service worker registration failed, error:', error)
-                  })
-              })
+                addEventListener('load', async () => {
+                    navigator.serviceWorker
+                        .register('./sw.js')
+                        .then((registration) => {
+                            console.log('Hooray. Registration successful, scope:', registration.scope)
+                        })
+                        .catch((error) => {
+                            console.warn('Whoops. Service worker registration failed, error:', error)
+                        })
+                })
             }
-          </script>
+        </script>
     </body>
 </html>
