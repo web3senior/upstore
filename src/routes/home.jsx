@@ -161,7 +161,7 @@ function Home({ title }) {
   }
 
   const getAppList = async () => {
-    let web3 = new Web3(`https://rpc.lukso.gateway.fm`)
+    let web3 = new Web3(`${import.meta.env.VITE_RPC_URL}`)
     web3.eth.defaultAccount = auth.wallet
     const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
     return await UpstoreContract.methods.getAppList().call()
