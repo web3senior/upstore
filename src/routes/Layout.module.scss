@@ -87,7 +87,6 @@
       column-gap: 0.5rem;
     }
 
-
     .connect-button {
       border: none;
       display: flex;
@@ -108,12 +107,12 @@
       font-size: 16px;
 
       &:after {
-        content: 'Connect Universal Profile';
+        content: 'Connect Wallet';
       }
 
       @include small-down() {
         &:after {
-          content: 'Connect UP';
+          content: 'Connect';
         }
       }
 

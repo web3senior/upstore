@@ -26,13 +26,7 @@ let links = [
     icon: null,
     target: '_blank',
     path: `https://explorer.execution.mainnet.lukso.network/address/${import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET}`,
-  },
-  //   {
-  //   name: 'LSP7 Metadata 🛠️',
-  //   icon: null,
-  //   target: '',
-  //   path: `tools/lsp7`,
-  // },
+  }
 ]
 
 export default function Root() {
@@ -52,7 +46,7 @@ export default function Root() {
           <div className={`${styles.container} __containerss`} data-width={`xlarge`}>
             <div className={`${styles['left']} d-flex flex-row align-items-center justify-content-start`}>
               <Link to={'/'} className={`${styles['logo']}`}>
-                <b>UP Store</b>
+                <b>{import.meta.env.VITE_NAME}</b>
               </Link>
 
               <ul className={`${styles['nav']} d-flex flex-row align-items-center justify-content-center`}>

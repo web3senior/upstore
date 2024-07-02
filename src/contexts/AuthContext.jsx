@@ -7,7 +7,7 @@ import LSP0ERC725Account from '@lukso/lsp-smart-contracts/artifacts/LSP0ERC725Ac
 import toast, { Toaster } from 'react-hot-toast'
 import Web3 from 'web3'
 
-export const PROVIDER = window.lukso
+export const PROVIDER = window.lukso || window.ethereum
 export const web3 = new Web3(PROVIDER)
 export const _ = web3.utils._
 

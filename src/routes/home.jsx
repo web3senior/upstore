@@ -28,12 +28,12 @@ export const data = {
   ],
   options: {
     plugins: {
-        title: {
-            display: false,
-            text: 'Custom Chart Title'
-        }
-    }
-}
+      title: {
+        display: false,
+        text: 'Custom Chart Title',
+      },
+    },
+  },
 }
 
 party.resolvableShapes['UP'] = `<img src="http://localhost:5173/src/assets/up-logo.svg"/>`
@@ -205,7 +205,7 @@ function Home({ title }) {
         <div className={`__container`} data-width={`large`}>
           <figure className={`${styles['logo']} ms-motion-slideDownIn`}>
             <img alt={import.meta.env.VITE_NAME} src={Logo} />
-            <figcaption>UP STORE</figcaption>
+            <figcaption>{import.meta.env.VITE_NAME}</figcaption>
           </figure>
 
           <div className={`${styles['txt-search']}`}>
@@ -216,14 +216,14 @@ function Home({ title }) {
               <span>+</span>
               <span>S</span>
             </div>
-            <input type={`text`} placeholder={`Search in ${app && app.length} dapps`} list={`apps`} accessKey={`s`} onChange={() => handleSearch()} ref={txtSearchRef} />
+            <input type={`text`} placeholder={`Search`} list={`apps`} accessKey={`s`} onChange={() => handleSearch()} ref={txtSearchRef} />
           </div>
 
           <datalist id={`apps`}>{app && app.map((item, i) => <option key={i} value={item.name} />)}</datalist>
 
           <div className={`d-flex flex-row align-items-center justify-content-start `}>
             <MaterialIcon name={`local_fire_department`} style={{ color: 'var(--color-primary)' }} />
-            <b className={`ms-fontSize-16`}>Hot dApps</b>
+            <b className={`ms-fontSize-16`}>Hot dApps [{app && app.length}]</b>
           </div>
 
           <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '85px' }}>
@@ -260,10 +260,9 @@ function Home({ title }) {
             {app && app.length > 0 && <DefaultAppHolder app={app.filter((item) => item.status)} />}
           </div>
 
-          <p className="mt-50">Recent dApps</p>
-
           {recentApp && recentApp.length > 0 && (
             <>
+              <p className="mt-50">Recent dApps</p>
               <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '85px' }}>
                 {app &&
                   app.length > 0 &&
@@ -290,38 +289,6 @@ function Home({ title }) {
               </div>
             </>
           )}
-        </div>
-
-        <div className={styles['statistics']}>
-          <div className={`__container`} data-width={`large`}>
-            <div className={`d-flex align-items-center justify-content-center`} style={{ '--data-width': '435px' }}>
-              <div>
-                <h6>There is much more to explore</h6>
-                <p>
-                  Unlock a world of possibilities with Lukso's extensive range of decentralized applications. With countless options available, you can explore and experience the full potential of
-                  blockchain technology like never before. Start your journey today and discover what Lukso has to offer.
-                </p>
-                <div className={`${styles['grid']} grid grid--fill mt-60`} style={{ '--data-width': '150px' }}>
-                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                    <span>{app && app.length > 0 && app.length}</span>
-                    <small>Dapps</small>
-                  </div>
-                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                    <span>{app && app.length > 0 && app.filter((item) => item.category === 'NFT').length}</span>
-                    <small>NFT Collections</small>
-                  </div>
-                  <div className={`${styles['statistics__card']} card d-flex flex-column`}>
-                    <span>{1}</span>
-                    <small>Chains</small>
-                  </div>
-                </div>
-              </div>
-
-              {/* <div className={`d-flex align-items-center justify-content-center`} style={{width: '400px'}} >
-                <Doughnut data={data}/>
-              </div> */}
-            </div>
-          </div>
         </div>
       </section>
     </>
