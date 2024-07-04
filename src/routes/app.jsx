@@ -71,16 +71,15 @@ function App({ title }) {
 
   const handleLike = async () => {
     if (!auth.wallet) {
-      toast.error(`Please connect Universal Profile`)
+      toast.error(`Please connect wallet`)
       return
     }
 
     const t = toast.loading(`Waiting for transaction's confirmation`)
 
-    try {
-      let web3 = new Web3(window.lukso)
-      web3.eth.defaultAccount = auth.wallet
 
+    console.log(auth.wallet)
+    try {
       return await contract.methods
         .setLike(params.appId)
         .send({ from: auth.wallet })

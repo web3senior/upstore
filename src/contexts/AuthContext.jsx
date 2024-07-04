@@ -15,7 +15,7 @@ export let web3
 
 if (localStorage.getItem(`defaultChain`) === null) {
   localStorage.setItem(`defaultChain`, 'arbitrum')
-  PROVIDER = `https://arb1.arbitrum.io/rpc` //window.lukso || window.ethereum
+  PROVIDER = `https://arb1.arbitrum.io/rpc` //|| window.ethereum
 } else {
   switch (localStorage.getItem(`defaultChain`)) {
     case `arbitrum`:
@@ -126,15 +126,18 @@ export function AuthProvider({ children }) {
   const connectWallet = async () => {
     let loadingToast = toast.loading('Loading...')
 
+    if (localStorage.getItem(`defaultChain`) === `lukso`) web3 = new Web3(window.lukso)
+    else web3 = new Web3(window.ethereum)
+
     try {
       let accounts = await web3.eth.getAccounts()
       if (accounts.length === 0) await web3.eth.requestAccounts()
       accounts = await web3.eth.getAccounts()
       //console.log(accounts)
       setWallet(accounts[0])
-      fetchProfile(accounts[0]).then((res) => setProfile(res))
+      // fetchProfile(accounts[0]).then((res) => setProfile(res))
       toast.dismiss(loadingToast)
-      toast.success(`UP successfuly connected`)
+      toast.success(`Wallet successfuly connected`)
       navigate(`/`)
       return accounts[0]
     } catch (error) {
@@ -144,14 +147,14 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    if (isUPinstalled()) {
-      isWalletConnected().then((addr) => {
-        if (addr !== undefined) {
-          setWallet(addr)
-          fetchProfile(addr).then((res) => setProfile(res))
-        }
-      })
-    }
+    //if (isUPinstalled()) {
+    isWalletConnected().then((addr) => {
+      if (addr !== undefined) {
+        setWallet(addr)
+        fetchProfile(addr).then((res) => setProfile(res))
+      }
+    })
+    // }
   }, [])
 
   const value = {
