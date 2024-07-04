@@ -2,6 +2,7 @@
 ---
 
 ![Author Badge](assets/badge-author.svg "Aratta")
+<a href="//arbitrum.io">![Arbitrum Badge](assets/badge-arb.svg "Lukso")</a>
 <a href="//lukso.network">![Lukso Badge](assets/badge-lukso.svg "Lukso")</a>
 ![Solidity Badge](assets/badge-solidity.svg "Solidity")
 <a href="/test">![Test Badge](assets/badge-test.svg "Test")</a>
@@ -11,7 +12,7 @@
 
 ## Demo
 
-# https://universalprofile.store
+### https://universalprofile.store
 
 ## YouTube
 https://youtu.be/ILmirZXwNyc
@@ -65,8 +66,18 @@ npm run test
 
 Lukso: verified contract address `0x9Dc207Aa462A6655c5934C953FAecA3595C87e43` [view on explorer](https://explorer.execution.testnet.lukso.network/address/0x9Dc207Aa462A6655c5934C953FAecA3595C87e43?tab=read_contract)
 
-We will be adding more networks soon.
 
+### Deployed Contract (Mainnet)
+## Arbitrum
+```
+0x8634130FF8D3De06121BEF04a25B78557883fe97
+```
+https://arbiscan.io/address/0x8634130ff8d3de06121bef04a25b78557883fe97
+
+## LUKSO
+```
+0x6d80FC6430711406494389024174A00fB063A0d5
+```
 
 ### Contributing
 
