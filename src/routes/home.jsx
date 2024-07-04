@@ -4,7 +4,7 @@ import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
 import toast, { Toaster } from 'react-hot-toast'
-import { useAuth, web3, _ } from './../contexts/AuthContext'
+import { useAuth, web3, _,contract } from './../contexts/AuthContext'
 import Logo from './../../src/assets/logo.svg'
 import Web3 from 'web3'
 import ABI from './../abi/upstore.json'
@@ -163,14 +163,12 @@ function Home({ title }) {
   const getAppList = async () => {
     let web3 = new Web3(`${import.meta.env.VITE_RPC_URL}`)
     web3.eth.defaultAccount = auth.wallet
-    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
-    return await UpstoreContract.methods.getAppList().call()
+    return await contract.methods.getAppList().call()
   }
 
   const getLike = async (appId) => {
     let web3 = new Web3(import.meta.env.VITE_RPC_URL)
-    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
-    return await UpstoreContract.methods.getLikeTotal(appId).call()
+    return await contract.methods.getLikeTotal(appId).call()
   }
 
   const handleRemoveRecentApp = async (e, appId) => {
@@ -223,7 +221,7 @@ function Home({ title }) {
 
           <div className={`d-flex flex-row align-items-center justify-content-start `}>
             <MaterialIcon name={`local_fire_department`} style={{ color: 'var(--color-primary)' }} />
-            <b className={`ms-fontSize-16`}>Hot dApps [{app && app.length}]</b>
+            <b className={`ms-fontSize-16`}>Hot DApps [{app && app.length}]</b>
           </div>
 
           <div className={`${styles['grid']} grid grid--fit mt-10`} style={{ '--data-width': '85px' }}>
@@ -262,7 +260,7 @@ function Home({ title }) {
 
           {recentApp && recentApp.length > 0 && (
             <>
-              <p className="mt-50">Recent dApps</p>
+              <p className="mt-50">Recent DApps</p>
               <div className={`${styles['grid']} grid grid--fill mt-10`} style={{ '--data-width': '85px' }}>
                 {app &&
                   app.length > 0 &&
@@ -311,7 +309,7 @@ const DefaultAppHolder = ({ app }) => {
             <img alt={import.meta.VITE_NAME} src={DappDefaultIcon} />
           </figure>
         </a>
-        <span>New dApp</span>
+        <span>New DApp</span>
       </div>
     )
   }

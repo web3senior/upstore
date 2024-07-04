@@ -8,6 +8,7 @@ import styles from './Layout.module.scss'
 import Logo from './../../src/assets/logo.svg'
 import Aratta from './../../src/assets/aratta.svg'
 import Lukso from './../../src/assets/lukso.svg'
+import Arbitrum from './../../src/assets/arbitrum-logo.svg'
 import UniversalProfile from './../../src/assets/universal-profile.svg'
 import party from 'party-js'
 
@@ -26,7 +27,7 @@ let links = [
     icon: null,
     target: '_blank',
     path: `https://explorer.execution.mainnet.lukso.network/address/${import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET}`,
-  }
+  },
 ]
 
 export default function Root() {
@@ -37,6 +38,34 @@ export default function Root() {
   const navigate = useNavigate()
   const navigation = useNavigation()
   const location = useLocation()
+
+  const SelectedChain = () => {
+    let defaultChain = localStorage.getItem(`defaultChain`)
+    let chainInfo
+    switch (defaultChain) {
+      case `arbitrum`:
+        chainInfo = (
+          <>
+            <img alt={`Arbitrum`} src={Arbitrum} />
+            <span>Arbitrum</span>
+          </>
+        )
+        break
+      case `lukso`:
+        chainInfo = (
+          <>
+            <img alt={`Lukso`} src={Lukso} />
+            <span>Lukso</span>
+          </>
+        )
+        break
+
+      default:
+        break
+    }
+
+    return chainInfo
+  }
 
   return (
     <>
@@ -63,11 +92,33 @@ export default function Root() {
 
             <div className={`${styles['actions']} d-flex align-items-center justify-content-end`}>
               <div className={`${styles['network']} d-flex align-items-center justify-content-end`}>
-                <img alt={`Lukso`} src={Lukso} />
-                <span>Lukso</span>
-                <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M5.69247 6.00759L0.384766 0.699887L1.09247 -0.0078125L5.69247 4.59219L10.2925 -0.0078125L11.0002 0.699887L5.69247 6.00759Z" fill="black" />
-                </svg>
+                <SelectedChain />
+
+                <div className={`${styles['network__sub']}`}>
+                  <ul className={`w-100`}>
+                    <li
+                      className={`d-flex flex-row align-items-center justify-content-center w-100`}
+                      onClick={() => {
+                        localStorage.setItem(`defaultChain`, 'arbitrum')
+                        window.location.reload()
+                      }}
+                    >
+                      <img alt={`Arbitrum`} src={Arbitrum} />
+                      <span>Arbitrum</span>
+                    </li>
+
+                    <li
+                      className={`d-flex flex-row align-items-center justify-content-center w-100`}
+                      onClick={() => {
+                        localStorage.setItem(`defaultChain`, 'lukso')
+                        window.location.reload()
+                      }}
+                    >
+                      <img alt={`Lukso`} src={Lukso} />
+                      <span>Lukso</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div className={`d-flex flex-row align-items-center justify-content-end`}>

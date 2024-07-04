@@ -6,7 +6,7 @@ import Shimmer from './helper/Shimmer'
 import Loading from './components/LoadingSpinner'
 import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
-import { useAuth, web3, _ } from '../contexts/AuthContext'
+import { useAuth, web3, _, contract } from '../contexts/AuthContext'
 import styles from './App.module.scss'
 import PinkCheckmark from './../../src/assets/verified.svg'
 import GitHubMark from './../../src/assets/icon-github.svg'
@@ -61,14 +61,12 @@ function App({ title }) {
 
   const getApp = async () => {
     let web3 = new Web3(import.meta.env.VITE_RPC_URL)
-    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
-    return await UpstoreContract.methods.getApp(params.appId).call()
+    return await contract.methods.getApp(params.appId).call()
   }
 
   const getLike = async () => {
     let web3 = new Web3(import.meta.env.VITE_RPC_URL)
-    const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
-    return await UpstoreContract.methods.getLikeTotal(params.appId).call()
+    return await contract.methods.getLikeTotal(params.appId).call()
   }
 
   const handleLike = async () => {
@@ -82,8 +80,8 @@ function App({ title }) {
     try {
       let web3 = new Web3(window.lukso)
       web3.eth.defaultAccount = auth.wallet
-      const UpstoreContract = new web3.eth.Contract(ABI, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET)
-      return await UpstoreContract.methods
+
+      return await contract.methods
         .setLike(params.appId)
         .send({ from: auth.wallet })
         .then((res) => {

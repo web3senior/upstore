@@ -59,16 +59,22 @@
     }
 
     .network {
+      position: relative;
       column-gap: 8px;
       border-radius: 1rem;
       padding: 0.8rem 1rem;
-      cursor: help;
+      cursor: pointer;
       user-select: none;
       @include small-down() {
         display: none;
       }
+      background: #f7f8fa;
+
       &:hover {
         background: #f7f8fa;
+        .network__sub {
+          display: block !important;
+        } 
       }
 
       img {
@@ -79,7 +85,20 @@
         border-radius: 999px;
       }
 
+
       span {
+        font-weight: bold;
+      }
+
+
+      &__sub {
+        display: none;
+        background: #f7f8fa;
+        position: absolute;
+        right: 0;
+        top: calc(100% + 0rem);
+        width: 100%;
+        border-radius: 1rem;
       }
     }
 

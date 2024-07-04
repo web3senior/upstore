@@ -6,9 +6,36 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import LSP0ERC725Account from '@lukso/lsp-smart-contracts/artifacts/LSP0ERC725Account.json'
 import toast, { Toaster } from 'react-hot-toast'
 import Web3 from 'web3'
+import ABI_LUKSO from './../abi/upstore.json'
+import ABI_ARBITRUM from './../abi/upstore_arbitrum.json'
 
-export const PROVIDER = window.lukso || window.ethereum
-export const web3 = new Web3(PROVIDER)
+export let PROVIDER
+export let contract
+export let web3
+
+if (localStorage.getItem(`defaultChain`) === null) {
+  localStorage.setItem(`defaultChain`, 'arbitrum')
+  PROVIDER = `https://arb1.arbitrum.io/rpc` //window.lukso || window.ethereum
+} else {
+  switch (localStorage.getItem(`defaultChain`)) {
+    case `arbitrum`:
+      PROVIDER = `https://arb1.arbitrum.io/rpc`
+      web3 = new Web3(PROVIDER)
+      contract = new web3.eth.Contract(ABI_ARBITRUM, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET_ARBITRUM)
+      break
+    case `lukso`:
+      PROVIDER = `https://42.rpc.thirdweb.com`
+      web3 = new Web3(PROVIDER)
+      contract = new web3.eth.Contract(ABI_LUKSO, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET_LUKSO)
+      break
+
+    default:
+      break
+  }
+}
+
+console.log(contract)
+
 export const _ = web3.utils._
 
 export const AuthContext = React.createContext()
