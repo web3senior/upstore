@@ -568,7 +568,7 @@ function App({ title }) {
                       )}
                     </div>
 
-                    <div className={`${styles.donator} card mb-40`}>
+                    <div className={`${styles.donator} card mb-40`} hidden>
                       <div className={`card__header`}>Donotors</div>
                       <div className={`card__body`}>
                         <table className={`data-table`}>
