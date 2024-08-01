@@ -344,16 +344,55 @@ function App({ title }) {
       console.log(res)
       if (!res.status) return
 
-      let data = res
+      let dataApp = res
       await fetchIPFS(res.metadata).then(async (IPFSres) => {
-        data = Object.assign(data, IPFSres)
+        dataApp = Object.assign(dataApp, IPFSres)
 
         await auth.fetchProfile(res.manager).then((res) => {
-          data.managerInfo = res.LSP3Profile
+          dataApp.managerInfo = res.LSP3Profile
         })
 
-        setApp([data])
-        setIsLoading(false)
+        setApp([dataApp])
+     
+
+
+        getDonationList().then(async (res) => {
+          console.log(res)
+          if (res.length < 1) return
+
+          let data = res.filter(item => {
+            console.log(item.to , dataApp.manager)
+           return item.to=== dataApp.manager
+
+          })
+          let chartDataLocal = {
+            key: [],
+            value: [],
+          }
+    
+          // Fetch and concat the token name
+          const tokenResponses = await Promise.all(res.map(async (item) => await getToken(item.tokenId)))
+          tokenResponses.map(async (item, i) => {
+            if (item.addr !== `0x0000000000000000000000000000000000000000`) item.name = web3.utils.hexToUtf8(await getLSP7Data(item.addr))
+            data[i].tokenInfo = item
+          })
+    
+          // Fetch and concat the user profile
+          const responses = await Promise.all(res.map(async (item) => await auth.fetchProfile(item.donator)))
+          responses.map(async (item, i) => {
+            data[i].profile = item
+    
+            chartDataLocal.key[i] = item.LSP3Profile.name
+            chartDataLocal.value[i] = web3.utils.fromWei(data[i].amount, `ether`)
+          })
+    
+          setChartData(chartDataLocal)
+          setDonationList(data)
+          console.log(data)
+          setIsLoading(false)
+        })
+
+
       })
     })
 
@@ -377,37 +416,7 @@ function App({ title }) {
       setTokenList(data)
     })
 
-    getDonationList(auth.wallet).then(async (res) => {
-      console.log(res)
-      if (res.length < 1) return
 
-      let data = res
-      let chartDataLocal = {
-        key: [],
-        value: [],
-      }
-
-      // Fetch and concat the token name
-      const tokenResponses = await Promise.all(res.map(async (item) => await getToken(item.tokenId)))
-      tokenResponses.map(async (item, i) => {
-        if (item.addr !== `0x0000000000000000000000000000000000000000`) item.name = web3.utils.hexToUtf8(await getLSP7Data(item.addr))
-        data[i].tokenInfo = item
-      })
-
-      // Fetch and concat the user profile
-      const responses = await Promise.all(res.map(async (item) => await auth.fetchProfile(item.donator)))
-      responses.map(async (item, i) => {
-        data[i].profile = item
-
-        chartDataLocal.key[i] = item.LSP3Profile.name
-        chartDataLocal.value[i] = web3.utils.fromWei(data[i].amount, `ether`)
-      })
-
-      setChartData(chartDataLocal)
-      setDonationList(data)
-      console.log(data)
-      setIsLoading(false)
-    })
   }, [])
 
   return (
@@ -568,7 +577,7 @@ function App({ title }) {
                       )}
                     </div>
 
-                    <div className={`${styles.donator} card mb-40`} hidden>
+                    <div className={`${styles.donator} card mb-40`}>
                       <div className={`card__header`}>Donotors</div>
                       <div className={`card__body`}>
                         <table className={`data-table`}>
