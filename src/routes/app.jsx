@@ -3,10 +3,12 @@ import { useNavigate, defer, useParams } from 'react-router-dom'
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
+
 import Loading from './components/LoadingSpinner'
+
 import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
-import { useAuth, web3, _, contract } from '../contexts/AuthContext'
+import { useAuth, web3, contract, donationContract } from '../contexts/AuthContext'
 import styles from './App.module.scss'
 import PinkCheckmark from './../../src/assets/verified.svg'
 import GitHubMark from './../../src/assets/icon-github.svg'
@@ -14,13 +16,111 @@ import IconX from './../../src/assets/icon-x.svg'
 import IconCG from './../../src/assets/icon-cg.svg'
 import IconTelegram from './../../src/assets/icon-telegram.svg'
 import IconDiscord from './../../src/assets/icon-discord.svg'
+import ABI_DONATION_LUKSO from './../abi/donation_lukso.json'
 import Banner from './../../src/assets/banner.png'
+import LSP0ERC725Account from '@lukso/lsp-smart-contracts/artifacts/LSP0ERC725Account.json'
+import LSP7Mintable from '@lukso/lsp-smart-contracts/artifacts/LSP7Mintable.json'
 import Web3 from 'web3'
 import ABI from '../abi/upstore.json'
 import party from 'party-js'
 // import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
+import { Doughnut } from 'react-chartjs-2'
+const options = {
+  layout: {
+    padding: 10,
+  },
 
+  maintainAspectRatio: false,
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top',
+      labels: {
+        font: {
+          size: 13,
+          family: 'Vazir',
+        },
+      },
+    },
+  },
+}
+const getOrCreateLegendList = (chart, id) => {
+  const legendContainer = document.getElementById(id)
+  let listContainer = legendContainer.querySelector('ul')
+
+  if (!listContainer) {
+    listContainer = document.createElement('ul')
+    listContainer.style.display = 'flex'
+    listContainer.style.flexDirection = 'row'
+    listContainer.style.margin = 0
+    listContainer.style.padding = 0
+
+    legendContainer.appendChild(listContainer)
+  }
+
+  return listContainer
+}
+
+const htmlLegendPlugin = {
+  id: 'htmlLegend',
+  afterUpdate(chart, args, options) {
+    const ul = getOrCreateLegendList(chart, options.containerID)
+
+    // Remove old legend items
+    while (ul.firstChild) {
+      ul.firstChild.remove()
+    }
+
+    // Reuse the built-in legendItems generator
+    const items = chart.options.plugins.legend.labels.generateLabels(chart)
+
+    items.forEach((item) => {
+      const li = document.createElement('li')
+      li.style.alignItems = 'center'
+      li.style.cursor = 'pointer'
+      li.style.display = 'flex'
+      li.style.flexDirection = 'row'
+      li.style.marginLeft = '10px'
+
+      li.onclick = () => {
+        const { type } = chart.config
+        if (type === 'pie' || type === 'doughnut') {
+          // Pie and doughnut charts only have a single dataset and visibility is per item
+          chart.toggleDataVisibility(item.index)
+        } else {
+          chart.setDatasetVisibility(item.datasetIndex, !chart.isDatasetVisible(item.datasetIndex))
+        }
+        chart.update()
+      }
+
+      // Color box
+      const boxSpan = document.createElement('span')
+      boxSpan.style.background = item.fillStyle
+      boxSpan.style.borderColor = item.strokeStyle
+      boxSpan.style.borderWidth = item.lineWidth + 'px'
+      boxSpan.style.display = 'inline-block'
+      boxSpan.style.flexShrink = 0
+      boxSpan.style.height = '20px'
+      boxSpan.style.marginRight = '10px'
+      boxSpan.style.width = '20px'
+
+      // Text
+      const textContainer = document.createElement('p')
+      textContainer.style.color = item.fontColor
+      textContainer.style.margin = 0
+      textContainer.style.padding = 0
+      textContainer.style.textDecoration = item.hidden ? 'line-through' : ''
+
+      const text = document.createTextNode(item.text)
+      textContainer.appendChild(text)
+
+      li.appendChild(boxSpan)
+      li.appendChild(textContainer)
+      ul.appendChild(li)
+    })
+  },
+}
 export const loader = async ({ request, params }) => {
   if (params.appId.length !== `0x0000000000000000000000000000000000000000000000000000000000000000`.length) return false
   if (localStorage.getItem(`appSeen`) !== null) {
@@ -43,9 +143,14 @@ function App({ title }) {
   const [app, setApp] = useState([])
   const [manager, setManager] = useState()
   const [like, setLike] = useState(0)
+  const [tokenList, setTokenList] = useState()
+  const [donationList, setDonationList] = useState()
+  const [showApprove, setShowApprove] = useState(false)
+  const [chartData, setChartData] = useState([])
   const auth = useAuth()
   const navigate = useNavigate()
   const params = useParams()
+  const chartRef = useRef()
 
   const fetchIPFS = async (CID) => {
     try {
@@ -58,17 +163,125 @@ function App({ title }) {
       console.error(error)
     }
   }
-
-  const getApp = async () => {
-    let web3 = new Web3(import.meta.env.VITE_RPC_URL)
-    return await contract.methods.getApp(params.appId).call()
+  const getDonationList = async () => {
+    const web3 = new Web3(window.lukso)
+    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
+    return await donationContract1.methods.getDonationList().call()
+  }
+  const getTokenList = async () => {
+    const web3 = new Web3(window.lukso)
+    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
+    return await donationContract1.methods.getTokenList().call()
   }
 
-  const getLike = async () => {
-    let web3 = new Web3(import.meta.env.VITE_RPC_URL)
-    return await contract.methods.getLikeTotal(params.appId).call()
+  const getLSP7Data = async (tokenContract) => {
+    const web3 = new Web3(window.lukso)
+    const donationContract1 = new web3.eth.Contract(LSP7Mintable.abi, tokenContract)
+    return await donationContract1.methods.getData(`0xdeba1e292f8ba88238e10ab3c7f88bd4be4fac56cad5194b6ecceaf653468af1`).call()
   }
 
+  const handleDonate = async (to) => {
+    // if (!auth.wallet) {
+    //   toast.error(`Please connect wallet`)
+    //   return
+    // }
+
+    const t = toast.loading(`Waiting for transaction's confirmation`)
+
+    const web3 = new Web3(window.lukso)
+    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
+    let accounts = await web3.eth.getAccounts()
+    if (accounts.length === 0) await web3.eth.requestAccounts()
+    accounts = await web3.eth.getAccounts()
+
+    try {
+      donationContract1.methods
+        .donate(
+          `${to}`, // to
+          web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), //amount
+          true, //force
+          '0x', //data
+          document.querySelector(`[name="token"]`).value //tokenId
+        )
+        .send({ from: accounts[0], value: web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`) })
+        .then((res) => {
+          console.log(res)
+          toast.dismiss(t)
+
+          // Party
+          party.confetti(document.querySelector(`.party-holder`), {
+            count: party.variation.range(20, 40),
+            shapes: ['star', 'roundedSquare'],
+          })
+
+          window.location.reload()
+        })
+    } catch (error) {
+      console.error(error)
+      toast.dismiss(t)
+    }
+  }
+
+  const handleApprove = async () => {
+    // if (!auth.wallet) {
+    //   toast.error(`Please connect wallet`)
+    //   return
+    // }
+    const t = toast.loading(`Waiting for transaction's confirmation`)
+
+    const web3 = new Web3(window.lukso)
+    let accounts = await web3.eth.getAccounts()
+    if (accounts.length === 0) await web3.eth.requestAccounts()
+    accounts = await web3.eth.getAccounts()
+
+    console.log(tokenList.filter((item) => item.id === document.querySelector(`[name="token"]`).value)[0].addr)
+
+    const lsp7Contract = new web3.eth.Contract(LSP7Mintable.abi, `0x39F73B9C8D4E370fD9ff22C932eD58009680aff0`)
+
+    return await lsp7Contract.methods
+      .authorizeOperator(`${import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO}`, web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), '0x')
+      .send({ from: accounts[0], value: 0 })
+      .then(() => {
+        try {
+          const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
+          donationContract1.methods
+            .donate(
+              `0xc1A411B2F0332C86c90Af22f5367A0265bCB1Df9`, // to
+              web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), //amount
+              true, //force
+              '0x', //data
+              document.querySelector(`[name="token"]`).value //tokenId
+            )
+            .send({ from: accounts[0], value: 0 })
+            .then((res) => {
+              console.log(res)
+
+              // Party
+              party.confetti(document.querySelector(`.party-holder`), {
+                count: party.variation.range(20, 40),
+                shapes: ['star', 'roundedSquare'],
+              })
+
+              toast.dismiss(t)
+            })
+        } catch (error) {
+          console.error(error)
+          toast.dismiss(t)
+        }
+      })
+  }
+
+  const getRandomColor = () => {
+    var letters = '0123456789ABCDEF'
+    var color = '#'
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+    return `${color}`
+  }
+  const getApp = async () => await contract.methods.getApp(params.appId).call()
+  const getLike = async () => await contract.methods.getLikeTotal(params.appId).call()
+  const getToken = async (tokenId) => await donationContract.methods.token(tokenId).call()
   const handleLike = async () => {
     if (!auth.wallet) {
       toast.error(`Please connect wallet`)
@@ -77,9 +290,9 @@ function App({ title }) {
 
     const t = toast.loading(`Waiting for transaction's confirmation`)
 
-
-    console.log(auth.wallet)
     try {
+      web3.eth.defaultAccount = auth.wallet
+
       return await contract.methods
         .setLike(params.appId)
         .send({ from: auth.wallet })
@@ -104,27 +317,103 @@ function App({ title }) {
     }
   }
 
+  const converTimestamp = (unix_timestamp) => {
+    const date = new Date(unix_timestamp * 1000)
+    const fullYear = date.getFullYear() // prints the year (e.g. 2021)
+    const month = date.getMonth() // prints the month (0-11, where 0 = January)
+    const day = date.getDate() // prints the day of the month (1-31)
+    const hours = date.getHours() // prints the hour (0-23)
+    const minutes = date.getMinutes() // prints the minute (0-59)
+    const seconds = date.getSeconds() // prints the second (0-59)
+    const formattedTime = `${day}/${month}/${fullYear} ` + hours + ':' + minutes + ':' + seconds
+    return formattedTime
+  }
+
+  const decodeProfileImage = (data) => {
+    console.log(data)
+    let url
+    if (data.LSP3Profile.profileImage && data.LSP3Profile.profileImage.length > 0) {
+      if (data.LSP3Profile.profileImage[0].url.indexOf(`ipfs`) > -1) return `${import.meta.env.VITE_IPFS_GATEWAY}${data.LSP3Profile.profileImage[0].url.replace('ipfs://', '')}`
+      else return `${data.LSP3Profile.profileImage[0].url}`
+    } else url = DefaultProfile
+    return url
+  }
+
   useEffect(() => {
     getApp().then(async (res) => {
+      console.log(res)
       if (!res.status) return
-      const responses = Object.assign(await fetchIPFS(res.metadata), res)
-      setApp([responses])
-      setIsLoading(false)
-      auth.fetchProfile(responses.manager).then((res) => {
-        setManager(res.LSP3Profile)
-        console.log(res.LSP3Profile)
+
+      let data = res
+      await fetchIPFS(res.metadata).then(async (IPFSres) => {
+        data = Object.assign(data, IPFSres)
+
+        await auth.fetchProfile(res.manager).then((res) => {
+          data.managerInfo = res.LSP3Profile
+        })
+
+        setApp([data])
+        setIsLoading(false)
       })
     })
 
     getLike().then((res) => {
       setLike(web3.utils.toNumber(res))
     })
+
+    getTokenList().then((res) => {
+      console.log(res)
+      let data = res
+      res.map((item, i) => {
+        if (item.addr === '0x0000000000000000000000000000000000000000') {
+          data[i].name = `LYX`
+        } else {
+          getLSP7Data(item.addr).then((res) => {
+            console.log(web3.utils.hexToUtf8(res))
+            data[i].name = web3.utils.hexToUtf8(res)
+          })
+        }
+      })
+      setTokenList(data)
+    })
+
+    getDonationList(auth.wallet).then(async (res) => {
+      console.log(res)
+      if (res.length < 1) return
+
+      let data = res
+      let chartDataLocal = {
+        key: [],
+        value: [],
+      }
+
+      // Fetch and concat the token name
+      const tokenResponses = await Promise.all(res.map(async (item) => await getToken(item.tokenId)))
+      tokenResponses.map(async (item, i) => {
+        if (item.addr !== `0x0000000000000000000000000000000000000000`) item.name = web3.utils.hexToUtf8(await getLSP7Data(item.addr))
+        data[i].tokenInfo = item
+      })
+
+      // Fetch and concat the user profile
+      const responses = await Promise.all(res.map(async (item) => await auth.fetchProfile(item.donator)))
+      responses.map(async (item, i) => {
+        data[i].profile = item
+
+        chartDataLocal.key[i] = item.LSP3Profile.name
+        chartDataLocal.value[i] = web3.utils.fromWei(data[i].amount, `ether`)
+      })
+
+      setChartData(chartDataLocal)
+      setDonationList(data)
+      console.log(data)
+      setIsLoading(false)
+    })
   }, [])
 
   return (
     <>
       <section className={`${styles.section} s-motion-slideUpIn`}>
-        <div className={`__container`} data-width={`large`}>
+        <div className={`__container`} data-width={`medium`}>
           {isLoading && (
             <>
               {[1].map((item, i) => (
@@ -137,103 +426,88 @@ function App({ title }) {
 
           <div className={`ms-Grid`} dir="ltr">
             <div className={`ms-Grid-row`}>
-              <div className={`ms-Grid-col ms-sm12 ms-md4 ms-lg4`}>
-                {app &&
-                  app.length > 0 &&
-                  app.map((item, i) => (
-                    <div className={`${styles['card']} party-holder`} key={i}>
-                      <div
-                        style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
-                        className={`${styles['card__body']} d-flex flex-column align-items-center justify-content-center animate fade`}
-                        key={i}
-                      >
-                        <figure className={`${styles['logo']}`} title={item.category}>
-                          <img alt={item.name} src={item.logo} />
-                          <figcaption>
-                            {item.name}
-                            <img src={PinkCheckmark} />
-                          </figcaption>
-                        </figure>
-                        <div className={`mt-10`}>
-                          {app[0].tags &&
-                            app[0].tags.split(',').map((tag, i) => (
-                              <span key={i} className={`badge badge-danger badge-pill ml-10`}>
-                                {tag}
-                              </span>
-                            ))}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-
-                <div className={`${styles['card']} mt-10`}>
-                  <div className={`${styles['card__body']} animate fade`}>
-                    {app && app.length > 0 && app[0].tags && (
-                      <div className={`d-flex`}>
-                        <span>🔒</span>
-                        <span>{app[0].url}</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {app && app.length > 0 && app[0].repo && (
-                  <>
-                    <div className={`${styles['card']} ${styles['repo']} mt-10`}>
-                      <div className={`${styles['card__body']} animate fade`}>
-                        <div className={`d-flex flex-row align-items-center justify-content-start`}>
-                          <img src={GitHubMark} />
-                          <a href={`${app[0].repo}`} target={`_blank`}>
-                            <span className={`badge badge-dark badge-pill ml-10`}>{app[0].repo}</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                {app && app.length > 0 && manager && (
-                  <>
-                    <div className={`${styles['card']} ${styles['repo']} mt-10`}>
-                      <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
-                        <span>Owner</span>
-                        <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>
-                          View
-                        </a>
-                      </div>
-                      <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
-                        <figure className={`${styles['owner']}`}>
-                          <img alt={``} src={`https://ipfs.io/ipfs/${manager?.profileImage[0]?.url.replace('ipfs://', '').replace('://', '')}`} />
-                          <figcaption>@{manager?.name}</figcaption>
-                        </figure>
-                        <p title={app[0].manager}>{`${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                <div className={`${styles['card']} ${styles['repo']} mt-10`}>
-                  <div className={`${styles['card__body']} animate fade d-flex flex-column align-items-center`}>
-                    <figure className={`${styles['qr']}`}>
-                      <img src={`https://quickchart.io/qr?text=${window.location.href}&size=200&format=svg`} />
-                    </figure>
-                  </div>
-                </div>
-              </div>
-
-              <div className={`ms-Grid-col ms-sm12 ms-md8 ms-lg8`}>
+              <div className={`ms-Grid-col ms-sm12 ms-md12 ms-lg12`}>
                 {app && app.length > 0 && (
                   <>
-                    <div className={`${styles['card']}`}>
-                      <div className={`${styles['card__header']} d-flex flex-row align-items-center justify-content-between`}>
-                        <span>Description</span>
-                        <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
+                    <div className="grid grid--fit" style={{ '--data-width': `200px`, gap: `1rem` }}>
+                      <div className={`card`} style={{ height: `200px` }}>
+                        <div className={`card__body`} style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}>
+                          {app.map((item, i) => (
+                            <div className={`party-holder`} key={i}>
+                              <div
+                                style={{ backgroundColor: item.style && JSON.parse(item.style).backgroundColor }}
+                                className={`d-flex flex-column align-items-center justify-content-center animate fade`}
+                                key={i}
+                              >
+                                <figure className={`${styles['logo']}`} title={item.category}>
+                                  <img alt={item.name} src={item.logo} />
+                                  <figcaption>
+                                    {item.name}
+                                    <img src={PinkCheckmark} />
+                                  </figcaption>
+                                </figure>
+                                <p>
+                                  <span className={`badge badge-pill badge-warning`}>#{app[0].category}</span>
+                                </p>
+                                <div className={`mt-10`}>
+                                  {app[0].tags &&
+                                    app[0].tags.split(',').map((tag, i) => (
+                                      <span key={i} className={`badge badge-danger badge-pill ml-10`}>
+                                        {tag}
+                                      </span>
+                                    ))}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
                       </div>
 
-                      <div style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }} className={`${styles['card__body']} ${styles['description']}`}>
-                        {app[0].description}
+                      <div className={`card`}>
+                        <div className={`card__body animate fade d-flex flex-column align-items-center`}>
+                          <figure className={`${styles['owner']}`}>
+                            <img alt={``} src={`${import.meta.env.VITE_IPFS_GATEWAY}${app[0].managerInfo?.profileImage[0]?.url.replace('ipfs://', '').replace('://', '')}`} />
+                            <figcaption>@{app[0]?.name}</figcaption>
+                          </figure>
+                          <p title={app[0].manager}>{`${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
+                          <p>
+                            <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>
+                              View Owner
+                            </a>
+                          </p>
+                        </div>
                       </div>
                     </div>
+
+                    <div className={`card mt-10`}>
+                      <div className={`card__body animate fade`}>{app[0].description}</div>
+                    </div>
+
+                    <div className={`card mt-10`}>
+                      <div className={`card__body animate fade`}>
+                        {app && app.length > 0 && app[0].tags && (
+                          <div className={`d-flex`}>
+                            <span>🔒</span>
+                            <span>{app[0].url}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {app[0].repo && (
+                      <>
+                        <div className={`card ${styles['repo']} mt-10`}>
+                          <div className={`card__body animate fade`}>
+                            <div className={`d-flex flex-row align-items-center justify-content-start`}>
+                              <img src={GitHubMark} />
+                              <a href={`${app[0].repo}`} target={`_blank`}>
+                                <span className={`badge badge-dark badge-pill ml-10`}>{app[0].repo}</span>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
 
                     <div className={`${styles['button']} mt-20 mb-20 d-flex flex-row align-items-center justify-content-between`}>
                       <a href={`${app[0].url}`} target={`_blank`}>
@@ -294,21 +568,128 @@ function App({ title }) {
                       )}
                     </div>
 
-                    <div className={`${styles['card']}`}>
-                      <div className={`${styles['card__body']}`}>
-                        <p>App ID: {params.appId && `${params.appId.slice(0, 8)}...${params.appId.slice(60)}`}</p>
+                    <div className={`${styles.donator} card mb-40`}>
+                      <div className={`card__header`}>Donotors</div>
+                      <div className={`card__body`}>
+                        <table className={`data-table`}>
+                          <caption>Donators list</caption>
+                          <thead>
+                            <tr>
+                              <th scope="col" className={`text-left`}>
+                                Donotar
+                              </th>
+                              <th scope="col">Amount</th>
+                              <th scope="col">Token</th>
+                              <th scope="col">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {donationList &&
+                              donationList.length > 0 &&
+                              donationList.map((item, i) => {
+                                return (
+                                  <tr key={i} className={`text-center`}>
+                                    <td>
+                                      {item.profile && (
+                                        <figure
+                                          className={`${styles['pfp']} d-flex flex-row align-items-center`}
+                                          style={{ '--animate-duration': `.${i * 2}s` }}
+                                          title={`${item.profile.LSP3Profile.name}`}
+                                        >
+                                          <img alt={`${item.profile.LSP3Profile.name}`} src={decodeProfileImage(item.profile)} style={{ width: '48px', borderRadius: '999px' }} draggable="true" />
+                                        </figure>
+                                      )}
+                                    </td>
+                                    <td>{web3.utils.fromWei(web3.utils.toNumber(item.amount), `ether`)}</td>
+                                    <td>{item.tokenInfo.name ? `$${item.tokenInfo.name}` : `⏣LYX`}</td>
+                                    <td>{converTimestamp(web3.utils.toNumber(item.dt))}</td>
+                                  </tr>
+                                )
+                              })}
+                          </tbody>
+                        </table>
+
+                        {chartData && chartData.key && chartData.key.length > 0 && (
+                          <div style={{ height: '300px' }}>
+                            <Doughnut
+                              width={'30%'}
+                              options={options}
+                              plugins={htmlLegendPlugin}
+                              data={{
+                                labels: chartData.key,
+                                datasets: [
+                                  {
+                                    label: 'Amount:',
+                                    data: chartData.value,
+                                    backgroundColor: chartData.key.map(() => getRandomColor() + `45`),
+                                    borderColor: 'rgba(2,2,2,.25)',
+                                    borderWidth: 2,
+                                  },
+                                ],
+                              }}
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
 
-                    <p className={`${styles['like']} d-flex align-items-center`}>
-                      <span>Like this dapp?</span>
+                    <div className={`card mt-20 form`}>
+                      <div className={`card__header`}>Direct donation</div>
+                      <div className={`card__body d-flex flex-column`} style={{ rowGap: `.5rem` }}>
+                        <div className={`alert alert--info`}>
+                          A small 2% fee is applied to each donation to support the platform. Your generosity helps maintain this direct donation system and allows us to continue providing this
+                          service. Thank you for your support!
+                        </div>
+                        <div className={`flex-1 d-flex flex-column`}>
+                          <label htmlFor="token">Token</label>
+                          <select
+                            name="token"
+                            id="token"
+                            onChange={(e) => {
+                              if (e.target.value !== `0x0000000000000000000000000000000000000000000000000000000000000001`) {
+                                setShowApprove(true)
+                              } else {
+                                setShowApprove(false)
+                              }
+                            }}
+                          >
+                            {tokenList &&
+                              tokenList.length > 0 &&
+                              tokenList.map((item, i) => (
+                                <option key={i} value={item.id}>
+                                  ${item.name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+
+                        <div className={`flex-1 d-flex flex-column`}>
+                          <label htmlFor="amount">Amount</label>
+                          <input type="number" min={1} name="amount" id="" defaultValue={1} />
+                        </div>
+
+                        {!showApprove && (
+                          <button className="btn" onClick={() => handleDonate(app[0].manager)}>
+                            Donate
+                          </button>
+                        )}
+                        {showApprove && (
+                          <button className="btn" onClick={() => handleApprove()}>
+                            Approve
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className={`${styles['like']} d-flex align-items-center mt-40 mb-40`}>
+                      <span>Like this DApp?</span>
 
                       <button className={`${styles['btn-like']}`} onClick={() => handleLike()}>
                         <MaterialIcon name={`favorite`} />
                       </button>
 
                       <span>{like}</span>
-                    </p>
+                    </div>
                   </>
                 )}
               </div>

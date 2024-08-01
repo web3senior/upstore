@@ -13,7 +13,7 @@
     "@lukso/lsp-smart-contracts": "^0.14.0",
     "algoliasearch": "^4.22.1",
     "animate.css": "^4.1.1",
-    "chart.js": "^4.4.2",
+    "chart.js": "^4.4.3",
     "office-ui-fabric-core": "^11.1.0",
     "party-js": "^2.2.0",
     "react": "^18.2.0",

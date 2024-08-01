@@ -10,12 +10,12 @@ import Loading from './routes/components/LoadingSpinner'
 const Layout = lazy(() => import('./routes/layout.jsx'))
 const UserLayout = lazy(() => import('./routes/user-layout.jsx'))
 import SplashScreen from './routes/splashScreen.jsx'
-import Whitelist from './routes/whitelist.jsx'
 import New from './routes/new.jsx'
 import Home, { loader as homeLoader } from './routes/home.jsx'
 import App, { loader as appLoader } from './routes/app.jsx'
 import About from './routes/about.jsx'
-import Lyx from './routes/lyx.jsx'
+import Ecosystem from './routes/ecosystem.jsx'
+import Admin from './routes/admin.jsx'
 import LSP7 from './routes/lsp7.jsx'
 
 console.log(`%c🆙`, 'font-size:5rem')
@@ -47,16 +47,16 @@ const router = createBrowserRouter([
         element: <New title={`New`} />,
       },
       {
+        path: 'admin',
+        element: <Admin title={`Admin`} />,
+      },
+      {
         path: 'about',
         element: <About title={`About`} />,
       },
       {
-        path: 'whitelist',
-        element: <Whitelist title={`Whitelist`} />,
-      },
-      {
-        path: 'lyx',
-        element: <Lyx title={`LYX`} />,
+        path: 'ecosystem',
+        element: <Ecosystem title={`Ecosystem`} />,
       },
       {
         path: 'tools/lsp7',

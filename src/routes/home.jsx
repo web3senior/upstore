@@ -4,7 +4,7 @@ import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
 import toast, { Toaster } from 'react-hot-toast'
-import { useAuth, web3, _,contract } from './../contexts/AuthContext'
+import { useAuth, web3,contract } from './../contexts/AuthContext'
 import Logo from './../../src/assets/logo.svg'
 import Web3 from 'web3'
 import ABI from './../abi/upstore.json'
@@ -38,8 +38,6 @@ export const data = {
 
 party.resolvableShapes['UP'] = `<img src="http://localhost:5173/src/assets/up-logo.svg"/>`
 party.resolvableShapes['Lukso'] = `<img src="http://localhost:5173/src/assets/lukso-logo.svg"/>`
-
-const WhitelistFactoryAddr = web3.utils.padLeft(`0x2`, 64)
 
 export const loader = async () => {
   return defer({ key: 'val' })
@@ -160,11 +158,7 @@ function Home({ title }) {
     return false
   }
 
-  const getAppList = async () => {
-    let web3 = new Web3(`${import.meta.env.VITE_RPC_URL}`)
-    web3.eth.defaultAccount = auth.wallet
-    return await contract.methods.getAppList().call()
-  }
+  const getAppList = async () =>  await contract.methods.getAppList().call()
 
   const getLike = async (appId) => {
     let web3 = new Web3(import.meta.env.VITE_RPC_URL)
@@ -180,9 +174,8 @@ function Home({ title }) {
     })
   }
 
-  const getRecentApp = async () => {
-    return await JSON.parse(localStorage.getItem(`appSeen`))
-  }
+  const getRecentApp = async () =>  await JSON.parse(localStorage.getItem(`appSeen`))
+  
 
   useEffect(() => {
     getAppList().then(async (res) => {

@@ -1,12 +1,6 @@
 [
 	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "url",
-				"type": "string"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -169,12 +163,12 @@
 	},
 	{
 		"inputs": [],
-		"name": "URL",
+		"name": "_appCounter",
 		"outputs": [
 			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
+				"internalType": "uint256",
+				"name": "_value",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -244,19 +238,6 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
-		"name": "count",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "bytes32",
@@ -318,7 +299,7 @@
 						"type": "bool"
 					}
 				],
-				"internalType": "struct UpStore.AppStruct",
+				"internalType": "struct Upstore.AppStruct",
 				"name": "",
 				"type": "tuple"
 			}
@@ -358,7 +339,7 @@
 						"type": "bool"
 					}
 				],
-				"internalType": "struct UpStore.AppStruct[]",
+				"internalType": "struct Upstore.AppStruct[]",
 				"name": "",
 				"type": "tuple[]"
 			},
@@ -597,19 +578,6 @@
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "newUrl",
-				"type": "string"
-			}
-		],
-		"name": "setURL",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
 				"internalType": "bytes32",
 				"name": "appId",
 				"type": "bytes32"
@@ -753,7 +721,7 @@
 						"type": "bool"
 					}
 				],
-				"internalType": "struct UpStore.AppStruct",
+				"internalType": "struct Upstore.AppStruct",
 				"name": "",
 				"type": "tuple"
 			}

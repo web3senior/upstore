@@ -1,0 +1,55 @@
+.section {
+  background-color: var(--white);
+
+  .page-hero {
+    background-color: var(--global-background-color);
+    padding: 4rem 1rem;
+    margin-bottom: 2rem;
+
+    h2 {
+      font: 600 calc(1rem + 1vw) 'Libre Franklin';
+    }
+
+    p {
+      text-wrap: balance;
+      line-height: 1.2rem;
+      font: 400 calc(.6rem + .5vw) 'Libre Franklin';
+    }
+  }
+
+  article {
+    margin-top: 2rem;
+
+    h3 {
+      margin: 1rem 0;
+    }
+
+    p {
+      color: #64748b;
+      line-height: 1.8rem;
+    }
+  }
+}
+
+.container {
+  padding: 0 1rem;
+}
+
+.card {
+  border:1px solid var(--black-025);
+  background-color: var(--global-background-color);
+
+  &__body {
+    padding: 1rem;
+
+    h1 {
+      margin: 0 0 1rem 0;
+    }
+    
+    p {
+      color: #64748b;
+      line-height: 1.4rem;
+      text-wrap: balance;
+    }
+  }
+}

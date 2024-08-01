@@ -16,13 +16,13 @@ $r: 60px;
     text-align: center;
 
     &:before {
+      content: '▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓'+ ' 100%';
+      color: var(--color-primary);
+      opacity: 0.6;
       animation-name: spinner;
       animation-duration: 1.8s;
       animation-iteration-count: infinite;
       animation-timing-function: linear;
-      content: '▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓'+ ' 100%';
-      color: var(--color-primary);
-      opacity: 0.6;
     }
   }
 }
