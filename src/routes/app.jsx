@@ -3,9 +3,7 @@ import { useNavigate, defer, useParams } from 'react-router-dom'
 import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
-
 import Loading from './components/LoadingSpinner'
-
 import { CheckIcon, ChromeIcon, BraveIcon } from './components/icons'
 import toast, { Toaster } from 'react-hot-toast'
 import { useAuth, web3, contract, donationContract } from '../contexts/AuthContext'
@@ -26,6 +24,7 @@ import party from 'party-js'
 // import { getApp } from './../util/api'
 import DappDefaultIcon from './../assets/dapp-default-icon.svg'
 import { Doughnut } from 'react-chartjs-2'
+
 const options = {
   layout: {
     padding: 10,
@@ -45,6 +44,7 @@ const options = {
     },
   },
 }
+
 const getOrCreateLegendList = (chart, id) => {
   const legendContainer = document.getElementById(id)
   let listContainer = legendContainer.querySelector('ul')
@@ -121,6 +121,7 @@ const htmlLegendPlugin = {
     })
   },
 }
+
 export const loader = async ({ request, params }) => {
   if (params.appId.length !== `0x0000000000000000000000000000000000000000000000000000000000000000`.length) return false
   if (localStorage.getItem(`appSeen`) !== null) {
@@ -163,24 +164,32 @@ function App({ title }) {
       console.error(error)
     }
   }
-  const getDonationList = async () => {
-    const web3 = new Web3(window.lukso)
-    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
-    return await donationContract1.methods.getDonationList().call()
-  }
-  const getTokenList = async () => {
-    const web3 = new Web3(window.lukso)
-    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
-    return await donationContract1.methods.getTokenList().call()
-  }
 
   const getLSP7Data = async (tokenContract) => {
     const web3 = new Web3(window.lukso)
-    const donationContract1 = new web3.eth.Contract(LSP7Mintable.abi, tokenContract)
-    return await donationContract1.methods.getData(`0xdeba1e292f8ba88238e10ab3c7f88bd4be4fac56cad5194b6ecceaf653468af1`).call()
+    const myContract = new web3.eth.Contract(LSP7Mintable.abi, tokenContract)
+    return await myContract.methods.getData(`0xdeba1e292f8ba88238e10ab3c7f88bd4be4fac56cad5194b6ecceaf653468af1`).call()
   }
 
-  const handleDonate = async (to) => {
+  const getDonationByAppId = async (appId) => await donationContract.methods.getDonationByAppId(`${appId}`).call()
+
+  const getDonatedEvent = async () => {
+    return await donationContract.getPastEvents(
+      'Donated',
+      {
+        filter: { _appId: params.appId },
+        fromBlock: 0,
+        toBlock: 'latest',
+      },
+      function (error, events) {
+        console.log(events)
+      }
+    )
+  }
+
+  const getTokenList = async () => await donationContract.methods.getTokenList().call()
+
+  const handleDonate = async (app) => {
     // if (!auth.wallet) {
     //   toast.error(`Please connect wallet`)
     //   return
@@ -189,15 +198,15 @@ function App({ title }) {
     const t = toast.loading(`Waiting for transaction's confirmation`)
 
     const web3 = new Web3(window.lukso)
-    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
     let accounts = await web3.eth.getAccounts()
     if (accounts.length === 0) await web3.eth.requestAccounts()
     accounts = await web3.eth.getAccounts()
-
+    console.log(app)
     try {
-      donationContract1.methods
+      donationContract.methods
         .donate(
-          `${to}`, // to
+          `${app.id}`, // appId
+          `${app.manager}`, // to
           web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), //amount
           true, //force
           '0x', //data
@@ -317,7 +326,7 @@ function App({ title }) {
     }
   }
 
-  const converTimestamp = (unix_timestamp) => {
+  const converTimestamp =async  (unix_timestamp) => {
     const date = new Date(unix_timestamp * 1000)
     const fullYear = date.getFullYear() // prints the year (e.g. 2021)
     const month = date.getMonth() // prints the month (0-11, where 0 = January)
@@ -340,6 +349,9 @@ function App({ title }) {
   }
 
   useEffect(() => {
+    // getBlockTimeStamp(`0x4c8bf4d7592301ef42645b57034652cd89b87fca88a72828dba89a518fcb4754`).then(console.log)
+
+    // return
     getApp().then(async (res) => {
       console.log(res)
       if (!res.status) return
@@ -353,46 +365,39 @@ function App({ title }) {
         })
 
         setApp([dataApp])
-     
 
+        getDonatedEvent().then(async (events) => {
+           console.log(events)
+          // return
+          if (events.length === 0) return
 
-        getDonationList().then(async (res) => {
-          console.log(res)
-          if (res.length < 1) return
-
-          let data = res.filter(item => {
-            console.log(item.to , dataApp.manager)
-           return item.to=== dataApp.manager
-
-          })
+          let data = events
           let chartDataLocal = {
             key: [],
             value: [],
           }
-    
+
           // Fetch and concat the token name
-          const tokenResponses = await Promise.all(res.map(async (item) => await getToken(item.tokenId)))
+          const tokenResponses = await Promise.all(events.map(async (event) => await getToken(event.returnValues._tokenId)))
           tokenResponses.map(async (item, i) => {
             if (item.addr !== `0x0000000000000000000000000000000000000000`) item.name = web3.utils.hexToUtf8(await getLSP7Data(item.addr))
             data[i].tokenInfo = item
           })
-    
+
           // Fetch and concat the user profile
-          const responses = await Promise.all(res.map(async (item) => await auth.fetchProfile(item.donator)))
+          const responses = await Promise.all(events.map(async (event) => await auth.fetchProfile(event.returnValues._from)))
           responses.map(async (item, i) => {
             data[i].profile = item
-    
+
             chartDataLocal.key[i] = item.LSP3Profile.name
-            chartDataLocal.value[i] = web3.utils.fromWei(data[i].amount, `ether`)
+            chartDataLocal.value[i] = web3.utils.fromWei(data[i].returnValues._amount, `ether`)
           })
-    
+
           setChartData(chartDataLocal)
           setDonationList(data)
           console.log(data)
           setIsLoading(false)
         })
-
-
       })
     })
 
@@ -415,8 +420,6 @@ function App({ title }) {
       })
       setTokenList(data)
     })
-
-
   }, [])
 
   return (
@@ -439,7 +442,7 @@ function App({ title }) {
                 {app && app.length > 0 && (
                   <>
                     <div className="grid grid--fit" style={{ '--data-width': `200px`, gap: `1rem` }}>
-                      <div className={`card`} style={{ height: `200px` }}>
+                      <div className={`card`} style={{ height: `220px` }}>
                         <div className={`card__body`} style={{ backgroundColor: app[0].style && JSON.parse(app[0].style).backgroundColor }}>
                           {app.map((item, i) => (
                             <div className={`party-holder`} key={i}>
@@ -476,11 +479,12 @@ function App({ title }) {
                         <div className={`card__body animate fade d-flex flex-column align-items-center`}>
                           <figure className={`${styles['owner']}`}>
                             <img alt={``} src={`${import.meta.env.VITE_IPFS_GATEWAY}${app[0].managerInfo?.profileImage[0]?.url.replace('ipfs://', '').replace('://', '')}`} />
-                            <figcaption>@{app[0]?.name}</figcaption>
+                            <figcaption className={`text-center`}>
+                              <b>@{app[0]?.managerInfo?.name}</b>
+                            </figcaption>
                           </figure>
-                          <p title={app[0].manager}>{`${app[0].manager.slice(0, 6)}...${app[0].manager.slice(38)}`}</p>
                           <p>
-                            <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=UPStore&network=mainnet`}>
+                            <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${app[0].manager}?referrer=${import.meta.env.VITE_NAME}&network=MAINNET`}>
                               View Owner
                             </a>
                           </p>
@@ -585,11 +589,9 @@ function App({ title }) {
                           <thead>
                             <tr>
                               <th scope="col" className={`text-left`}>
-                                Donotar
+                                Donator
                               </th>
                               <th scope="col">Amount</th>
-                              <th scope="col">Token</th>
-                              <th scope="col">Date</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -599,19 +601,22 @@ function App({ title }) {
                                 return (
                                   <tr key={i} className={`text-center`}>
                                     <td>
-                                      {item.profile && (
-                                        <figure
-                                          className={`${styles['pfp']} d-flex flex-row align-items-center`}
-                                          style={{ '--animate-duration': `.${i * 2}s` }}
-                                          title={`${item.profile.LSP3Profile.name}`}
-                                        >
-                                          <img alt={`${item.profile.LSP3Profile.name}`} src={decodeProfileImage(item.profile)} style={{ width: '48px', borderRadius: '999px' }} draggable="true" />
-                                        </figure>
-                                      )}
+                                      <a target={`_blank`} href={`https://wallet.universalprofile.cloud/${item.donator}?referrer=${import.meta.env.VITE_NAME}&network=MAINNET`}>
+                                        {item.profile && (
+                                          <figure
+                                            className={`${styles['pfp']} d-flex flex-row align-items-center`}
+                                            style={{ '--animate-duration': `.${i * 2}s` }}
+                                            title={`${item.profile.LSP3Profile.name}`}
+                                          >
+                                            <img alt={`${item.profile.LSP3Profile.name}`} src={decodeProfileImage(item.profile)} style={{ width: '48px', borderRadius: '999px' }} draggable="true" />
+                                          </figure>
+                                        )}
+                                      </a>
                                     </td>
-                                    <td>{web3.utils.fromWei(web3.utils.toNumber(item.amount), `ether`)}</td>
-                                    <td>{item.tokenInfo.name ? `$${item.tokenInfo.name}` : `⏣LYX`}</td>
-                                    <td>{converTimestamp(web3.utils.toNumber(item.dt))}</td>
+                                    <td>
+                                      {web3.utils.fromWei(web3.utils.toNumber(item.returnValues._amount), `ether`)} &nbsp;
+                                      {item.tokenInfo.name ? `$${item.tokenInfo.name}` : `⏣LYX`}
+                                    </td>
                                   </tr>
                                 )
                               })}
@@ -678,7 +683,7 @@ function App({ title }) {
                         </div>
 
                         {!showApprove && (
-                          <button className="btn" onClick={() => handleDonate(app[0].manager)}>
+                          <button className="btn" onClick={() => handleDonate(app[0])}>
                             Donate
                           </button>
                         )}

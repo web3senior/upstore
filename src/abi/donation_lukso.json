@@ -40,6 +40,11 @@
 	{
 		"inputs": [
 			{
+				"internalType": "bytes32",
+				"name": "_appId",
+				"type": "bytes32"
+			},
+			{
 				"internalType": "address",
 				"name": "_to",
 				"type": "address"
@@ -144,6 +149,43 @@
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "_tokenId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "_appId",
+				"type": "bytes32"
+			}
+		],
+		"name": "Donated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
 				"indexed": true,
 				"internalType": "address",
 				"name": "previousOwner",
@@ -217,6 +259,25 @@
 			{
 				"indexed": true,
 				"internalType": "bytes32",
+				"name": "_tokenId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "TokenRemoved",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
 				"name": "id",
 				"type": "bytes32"
 			},
@@ -234,6 +295,39 @@
 			}
 		],
 		"name": "TokenUpdated",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "unpause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "Unpaused",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint8",
+				"name": "fee",
+				"type": "uint8"
+			}
+		],
+		"name": "feeUpdated",
 		"type": "event"
 	},
 	{
@@ -255,63 +349,6 @@
 		"type": "function"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_from",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "_to",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "bytes32",
-				"name": "_tokenId",
-				"type": "bytes32"
-			}
-		],
-		"name": "Transfered",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "account",
-				"type": "address"
-			}
-		],
-		"name": "Unpaused",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint8",
-				"name": "",
-				"type": "uint8"
-			}
-		],
-		"name": "feeUpdated",
-		"type": "event"
-	},
-	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -320,13 +357,6 @@
 			}
 		],
 		"name": "transferOwnership",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "unpause",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -457,6 +487,11 @@
 				"type": "bytes32"
 			},
 			{
+				"internalType": "bytes32",
+				"name": "appId",
+				"type": "bytes32"
+			},
+			{
 				"internalType": "uint256",
 				"name": "amount",
 				"type": "uint256"
@@ -511,6 +546,11 @@
 						"type": "bytes32"
 					},
 					{
+						"internalType": "bytes32",
+						"name": "appId",
+						"type": "bytes32"
+					},
+					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -526,7 +566,58 @@
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Donation.DonationStruct[]",
+				"internalType": "struct DirectDonation.DonationStruct[]",
+				"name": "list",
+				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_appId",
+				"type": "bytes32"
+			}
+		],
+		"name": "getDonationByAppId",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "donator",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "tokenId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "appId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "dt",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct DirectDonation.DonationStruct[]",
 				"name": "list",
 				"type": "tuple[]"
 			}
@@ -557,6 +648,11 @@
 						"type": "bytes32"
 					},
 					{
+						"internalType": "bytes32",
+						"name": "appId",
+						"type": "bytes32"
+					},
+					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -572,7 +668,7 @@
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Donation.DonationStruct[]",
+				"internalType": "struct DirectDonation.DonationStruct[]",
 				"name": "list",
 				"type": "tuple[]"
 			}
@@ -597,6 +693,11 @@
 						"type": "bytes32"
 					},
 					{
+						"internalType": "bytes32",
+						"name": "appId",
+						"type": "bytes32"
+					},
+					{
 						"internalType": "uint256",
 						"name": "amount",
 						"type": "uint256"
@@ -612,7 +713,7 @@
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Donation.DonationStruct[]",
+				"internalType": "struct DirectDonation.DonationStruct[]",
 				"name": "list",
 				"type": "tuple[]"
 			}
@@ -648,7 +749,7 @@
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Donation.TokenStruct[]",
+				"internalType": "struct DirectDonation.TokenStruct[]",
 				"name": "list",
 				"type": "tuple[]"
 			}
@@ -683,7 +784,7 @@
 						"type": "uint256"
 					}
 				],
-				"internalType": "struct Donation.TokenExportStruct[]",
+				"internalType": "struct DirectDonation.TokenExportStruct[]",
 				"name": "list",
 				"type": "tuple[]"
 			}

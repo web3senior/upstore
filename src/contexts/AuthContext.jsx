@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 // import { user } from '../util/api'
 // import { ERC725 } from '@erc725/erc725.js'
-import LSP0ERC725Account from '@lukso/lsp-smart-contracts/artifacts/LSP0ERC725Account.json';
+import LSP0ERC725Account from '@lukso/lsp-smart-contracts/artifacts/LSP0ERC725Account.json'
 import ABI_LUKSO from './../abi/upstore.json'
 import ABI_ARBITRUM from './../abi/upstore_arbitrum.json'
 import ABI_DONATION from './../abi/donation_lukso.json'
@@ -11,7 +11,7 @@ import ABI_DONATION from './../abi/donation_lukso.json'
 import toast, { Toaster } from 'react-hot-toast'
 import Web3 from 'web3'
 
-export const PROVIDER = window.lukso ||import.meta.env.VITE_RPC_URL || window.ethereum
+export const PROVIDER = window.lukso || import.meta.env.VITE_LUKSO_PROVIDER || window.ethereum
 export const web3 = new Web3(PROVIDER)
 export const contract = new web3.eth.Contract(ABI_LUKSO, import.meta.env.VITE_UPSTORE_CONTRACT_MAINNET_LUKSO)
 export const donationContract = new web3.eth.Contract(ABI_DONATION, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
@@ -96,9 +96,9 @@ export const isWalletConnected = async () => {
 export const isUPinstalled = () => PROVIDER && PROVIDER.isUniversalProfileExtension
 
 export function AuthProvider({ children }) {
+  const [isLoading, setIsLoading] = useState(true)
   const [wallet, setWallet] = useState(null)
   const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -129,17 +129,14 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    console.log(`Contract`, import.meta.env.VITE_DFORM_CONTRACT_MAINNET)
-    setLoading(true)
     isWalletConnected().then((addr) => {
       if (addr !== undefined) {
-        console.log(addr)
         setWallet(addr)
         localStorage.setItem(`wallet_addr`, addr)
-        setLoading(false)
-        //fetchProfile(addr).then((res) => setProfile(res))
+        setIsLoading(false)
+        // fetchProfile(addr).then((res) => setProfile(res))
       }
-      setLoading(false)
+      setIsLoading(false)
     })
 
     if (!localStorage.getItem(`defaultChain`)) localStorage.setItem(`defaultChain`, 'Ethereum')
@@ -157,7 +154,7 @@ export function AuthProvider({ children }) {
     logout,
   }
 
-  if (loading) return <small>Loading in Auth Context...</small>
+  if (isLoading) return <small>Loading in Auth Context...</small>
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

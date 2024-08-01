@@ -71,8 +71,6 @@ export default function Root() {
 
   useEffect(() => {}, [])
 
-  return <>🚨 Get ready! The Upstore website is launching today! 🚀</>
-
   return (
     <>
       <Toaster />
