@@ -231,7 +231,7 @@ function App({ title }) {
     }
   }
 
-  const handleApprove = async () => {
+  const handleApprove = async (app) => {
     // if (!auth.wallet) {
     //   toast.error(`Please connect wallet`)
     //   return
@@ -243,9 +243,9 @@ function App({ title }) {
     if (accounts.length === 0) await web3.eth.requestAccounts()
     accounts = await web3.eth.getAccounts()
 
-    console.log(tokenList.filter((item) => item.id === document.querySelector(`[name="token"]`).value)[0].addr)
+    let lsp7Token = tokenList.filter((item) => item.id === document.querySelector(`[name="token"]`).value)[0].addr
 
-    const lsp7Contract = new web3.eth.Contract(LSP7Mintable.abi, `0x39F73B9C8D4E370fD9ff22C932eD58009680aff0`)
+    const lsp7Contract = new web3.eth.Contract(LSP7Mintable.abi, `${lsp7Token}`)
 
     return await lsp7Contract.methods
       .authorizeOperator(`${import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO}`, web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), '0x')
@@ -255,7 +255,8 @@ function App({ title }) {
           const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_MAINNET_LUKSO)
           donationContract1.methods
             .donate(
-              `0xc1A411B2F0332C86c90Af22f5367A0265bCB1Df9`, // to
+              `${app.id}`, // appId
+              `${app.manager}`, // to
               web3.utils.toWei(document.querySelector(`[name="amount"]`).value, `ether`), //amount
               true, //force
               '0x', //data
@@ -326,7 +327,7 @@ function App({ title }) {
     }
   }
 
-  const converTimestamp =async  (unix_timestamp) => {
+  const converTimestamp = async (unix_timestamp) => {
     const date = new Date(unix_timestamp * 1000)
     const fullYear = date.getFullYear() // prints the year (e.g. 2021)
     const month = date.getMonth() // prints the month (0-11, where 0 = January)
@@ -355,22 +356,20 @@ function App({ title }) {
     getApp().then(async (res) => {
       let dataApp = res
       await fetchIPFS(res.metadata).then(async (IPFSres) => {
-
         if (!res.status) return
         dataApp = Object.assign(dataApp, IPFSres)
 
-       try {
-        await auth.fetchProfile(res.manager).then((res) => {
-          dataApp.managerInfo = res?.LSP3Profile
-        })
-       } catch (error) {
-        console.log(error)
-       }
-   
+        try {
+          await auth.fetchProfile(res.manager).then((res) => {
+            dataApp.managerInfo = res?.LSP3Profile
+          })
+        } catch (error) {
+          console.log(error)
+        }
+
         setApp([dataApp])
-  
+
         getDonatedEvent().then(async (events) => {
-         
           if (events.length === 0) return
 
           let data = events
@@ -690,7 +689,7 @@ function App({ title }) {
                           </button>
                         )}
                         {showApprove && (
-                          <button className="btn" onClick={() => handleApprove()}>
+                          <button className="btn" onClick={() => handleApprove(app[0])}>
                             Approve
                           </button>
                         )}
