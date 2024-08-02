@@ -4,7 +4,7 @@ import { Title } from './helper/DocumentTitle'
 import MaterialIcon from './helper/MaterialIcon'
 import Shimmer from './helper/Shimmer'
 import toast, { Toaster } from 'react-hot-toast'
-import { useAuth, web3,  contract, donationContract } from '../contexts/AuthContext'
+import { useAuth, web3, contract, donationContract } from '../contexts/AuthContext'
 import ABI_DONATION_LUKSO from './../abi/donation_lukso.json'
 import party from 'party-js'
 import styles from './Home.module.scss'
@@ -140,14 +140,13 @@ function Admin({ title }) {
     const t = toast.loading(`Waiting for transaction's confirmation`)
     const web3 = new Web3(window.lukso)
 
-    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_TESTNET_LUKSO)
     let accounts = await web3.eth.getAccounts()
     if (accounts.length === 0) await web3.eth.requestAccounts()
     accounts = await web3.eth.getAccounts()
 
     console.log(document.querySelector(`[name="token"]`).value)
     try {
-      donationContract1.methods
+      donationContract.methods
         .addToken(document.querySelector(`[name="token"]`).value)
         .send({ from: accounts[0], value: 0 })
         .then((res) => {
@@ -170,13 +169,12 @@ function Admin({ title }) {
     const t = toast.loading(`Waiting for transaction's confirmation`)
     const web3 = new Web3(window.lukso)
 
-    const donationContract1 = new web3.eth.Contract(ABI_DONATION_LUKSO, import.meta.env.VITE_DONATION_CONTRACT_TESTNET_LUKSO)
     let accounts = await web3.eth.getAccounts()
     if (accounts.length === 0) await web3.eth.requestAccounts()
     accounts = await web3.eth.getAccounts()
 
     try {
-      donationContract1.methods
+      donationContract.methods
         .deleteToken(document.querySelector(`[name="token"]`).value)
         .send({ from: accounts[0], value: 0 })
         .then((res) => {
