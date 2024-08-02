@@ -353,22 +353,24 @@ function App({ title }) {
 
     // return
     getApp().then(async (res) => {
-      console.log(res)
-      if (!res.status) return
-
       let dataApp = res
       await fetchIPFS(res.metadata).then(async (IPFSres) => {
+
+        if (!res.status) return
         dataApp = Object.assign(dataApp, IPFSres)
 
+       try {
         await auth.fetchProfile(res.manager).then((res) => {
-          dataApp.managerInfo = res.LSP3Profile
+          dataApp.managerInfo = res?.LSP3Profile
         })
-
+       } catch (error) {
+        console.log(error)
+       }
+   
         setApp([dataApp])
-
+  
         getDonatedEvent().then(async (events) => {
-           console.log(events)
-          // return
+         
           if (events.length === 0) return
 
           let data = events

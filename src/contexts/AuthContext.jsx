@@ -45,13 +45,13 @@ export const getIPFS = async (CID) => {
  */
 
 export const fetchProfile = async (addr) => {
-  //console.log(addr)
-  var contract = new web3.eth.Contract(LSP0ERC725Account.abi, addr)
   try {
+    const contract = new web3.eth.Contract(LSP0ERC725Account.abi, addr)
     return contract.methods
       .getData('0x5ef83ad9559033e6e941db7d7c495acdce616347d28e90c7ce47cbfcfcad3bc5')
       .call()
       .then(async (data) => {
+
         data = data.substring(6, data.length)
         // console.log(data)
         //  data ="0x" + data.substring(6)
@@ -77,7 +77,7 @@ export const fetchProfile = async (addr) => {
       })
   } catch (error) {
     console.log(error)
-    return []
+    return error
   }
 }
 
