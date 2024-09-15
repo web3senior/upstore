@@ -426,7 +426,7 @@ function App({ title }) {
   return (
     <>
       <section className={`${styles.section} s-motion-slideUpIn`}>
-        <div className={`__container`} data-width={`medium`}>
+        <div className={`__container`} data-width={`large`}>
           {isLoading && (
             <>
               {[1].map((item, i) => (
