@@ -19,9 +19,9 @@ https://youtu.be/ILmirZXwNyc
 
 ## Overview
 
-Traditional app stores, like Apple's App Store or Google Play, are controlled by a single entity. This means they have the power to decide what apps get listed, and can even remove them if they violate their guidelines.
-
-Decentralized app stores (dapp stores) are different. They are built on blockchain technology, which distributes control among a network of computers. This means that there is no single authority that can decide what gets listed in a dapp store.
+UP Store & UP Store Shield: A Decentralized App Store on Multichain
+Overview
+UP Store & UP Store Shield is a decentralized application store (dapp store) platform designed for a multichain environment. It offers users a more secure, censorship-resistant, and user-controlled environment to discover and interact with dapps across various blockchain networks.
 
 ### Benefits of dapp stores
 
@@ -38,19 +38,19 @@ Decentralized app stores (dapp stores) are different. They are built on blockcha
 - Only the owner of the contract which is a member of Lusko community or from Lukso team, can change the dapp status
 - Owner and only the manager of the dapp can update the dapp metadata and the new manager
 
-### Motiviation
-
-> On LUKSO, users currently get a free monthly quota of 20.000.000 GAS when creating a Universal Profile through the Universal Profile Browser Extension[1].
-
 ### Features
 
 - UP Store:
   - Searchable dapps on LUKSO network.
+  - Users can easily find and explore dapps across multiple blockchain networks.
+  - The platform supports the growth of innovative dapps on various blockchains
 - UP Store Shield:
-  - An browser extension to show the VC on the dapp or in a popup.
+  - A browser extension that provides verification and security information about dapps, regardless of the underlying blockchain.
 - Security:
   - Access control ensures only authorized manager can manage the whitelist.
   - Re-entrancy attacks are prevented using standard security practices.
+- Direct donation mechanism:
+  - Users can directly donate to and support their favorite dapps, regardless of the blockchain they are on.
 
 ### Getting Started
 
