@@ -1,14 +1,14 @@
 # 🛍️ UP Store & UP Store Shield
 ---
 
-![Author Badge](assets/badge-author.svg "Aratta")
-<a href="//arbitrum.io">![Arbitrum Badge](assets/badge-arb.svg "Lukso")</a>
-<a href="//lukso.network">![Lukso Badge](assets/badge-lukso.svg "Lukso")</a>
-![Solidity Badge](assets/badge-solidity.svg "Solidity")
-<a href="/test">![Test Badge](assets/badge-test.svg "Test")</a>
-![HardHat Badge](assets/badge-hardhat.svg "HardHat")
-![Prettier Badge](assets/badge-prettier.svg "HardHat")
-<a href="//twitter.com/atenyun">![X Badge](assets/badge-x.svg "HardHat")</a>
+![Author Badge](src/assets/badge-author.svg "Aratta")
+<a href="//arbitrum.io">![Arbitrum Badge](src/assets/badge-arb.svg "Lukso")</a>
+<a href="//lukso.network">![Lukso Badge](src/assets/badge-lukso.svg "Lukso")</a>
+![Solidity Badge](src/assets/badge-solidity.svg "Solidity")
+<a href="/test">![Test Badge](src/assets/badge-test.svg "Test")</a>
+![HardHat Badge](src/assets/badge-hardhat.svg "HardHat")
+![Prettier Badge](src/assets/badge-prettier.svg "HardHat")
+<a href="//twitter.com/atenyun">![X Badge](src/assets/badge-x.svg "HardHat")</a>
 
 ## Demo
 
