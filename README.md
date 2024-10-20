@@ -102,3 +102,21 @@ Upload to IPFS => https://solidgrant.click/home
 Distributed under the [MIT](https://choosealicense.com/licenses/mit/) License.
 
 [Amir Rahimi](https://universallink.me/u/atenyun) - Fullstack blockchain developer
+
+
+
+
+
+
+
+
+
+Potential Milestones:
+
+Integration of LSP7 tokens: As mentioned in the previous response, UpStore has likely integrated LSP7 tokens into its direct donation mechanism. This would allow users to easily support their favorite dapps on the platform.
+Platform optimization: The development team may have focused on optimizing the platform for performance, user experience, and security. This could involve improvements to the user interface, search functionality, and overall usability.
+Additional dapp listings: UpStore may have expanded its catalog of dapps, adding more options for users to discover and explore.
+Community engagement: The project may have engaged with the LUKSO community to gather feedback and ideas for future development. This could involve participating in forums, social media discussions, or organizing community events.
+Adding Arbitrum network: UpStore may have expanded to support the Arbitrum network, allowing users to discover and interact with dapps on this scalable and cost-effective blockchain.
+Adding a few Dapp on Arbitrum: If UpStore has added Arbitrum support, it is likely that they have also listed a few dapps built on this network. These dapps could offer a variety of functionalities, such as decentralized finance (DeFi), gaming, or social networking.
+Overall, it is likely that UpStore has made significant progress since the hackathon. The integration of LSP7 tokens is a notable achievement, and the team has likely focused on other areas to improve the platform and better serve the LUKSO community.
