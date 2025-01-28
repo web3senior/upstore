@@ -668,6 +668,7 @@ function App({ title }) {
                               }
                             }}
                           >
+                            <option value={``}>Glo Dollar</option>
                             {tokenList &&
                               tokenList.length > 0 &&
                               tokenList.map((item, i) => (

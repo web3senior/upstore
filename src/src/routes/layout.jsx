@@ -12,6 +12,7 @@ import CGIcon from './../../src/assets/icon-cg.svg'
 import GitHubIcon from './../../src/assets/icon-github.svg'
 import EthereumLogo from './../../src/assets/ethereum-logo.svg'
 import ArbitrumLogo from './../../src/assets/arbitrum-logo.svg'
+import OptimisimLogo from './../../src/assets/optimisim-logo.svg'
 import LuksoLogo from './../../src/assets/lukso.svg'
 import party from 'party-js'
 import styles from './Layout.module.scss'
@@ -57,6 +58,10 @@ export default function Root() {
       name: `LUKSO`,
       logo: LuksoLogo,
     },
+    {
+      name: `Optimism Testnet`,
+      logo: OptimisimLogo,
+    },
   ])
   const auth = useAuth()
 
@@ -69,7 +74,9 @@ export default function Root() {
     return <img alt={`${filteredChain[0].name}`} src={`${filteredChain[0].logo}`} title={`${filteredChain[0].name}`} />
   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    if (localStorage.getItem(`defaultChain`)) setDefaultChain(localStorage.getItem(`defaultChain`))
+  }, [])
 
   return (
     <>
@@ -78,7 +85,6 @@ export default function Root() {
 
       <header className={`${styles.header}`}>
         <div className={`__container d-flex flex-row align-items-center justify-content-between`} data-width={`xxlarge`}>
-          {/* Logo */}
           <Link to={`/`}>
             <figure className={`${styles['logo']}`}>
               <img alt={import.meta.env.VITE_TITLE} src={Logo} />
@@ -162,6 +168,7 @@ export default function Root() {
                         <figure className={`d-flex flex-row align-items-center justify-content-start`} style={{ columnGap: `.5rem` }}>
                           <img alt={`${item.name}`} src={item.logo} />
                           <figcaption>{item.name}</figcaption>
+                          {console.log(item.name.toLowerCase(),defaultChain.toLowerCase())}
                           {item.name.toLowerCase() === defaultChain.toLowerCase() && <Icon name={`check`} style={{ marginLeft: `auto`, color: `var(--color-primary)` }} />}
                         </figure>
                       </li>

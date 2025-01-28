@@ -1,9 +1,0 @@
-@import './../styles/components/responsive';
-
-.section {
-  height: inherit;
-  padding-top: 1rem;
-
-  @include small-down() {
-  }
-}

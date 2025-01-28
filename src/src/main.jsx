@@ -16,9 +16,7 @@ import App, { loader as appLoader } from './routes/app.jsx'
 import About from './routes/about.jsx'
 import Ecosystem from './routes/ecosystem.jsx'
 import Admin from './routes/admin.jsx'
-import LSP7 from './routes/lsp7.jsx'
 
-console.log(`%c🆙`, 'font-size:5rem')
 
 const router = createBrowserRouter([
   {
@@ -57,10 +55,6 @@ const router = createBrowserRouter([
       {
         path: 'ecosystem',
         element: <Ecosystem title={`Ecosystem`} />,
-      },
-      {
-        path: 'tools/lsp7',
-        element: <LSP7 title={`LSP7`} />,
       },
     ],
   },

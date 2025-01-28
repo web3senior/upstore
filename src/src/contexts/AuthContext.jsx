@@ -139,7 +139,7 @@ export function AuthProvider({ children }) {
       setIsLoading(false)
     })
 
-    if (!localStorage.getItem(`defaultChain`)) localStorage.setItem(`defaultChain`, 'Ethereum')
+    if (!localStorage.getItem(`defaultChain`)) localStorage.setItem(`defaultChain`, 'Lukso')
   }, [])
 
   const value = {
