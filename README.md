@@ -68,16 +68,22 @@ Lukso: verified contract address `0x9Dc207Aa462A6655c5934C953FAecA3595C87e43` [v
 
 
 ### Deployed Contract (Mainnet)
-## Arbitrum
+## Arbitrum Mainnet
 ```
 0x8634130FF8D3De06121BEF04a25B78557883fe97
 ```
 https://arbiscan.io/address/0x8634130ff8d3de06121bef04a25b78557883fe97
 
-## LUKSO
+## LUKSO Mainnet
 ```
 0x6d80FC6430711406494389024174A00fB063A0d5
 ```
+
+## Optimism Sepolia Testnet
+```
+0xf5e4d19c9de1323dfF4fd85822Ca7A3582035e76
+```
+https://sepolia-optimism.etherscan.io/address/0xf5e4d19c9de1323dff4fd85822ca7a3582035e76#code
 
 ### Contributing
 
@@ -102,14 +108,6 @@ Upload to IPFS => https://solidgrant.click/home
 Distributed under the [MIT](https://choosealicense.com/licenses/mit/) License.
 
 [Amir Rahimi](https://universallink.me/u/atenyun) - Fullstack blockchain developer
-
-
-
-
-
-
-
-
 
 Potential Milestones:
 
