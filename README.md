@@ -12,7 +12,7 @@
 
 ## Demo
 
-### https://universalprofile.store
+### https://upstore-git-main-amir-rahimis-projects.vercel.app/
 
 ## YouTube
 https://youtu.be/ILmirZXwNyc
